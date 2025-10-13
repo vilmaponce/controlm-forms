@@ -1,0 +1,1000 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ABM Jobs - Control-M</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { 
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    padding: 20px;
+    color: #333;
+}
+h1 { 
+    text-align: center;
+    color: white;
+    font-size: 2rem;
+    margin-bottom: 10px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+}
+.importante {
+    text-align: center;
+    color: white;
+    font-size: 1.1rem;
+    margin-bottom: 20px;
+    background: rgba(255, 0, 0, 0.2);
+    padding: 10px;
+    border-radius: 10px;
+}
+.importante .asterisco {
+    color: #ff6b6b;
+    font-weight: bold;
+    font-size: 1.3rem;
+}
+h2 { 
+    text-align: center;
+    color: white;
+    font-size: 1.3rem;
+    margin-bottom: 20px;
+    font-weight: 400;
+}
+#lista-jobs {
+    display: block;
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto 30px;
+    padding: 15px;
+    font-size: 1.1rem;
+    border: 2px solid #fff;
+    border-radius: 10px;
+    background: white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+#lista-jobs:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+.custom-form {
+    max-width: 900px;
+    margin: 0 auto;
+    background: white;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    animation: fadeIn 0.4s ease;
+}
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+.custom-form h2 {
+    color: #667eea;
+    text-align: left;
+    margin-bottom: 25px;
+    padding-bottom: 15px;
+    border-bottom: 3px solid #667eea;
+    text-shadow: none;
+}
+.custom-form label {
+    display: block;
+    margin-bottom: 15px;
+    font-weight: 600;
+    color: #444;
+    font-size: 0.95rem;
+}
+.requerido {
+    color: #ff0000;
+    font-weight: bold;
+    margin-left: 3px;
+}
+.custom-form input[type="text"],
+.custom-form input[type="date"],
+.custom-form input[type="time"],
+.custom-form input[type="number"],
+.custom-form input[type="password"],
+.custom-form select,
+.custom-form textarea {
+    width: 100%;
+    padding: 12px;
+    margin-top: 5px;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-family: inherit;
+    transition: all 0.3s ease;
+    background: #fafafa;
+}
+.custom-form input:focus,
+.custom-form select:focus,
+.custom-form textarea:focus {
+    outline: none;
+    border-color: #667eea;
+    background: white;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+.custom-form textarea {
+    min-height: 100px;
+    resize: vertical;
+}
+.ciclico-campos {
+    background: #f0f4ff;
+    padding: 20px;
+    border-radius: 10px;
+    margin: 15px 0;
+    border-left: 4px solid #667eea;
+}
+.custom-form input[required],
+.custom-form textarea[required] {
+    border-left: 4px solid #ff6b6b;
+}
+.custom-form button[type="submit"] {
+    width: 100%;
+    padding: 15px;
+    margin-top: 25px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+}
+.custom-form button[type="submit"]:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+}
+.section-title {
+    margin-top: 20px;
+    margin-bottom: 15px;
+    font-size: 1.05rem;
+    color: #667eea;
+    font-weight: 700;
+    padding: 10px;
+    background: #f0f4ff;
+    border-radius: 8px;
+    border-left: 4px solid #667eea;
+}
+
+/* CAMPOS DINÁMICOS */
+.campos-dinamicos {
+    background: #f9f9f9;
+    padding: 20px;
+    border-radius: 10px;
+    margin: 20px 0;
+    border: 2px dashed #667eea;
+}
+.fila-dinamica {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 50px;
+    gap: 10px;
+    margin-bottom: 15px;
+    padding: 15px;
+    background: white;
+    border-radius: 8px;
+    border: 1px solid #e0e0e0;
+}
+.btn-agregar {
+    background: #28a745;
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    margin-top: 10px;
+    transition: all 0.3s;
+}
+.btn-agregar:hover {
+    background: #218838;
+    transform: translateY(-2px);
+}
+.btn-eliminar {
+    background: #dc3545;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.3s;
+    font-size: 1.2rem;
+}
+.btn-eliminar:hover {
+    background: #c82333;
+}
+
+@media (max-width: 768px) {
+    body { padding: 10px; }
+    h1 { font-size: 1.5rem; }
+    .custom-form { padding: 20px; }
+    .fila-dinamica {
+        grid-template-columns: 1fr;
+    }
+}
+</style>
+</head>
+<body>
+
+<h1>Plantillas de alta, baja y modificación en Jobs de Control-M</h1>
+<h1>ADMINISTRACIÓN CONTROL-M</h1>
+<div class="importante">
+    <strong>IMPORTANTE:</strong> Los campos marcados con <span class="asterisco">(*)</span> son obligatorios
+</div>
+
+<h2>Seleccionar un formulario:</h2>
+
+<select name="tipo_job" id="lista-jobs">
+    <option value="">Seleccionar...</option>
+    <option value="os">SCRIPT / CMD</option>
+    <option value="sap">SAP</option>
+    <option value="file-transfer">FILE TRANSFER</option>
+    <option value="database">DATABASE</option>
+    <option value="webjob">WEBJOB</option>
+    <option value="masiva">MASIVA</option>
+</select>
+
+<!-- FORMULARIO OS COMPLETO -->
+<form id="form-os" action="/formularios/os" method="post" class="custom-form" style="display:none;">
+    <input type="hidden" name="tipo_job" value="os">
+    <h2>Campo SCRIPT / CMD</h2>
+   
+    
+    <label>Tipo de solicitud:<span class="requerido">(*)</span>
+        <select name="tipo_solicitud_os">
+            <option value="">Seleccionar...</option>
+            <option value="alta">Alta</option>
+            <option value="baja">Baja</option>
+            <option value="modificacion">Modificación</option>
+        </select>
+    </label>
+    
+    <label>Ambiente:<span class="requerido">(*)</span>
+        <select name="ambiente_os">
+            <option value="">Seleccionar...</option>
+            <option value="desarrollo">Desarrollo</option>
+            <option value="testing">Testing</option>
+            <option value="produccion">Producción</option>
+        </select>
+    </label>
+    
+    <label>Ticket en Service Now: <input type="text" name="sn_os"></label>
+    <label>Jobname: <input type="text" name="jobname_os"></label>
+    <label>Descripción del proceso<span class="requerido">(*)</span> <input type="text" name="descripcion_os"></label>
+    <label>Nombre del servidor<span class="requerido">(*)</span> <input type="text" name="servidor_os" required></label>
+    <label>Usuario ejecutante <input type="text" name="usuario_os"></label>
+    <label>Instancia de aplicación en SN <span class="requerido">(*)</span> <input type="text" name="instancia_os"></label>
+    <label>Nombre del proceso a ejecutar<span class="requerido">(*)</span> <input type="text" name="command_os" required></label>
+    
+    <div class="section-title">Frecuencia de ejecución<span class="requerido">(*)</span></div>
+    <label>Días de la semana: <input type="text" name="dias_semana_os" placeholder="L,M,Mi,J,V"></label>
+    <label>Días del mes: <input type="text" name="dias_mes_os" placeholder="1,15,30"></label>
+    <label>Mes/es:
+        <select name="meses_os">
+            <option value="">Todos</option>
+            <option value="enero">Enero</option>
+            <option value="febrero">Febrero</option>
+            <option value="marzo">Marzo</option>
+            <option value="abril">Abril</option>
+            <option value="mayo">Mayo</option>
+            <option value="junio">Junio</option>
+            <option value="julio">Julio</option>
+            <option value="agosto">Agosto</option>
+            <option value="septiembre">Septiembre</option>
+            <option value="octubre">Octubre</option>
+            <option value="noviembre">Noviembre</option>
+            <option value="diciembre">Diciembre</option>
+        </select>
+    </label>
+    <label>Fecha única: <input type="date" name="fecha_unica_os"></label>
+    <label>Hora: <input type="time" name="hora_os"></label>
+    <label>Cíclico:
+        <select name="ciclico_os" class="ciclico-select">
+            <option value="no">No</option>
+            <option value="si">Sí</option>
+        </select>
+    </label>
+    <div class="ciclico-campos" style="display: none;">
+        <label>Hora desde: <input type="time" name="hora_desde_os"></label>
+        <label>Hora hasta: <input type="time" name="hora_hasta_os"></label>
+        <label>Intervalo (minutos): <input type="number" name="intervalo_os" placeholder="30"></label>
+        <label>Desde:
+            <select name="desde_os">
+                <option value="">Seleccionar...</option>
+                <option value="fin">Fin</option>
+                <option value="principio">Principio</option>
+            </select>
+        </label>
+    </div>
+    <label>Activo desde: <input type="date" name="activo_desde_os"></label>
+    <label>Activo hasta: <input type="date" name="activo_hasta_os"></label>
+    
+    <label>Si tiene dependencias indicar cuales: 
+        <textarea name="dependencias_os" placeholder="JOB.TO.JOB"></textarea>
+    </label>
+    
+    <label>Criticidad:
+        <select name="criticidad_os">
+            <option value="">Seleccionar...</option>
+            <option value="baja">Baja</option>
+            <option value="media">Media</option>
+            <option value="alta">Alta</option>
+        </select>    
+    </label>
+    
+    <div class="section-title">DOCUMENTACIÓN <span class="requerido">(indicar un único grupo)</span></div>
+    <label>Grupo responsable correo<span class="requerido">(*)</span> <input type="text" name="grupo_responsable_correo_os" required></label>
+    <label>Grupo responsable Service Now: <input type="text" name="grupo_responsable_sn_os"></label>
+    <label>Acción a seguir si cancela <span class="requerido">(*)IMPORTANTE: NO DERIVAR INCIDENTE-CERRAR EN OPERACIONES</span>
+        <textarea name="accion_cancela_os" required></textarea>
+    </label>
+    <label>Observaciones / Datos Complementarios / Notas 
+        <textarea name="observaciones_os"></textarea>
+    </label>
+    
+    <button type="submit">Guardar</button>
+</form>
+
+<!-- FORMULARIO SAP COMPLETO -->
+<form id="form-sap" action="/formularios/sap" method="post" class="custom-form" style="display:none;">
+    <input type="hidden" name="tipo_job" value="sap">
+    <h2>Campo SAP</h2>
+    
+    <label>Tipo de solicitud<span class="requerido">(*)</span>
+        <select name="tipo_solicitud_sap">
+            <option value="">Seleccionar...</option>
+            <option value="alta">Alta</option>
+            <option value="baja">Baja</option>
+            <option value="modificacion">Modificación</option>
+        </select>
+    </label>
+    
+    <label>Ambiente<span class="requerido">(*)</span>
+        <select name="ambiente_sap">
+            <option value="">Seleccionar...</option>
+            <option value="desarrollo">Desarrollo</option>
+            <option value="testing">Testing</option>
+            <option value="produccion">Producción</option>
+        </select>
+    </label>
+    
+    <label>Ticket en Service Now: <input type="text" name="sn_sap"></label>
+    <label>Jobname: <input type="text" name="jobname_sap"></label>
+    <label>Descripción del proceso<span class="requerido">(*)</span><input type="text" name="descripcion_sap"></label>
+    <label>Nombre del servidor<span class="requerido">(*)</span> <input type="text" name="servidor_sap" required></label>
+    <label>Usuario ejecutante: <input type="text" name="usuario_sap"></label>
+    <label>Instancia de aplicación<span class="requerido">(*)</span> <input type="text" name="instancia_sap"></label>
+    <label>Nombre del Proceso de SAP a Lanzar desde Control-M( Proceso a Ejecutar )<span class="requerido">(*)</span> <input type="text" name="command_sap" required></label>
+    <label>Usuario en SAP: <input type="text" name="usuario_en_sap"></label>
+    <label>Instancia/Mandante: <input type="text" name="mandante_sap"></label>
+    <label>Módulo: <input type="text" name="modulo_sap"></label>
+    
+    <div class="section-title">Frecuencia de ejecución<span class="requerido">(*)</span></div>
+    <label>Días de la semana: <input type="text" name="dias_semana_sap" placeholder="L,M,Mi,J,V"></label>
+    <label>Días del mes: <input type="text" name="dias_mes_sap" placeholder="1,15,30"></label>
+    <label>Mes/es:
+        <select name="meses_sap">
+            <option value="">Todos</option>
+            <option value="enero">Enero</option>
+            <option value="febrero">Febrero</option>
+            <option value="marzo">Marzo</option>
+            <option value="abril">Abril</option>
+            <option value="mayo">Mayo</option>
+            <option value="junio">Junio</option>
+            <option value="julio">Julio</option>
+            <option value="agosto">Agosto</option>
+            <option value="septiembre">Septiembre</option>
+            <option value="octubre">Octubre</option>
+            <option value="noviembre">Noviembre</option>
+            <option value="diciembre">Diciembre</option>
+        </select>
+    </label>
+    <label>Fecha única: <input type="date" name="fecha_unica_sap"></label>
+    <label>Hora: <input type="time" name="hora_sap"></label>
+    <label>Cíclico:
+        <select name="ciclico_sap" class="ciclico-select">
+            <option value="no">No</option>
+            <option value="si">Sí</option>
+        </select>
+    </label>
+    <div class="ciclico-campos" style="display: none;">
+        <label>Hora desde: <input type="time" name="hora_desde_sap"></label>
+        <label>Hora hasta: <input type="time" name="hora_hasta_sap"></label>
+        <label>Intervalo (minutos): <input type="number" name="intervalo_sap" placeholder="30"></label>
+        <label>Desde:
+            <select name="desde_sap">
+                <option value="">Seleccionar...</option>
+                <option value="fin">Fin</option>
+                <option value="principio">Principio</option>
+            </select>
+        </label>
+    </div>
+    <label>Activo desde: <input type="date" name="activo_desde_sap"></label>
+    <label>Activo hasta: <input type="date" name="activo_hasta_sap"></label>
+    
+    <label>Si tiene dependencias indicar cuales: 
+        <textarea name="dependencias_sap" placeholder="JOB.TO.JOB"></textarea>
+    </label>
+    
+    <label>Criticidad:
+        <select name="criticidad_sap">
+            <option value="">Seleccionar...</option>
+            <option value="baja">Baja</option>
+            <option value="media">Media</option>
+            <option value="alta">Alta</option>
+        </select>
+    </label>
+    
+    <div class="section-title">DOCUMENTACIÓN <span class="requerido">(indicar un único grupo)</span></div>
+    <label>Grupo responsable correo<span class="requerido">(*)</span> <input type="text" name="grupo_responsable_correo_sap" required></label>
+    <label>Grupo responsable Service Now: <input type="text" name="grupo_responsable_sn_sap"></label>
+    <label>Acción a seguir si cancela <span class="requerido">(*)-IMPORTANTE!: NO DERIVAR INCIDENTE - CERRAR EN OPERACIONES</span>
+        <textarea name="accion_cancela_sap" required></textarea>
+    </label>
+    <label>Observaciones / Datos Complementarios / Notas 
+        <textarea name="observaciones_sap"></textarea>
+    </label>
+    
+    <button type="submit">Guardar</button>
+</form>
+
+<!-- FORMULARIO FILE TRANSFER COMPLETO -->
+<form id="form-file-transfer" action="/formularios/file-transfer" method="post" class="custom-form" style="display:none;">
+    <input type="hidden" name="tipo_job" value="file-transfer">
+    <h2>Campo FILE-TRANSFER</h2>
+    
+    <label>Tipo de solicitud<span class="requerido">(*)</span>
+        <select name="tipo_solicitud_aft">
+            <option value="">Seleccionar...</option>
+            <option value="alta">Alta</option>
+            <option value="baja">Baja</option>
+            <option value="modificacion">Modificación</option>
+        </select>
+    </label>
+    
+    <label>Ambiente<span class="requerido">(*)</span>
+        <select name="ambiente_aft">
+            <option value="">Seleccionar...</option>
+            <option value="desarrollo">Desarrollo</option>
+            <option value="testing">Testing</option>
+            <option value="produccion">Producción</option>
+        </select>
+    </label>
+    
+    <label>Ticket en Service Now: <input type="text" name="sn_aft"></label>
+    <label>Jobname: <input type="text" name="jobname_aft"></label>
+    <label>Descripción del proceso<span class="requerido">(*)</span> <input type="text" name="descripcion_aft"></label>
+    <label>Instancia de aplicación en SN<span class="requerido">(*)</span> <input type="text" name="instancia_aft"></label>
+    
+    <div class="section-title">Configuración ORIGEN</div>
+    <label>Servidor Origen<span class="requerido">(*)</span> <input type="text" name="servidor_origen_aft"></label>
+    <label>Carpeta Origen<span class="requerido">(*)</span> <input type="text" name="carpeta_origen_aft"></label>
+    <label>Usuario Origen<span class="requerido">(*)</span> <input type="text" name="usuario_origen_aft"></label>
+    <label>Archivos a Transmitir<span class="requerido">(*)</span> <input type="text" name="archivos_transmitir_aft"></label>
+    
+    <div class="section-title">Configuración DESTINO</div>
+    <label>Servidor Destino <span class="requerido">(*)</span><input type="text" name="servidor_destino_aft"></label>
+    <label>Carpeta Destino<span class="requerido">(*)</span> <input type="text" name="carpeta_destino_aft"></label>
+    <label>Usuario Destino<span class="requerido">(*)</span> <input type="text" name="usuario_destino_aft"></label>
+    <label>Nombre del archivo en Destino<span class="requerido">(*)</span> <input type="text" name="nombre_destino_aft"></label>
+    
+    <label>Si archivo existe en Destino<span class="requerido">(*)</span>
+        <select name="archivo_existe_aft">
+            <option value="">Seleccionar...</option>
+            <option value="overwrite">OVERWRITE</option>
+            <option value="append">APPEND</option>
+            <option value="abort">ABORT</option>
+            <option value="skip">SKIP</option>
+        </select>
+    </label>
+    
+    <label>Copia Recursiva<span class="requerido">(*)</span>
+        <select name="copia_recursiva_aft">
+            <option value="">Seleccionar...</option>
+            <option value="si">Sí</option>
+            <option value="no">No</option>
+        </select>
+    </label>
+    
+    <label>Luego de Copia OK<span class="requerido">(*)</span>
+        <select name="copia_ok_aft">
+            <option value="">Seleccionar...</option>
+            <option value="left_as_is">LEFT AS IS</option>
+            <option value="delete">DELETE</option>
+            <option value="rename">RENAME</option>
+        </select>
+    </label>
+    
+    <div class="section-title">Frecuencia de ejecución<span class="requerido">(*)</span></div>
+    <label>Días de la semana: <input type="text" name="dias_semana_aft"></label>
+    <label>Días del mes: <input type="text" name="dias_mes_aft"></label>
+    <label>Mes/es:
+        <select name="meses_aft">
+            <option value="">Todos</option>
+            <option value="enero">Enero</option>
+            <option value="febrero">Febrero</option>
+            <option value="marzo">Marzo</option>
+            <option value="abril">Abril</option>
+            <option value="mayo">Mayo</option>
+            <option value="junio">Junio</option>
+            <option value="julio">Julio</option>
+            <option value="agosto">Agosto</option>
+            <option value="septiembre">Septiembre</option>
+            <option value="octubre">Octubre</option>
+            <option value="noviembre">Noviembre</option>
+            <option value="diciembre">Diciembre</option>
+        </select>
+    </label>
+    <label>Fecha única: <input type="date" name="fecha_unica_aft"></label>
+    <label>Hora: <input type="time" name="hora_aft"></label>
+     <label>Cíclico:
+        <select name="ciclico_sap" class="ciclico-select">
+            <option value="no">No</option>
+            <option value="si">Sí</option>
+        </select>
+    </label>
+    <div class="ciclico-campos" style="display: none;">
+        <label>Hora desde: <input type="time" name="hora_desde_sap"></label>
+        <label>Hora hasta: <input type="time" name="hora_hasta_sap"></label>
+        <label>Intervalo (minutos): <input type="number" name="intervalo_sap" placeholder="30"></label>
+        <label>Desde:
+            <select name="desde_sap">
+                <option value="">Seleccionar...</option>
+                <option value="fin">Fin</option>
+                <option value="principio">Principio</option>
+            </select>
+        </label>
+    </div>
+    <label>Activo desde: <input type="date" name="activo_desde_aft"></label>
+    <label>Activo hasta: <input type="date" name="activo_hasta_aft"></label>
+    
+    <label>Si tiene dependencias indicar cuales: 
+        <textarea name="dependencias_aft" placeholder="JOB.TO.JOB"></textarea>
+    </label>
+    
+    <label>Criticidad:
+        <select name="criticidad_aft">
+            <option value="">Seleccionar...</option>
+            <option value="baja">Baja</option>
+            <option value="media">Media</option>
+            <option value="alta">Alta</option>
+        </select>
+    </label>
+    
+    <div class="section-title">DOCUMENTACIÓN<span class="requerido">(Indicar un único grupo)</span></div>
+    <label>Grupo responsable correo<span class="requerido">(*)</span> <input type="text" name="grupo_responsable_correo_aft" required></label>
+    <label>Grupo responsable Service Now: <input type="text" name="grupo_responsable_sn_aft"></label>
+    <label>Acción a seguir si cancela <span class="requerido">(*)-IMPORTANTE!: NO DERIVAR INCIDENTE - CERRAR EN OPERACIONES</span> 
+        <textarea name="accion_cancela_aft" required></textarea>
+    </label>
+    <label>Observaciones / Datos Complementarios / Notas 
+        <textarea name="observaciones_aft"></textarea>
+    </label>
+    
+    <button type="submit">Guardar</button>
+</form>
+
+<!-- FORMULARIO DATABASE COMPLETO -->
+<form id="form-database" class="custom-form" style="display:none;">
+    <h2>Campo DATABASE</h2>
+    
+    <label>TIPO DE SOLICITUD <span class="requerido">(*)</span>
+        <select name="tipo_solicitud_db" required>
+            <option value="">Seleccionar...</option>
+            <option value="alta">Alta</option>
+            <option value="baja">Baja</option>
+            <option value="modificacion">Modificación</option>
+        </select>
+    </label>
+    
+    <label>AMBIENTE <span class="requerido">(*)</span>
+        <select name="ambiente_db" required>
+            <option value="">Seleccionar...</option>
+            <option value="desarrollo">Desarrollo</option>
+            <option value="testing">Testing</option>
+            <option value="produccion">Producción</option>
+            <option value="homologacion">Laboratorio</option>
+        </select>
+    </label>
+    
+    <label>Ticket en Service Now: <input type="text" name="sn_db"></label>
+    <label>JOBNAME: <input type="text" name="jobname_db"></label>
+    
+    <label>DESCRIPCIÓN DEL PROCESO <span class="requerido">(*)</span>
+        <textarea name="descripcion_db" required placeholder="Ejecuta un Stored Procedure para enviar informacion a la tabla EC_COMPLETACIONES_DETALLE"></textarea>
+    </label>
+    
+    <div class="section-title">Configuración de Base de Datos</div>
+    
+    <label>TIPO DE BD <span class="requerido">(*)</span>
+        <select name="tipo_bd" required>
+            <option value=""></option>
+            <option value="mssql">MSSQL</option>
+            <option value="oracle">Oracle</option>
+            <option value="db2">DB2</option>
+            <option value="mysql">MySQL</option>
+            <option value="sybase">Sybase</option>
+            <option value="postgresql">PostgreSQL</option>
+        </select>
+    </label>
+    
+    <label>VERSION DE BD <span class="requerido">(*)</span>
+        <input type="text" name="version_bd" placeholder="10g" required>
+    </label>
+    <label>Instancia de Aplicación en SN<span class="requerido">(*)</span>
+        <input type="text" name="version_bd" placeholder="10g" required>
+    </label>
+    
+    <label>SERVIDOR / HOSTNAME <span class="requerido">(*)</span>
+        <input type="text" name="servidor_db" placeholder="nombre servidor" required>
+    </label>
+    
+    <label>NOMBRE DE LA BASE DE DATOS <span class="requerido">(*)</span>
+        <input type="text" name="nombre_bd" placeholder="nombre base de datos" required>
+    </label>
+    
+    <label>PUERTO<span class="requerido">(*)</span> <input type="text" name="puerto_db" placeholder="ej 1234"></label>
+    
+    <label>TIPO DE AUTENTICACION <span class="requerido">(*)</span>
+        <select name="tipo_auth_db" required>
+            <option value=""></option>
+            <option value="windows">Windows Authentication</option>
+            <option value="sql">SQL Server Authentication</option>
+            <option value="ntlm2">NTLM2 Windows Authentication</option>
+        </select>
+    </label>
+    
+    <label>USUARIO DE BD <span class="requerido">(*)</span>
+        <input type="text" name="usuario_db" placeholder="usuario db" required>
+    </label>
+    
+    <label>TIPO DE EJECUCION <span class="requerido">(*)</span>
+        <select name="tipo_ejecucion_db" required>
+            <option value=""></option>
+            <option value="stored-procedure">STORED PROCEDURE</option>
+            <option value="sql-script">SQL Script</option>
+            <option value="embedded query">Embedded Query</option>
+            <option value="ssis package">SSIS Package</option>
+            <option value="mssql agent job">MSSQL Agent Job</option>
+        </select>
+    </label>
+    
+    <label>SCHEMA <span class="requerido">(*)</span>
+        <input type="text" name="schema_db" placeholder="schema" required>
+    </label>
+    
+    <label>PACKAGE: <input type="text" name="package_db" placeholder="N/A"></label>
+    
+    <label>NOMBRE STORED PROCEDURE<span class="requerido">(*)</span> <input type="text" name="nombre_sp_db" placeholder="nombre S_P"></label>
+    
+    <div class="section-title">FRECUENCIA de EJECUCIÓN <span class="requerido">(*)</span></div>
+    
+    <label>Días de la Semana: <input type="text" name="dias_semana_db" placeholder="Todos"></label>
+    <label>Días del Mes: <input type="text" name="dias_mes_db" placeholder="Todos"></label>
+    <label>Mes/es:
+        <select name="meses_db">
+            <option value="todos">TODOS</option>
+            <option value="enero">Enero</option>
+            <option value="febrero">Febrero</option>
+            <option value="marzo">Marzo</option>
+            <option value="abril">Abril</option>
+            <option value="mayo">Mayo</option>
+            <option value="junio">Junio</option>
+            <option value="julio">Julio</option>
+            <option value="agosto">Agosto</option>
+            <option value="septiembre">Septiembre</option>
+            <option value="octubre">Octubre</option>
+            <option value="noviembre">Noviembre</option>
+            <option value="diciembre">Diciembre</option>
+        </select>
+    </label>
+    <label>Fecha Única: <input type="date" name="fecha_unica_db"></label>
+    <label>Hora: <input type="time" name="hora_db"></label>
+    <label>CÍCLICO?
+        <select name="ciclico_db" class="ciclico-select">
+            <option value="no">NO</option>
+            <option value="si">SI</option>
+        </select>
+    </label>
+    <div class="ciclico-campos" style="display: none;">
+        <label>Hora Desde: <input type="time" name="hora_desde_db"></label>
+        <label>Hora Hasta: <input type="time" name="hora_hasta_db"></label>
+        <label>Intervalo: <input type="number" name="intervalo_db"></label>
+        <label>Desde:
+            <select name="desde_db">
+                <option value=""></option>
+                <option value="fin">Fin</option>
+                <option value="principio">Principio</option>
+            </select>
+        </label>
+    </div>
+    
+    <label>Activo Desde: <input type="date" name="activo_desde_db"></label>
+    <label>Activo Hasta: <input type="date" name="activo_hasta_db"></label>
+    
+    <label>Si tiene dependencias indicar cuales: 
+        <textarea name="dependencias_db"></textarea>
+    </label>
+    
+    <div class="section-title">DOCUMENTACIÓN <span class="requerido">(Indicar un único grupo)</span></div>
+    
+    <label>Grupo Responsable Correo <span class="requerido">(*)</span>
+        <input type="text" name="grupo_responsable_correo_db" required>
+    </label>
+    
+    <label>Grupo Responsable Service Now: <input type="text" name="grupo_responsable_sn_db"></label>
+    
+    <label>Acción a Seguir si Cancela <span class="requerido">(*MPORTANTE!: NO DERIVAR INCIDENTE - CERRAR EN OPERACIONES)</span>
+        <textarea name="accion_cancela_db" required placeholder="IMPORTANTE!: NO DERIVAR INCIDENTE - CERRAR EN OPERACIONES"></textarea>
+    </label>
+    
+    <label>Observaciones / Datos Complementarios / Notas:
+        <textarea name="observaciones_db"></textarea>
+    </label>
+    
+    <button type="submit">Guardar</button>
+</form>
+
+<!-- FORMULARIO WEBJOB COMPLETO -->
+<form id="form-webjob" class="custom-form" style="display:none;">
+    <h2>Campo WEBJOB</h2>
+    
+    <label>TIPO DE SOLICITUD <span class="requerido">(*)</span>
+        <select name="tipo_solicitud_wj" required>
+            <option value="">Seleccionar...</option>
+            <option value="alta">Alta</option>
+            <option value="baja">Baja</option>
+            <option value="modificacion">Modificación</option>
+        </select>
+    </label>
+    
+    <label>AMBIENTE <span class="requerido">(*)</span>
+        <select name="ambiente_wj" required>
+            <option value="">Seleccionar...</option>
+            <option value="produccion">PRODUCCION</option>
+            <option value="desarrollo">DESARROLLO</option>
+            <option value="testing">TESTING</option>
+            <option value="laboratorio">LABORATORIO</option>
+        </select>
+    </label>
+    
+    <label>Ticket en Service Now: <input type="text" name="sn_wj"></label>
+    <label>JOBNAME: <input type="text" name="jobname_wj"></label>
+    
+    <label>DESCRIPCIÓN DEL PROCESO <span class="requerido">(*)</span>
+        <textarea name="descripcion_wj" required></textarea>
+    </label>
+    
+    <label>Instancia de Aplicación en SN <span class="requerido">(*)</span>
+        <input type="text" name="instancia_sn_wj" required>
+    </label>
+
+    <label>Nombre del Webjob (Sugerido) 
+        <input type="text" name="servidor_wj" required>
+
+    </label>
+
+    <label>Comando a ejecutar <span class="requerido">(*)</span> 
+        <select name="command_wj" required>
+            <option value=""></option>
+            <option value="run">RUN</option>
+            <option value="start">START</option>
+            <option value="stop">STOP</option>
+            <option value="otro">OTRO</option>
+        </select>
+    </label>
+
+    <label >Si es otro, indicar cual?
+        <input type="text" name="otro_command_wj">
+    </label>
+    
+    <div class="section-title">CREDENCIALES DEL CLIENTE</div>
+    
+    <label>Usuario de Conexión  <span class="requerido">((Client ID))</span>  <input type="text" name="client_id_wj"></label>
+    <label>Clave para acceder <span class="requerido">((Client Secret))</span><input type="password" name="client_secret_wj"></label>
+    
+    <div class="section-title">FRECUENCIA de EJECUCIÓN <span class="requerido">(*)</span></div>
+    
+    <label>Días de la Semana: <input type="text" name="dias_semana_wj"></label>
+    <label>Días del Mes: <input type="text" name="dias_mes_wj"></label>
+    <label>Mes/es:
+        <select name="meses_wj">
+            <option value="todos">TODOS</option>
+            <option value="enero">Enero</option>
+            <option value="febrero">Febrero</option>
+            <option value="marzo">Marzo</option>
+            <option value="abril">Abril</option>
+            <option value="mayo">Mayo</option>
+            <option value="junio">Junio</option>
+            <option value="julio">Julio</option>
+            <option value="agosto">Agosto</option>
+            <option value="septiembre">Septiembre</option>
+            <option value="octubre">Octubre</option>
+            <option value="noviembre">Noviembre</option>
+            <option value="diciembre">Diciembre</option>
+        </select>
+    </label>
+    <label>Fecha Única: <input type="date" name="fecha_unica_wj"></label>
+    <label>Hora: <input type="time" name="hora_wj"></label>
+    <label>CÍCLICO?
+        <select name="ciclico_wj" class="ciclico-select">
+            <option value="no">NO</option>
+            <option value="si">SI</option>
+        </select>
+    </label>
+    <div class="ciclico-campos" style="display: none;">
+        <label>Hora Desde: <input type="time" name="hora_desde_wj"></label>
+        <label>Hora Hasta: <input type="time" name="hora_hasta_wj"></label>
+        <label>Intervalo: <input type="number" name="intervalo_wj"></label>
+        <label>Desde:
+            <select name="desde_wj">
+                <option value=""></option>
+                <option value="fin">Fin</option>
+                <option value="principio">Principio</option>
+            </select>
+        </label>
+    </div>
+    
+    <label>Activo Desde: <input type="date" name="activo_desde_wj"></label>
+    <label>Activo Hasta: <input type="date" name="activo_hasta_wj"></label>
+    <label>Criticidad:
+        <select name="criticidad_wj">
+            <option value=""></option>
+            <option value="baja">Baja</option>
+            <option value="media">Media</option>
+            <option value="alta">Alta</option>
+        </select>
+    </label>
+    <label>Si tiene dependencias indicar cuales: <textarea name="dependencias_wj"></textarea></label>
+    
+    <div class="section-title">DOCUMENTACIÓN <span class="requerido"> (Indicar un único grupo)</span>
+       </div>
+    
+    <label>Grupo Responsable Correo <span class="requerido">(*)</span>
+        <input type="text" name="grupo_responsable_correo_wj" required>
+    </label>
+    <label>Grupo Responsable Service Now: <input type="text" name="grupo_responsable_sn_wj"></label>
+    <label>Acción a Seguir si Cancela <span class="requerido">(*) IMPORTANTE : NO DERIVAR INCIDENTE - CERRAR EN OPERACIONES</span>
+        <textarea name="accion_cancela_wj" required></textarea>
+    </label>
+    <label>Observaciones / Datos Complementarios / Notas:
+        <textarea name="observaciones_wj"></textarea>
+    </label>
+    
+    <button type="submit">Guardar</button>
+</form>
+
+<!-- FORMULARIO MASIVA CON CAMPOS DINÁMICOS -->
+<form id="form-masiva" class="custom-form" style="display:none;">
+    <h2>MASIVA - Agregar múltiples jobs</h2>
+    
+    <label>TIPO DE SOLICITUD <span class="requerido">(*)</span>
+        <select name="tipo_solicitud_masiva" required>
+            <option value="">Seleccionar...</option>
+            <option value="alta">Alta</option>
+            <option value="baja">Baja</option>
+            <option value="modificacion">Modificación</option>
+        </select>
+    </label>
+    
+    <label>AMBIENTE <span class="requerido">(*)</span>
+        <select name="ambiente_masiva" required>
+            <option value="">Seleccionar...</option>
+            <option value="desarrollo">Desarrollo</option>
+            <option value="testing">Testing</option>
+            <option value="produccion">Producción</option>
+            <option value="laboratorio">Laboratorio</option>
+        </select>
+    </label>
+    
+    <div class="section-title">📋 Jobs a procesar</div>
+    
+    <div class="campos-dinamicos" id="contenedor-jobs">
+        <div class="fila-dinamica">
+            <input type="text" name="jobname[]" placeholder="Nombre Job *" required>
+            <input type="text" name="descripcion[]" placeholder="Descripción">
+            <input type="text" name="servidor[]" placeholder="Servidor">
+            <input type="text" name="usuario[]" placeholder="Usuario">
+            <button type="button" class="btn-eliminar" onclick="eliminarFila(this)">❌</button>
+        </div>
+    </div>
+    
+    <button type="button" class="btn-agregar" onclick="agregarJob()">➕ Agregar otro Job</button>
+    
+    <div class="section-title">DOCUMENTACIÓN</div>
+    <label>Grupo Responsable Correo <span class="requerido">(*)</span>
+        <input type="text" name="grupo_responsable_correo_masiva" required>
+    </label>
+    <label>Observaciones: <textarea name="observaciones_masiva"></textarea></label>
+    
+    <button type="submit">Guardar Todos</button>
+</form>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const select = document.getElementById('lista-jobs');
+    const forms = {
+        'os': document.getElementById('form-os'),
+        'sap': document.getElementById('form-sap'),
+        'file-transfer': document.getElementById('form-file-transfer'),
+        'database': document.getElementById('form-database'),
+        'webjob': document.getElementById('form-webjob'),
+        'masiva': document.getElementById('form-masiva')
+    };
+
+    function inicializarCiclico(form) {
+        const selectCiclico = form.querySelector('.ciclico-select');
+        const campos = form.querySelector('.ciclico-campos');
+        if (!selectCiclico || !campos) return;
+
+        function toggleCampos() {
+            campos.style.display = selectCiclico.value === 'si' ? 'block' : 'none';
+        }
+
+        selectCiclico.addEventListener('change', toggleCampos);
+        toggleCampos();
+    }
+
+    select.addEventListener('change', function() {
+        for (const key in forms) {
+            if (forms[key]) forms[key].style.display = 'none';
+        }
+
+        const formSeleccionado = forms[this.value];
+        if (formSeleccionado) {
+            formSeleccionado.style.display = 'block';
+            inicializarCiclico(formSeleccionado);
+        }
+    });
+
+    for (const key in forms) {
+        if (forms[key]) inicializarCiclico(forms[key]);
+    }
+});
+// FUNCIONES PARA MASIVA
+let contadorJobs = 1;
+
+function agregarJob() {
+    contadorJobs++;
+    if (contadorJobs > 50) {
+        alert('Máximo 50 jobs');
+        return;
+    }
+    
+    const contenedor = document.getElementById('contenedor-jobs');
+    const nuevaFila = document.createElement('div');
+    nuevaFila.className = 'fila-dinamica';
+    nuevaFila.innerHTML = `
+        <input type="text" name="jobname[]" placeholder="Nombre Job *" required>
+        <input type="text" name="descripcion[]" placeholder="Descripción">
+        <input type="text" name="servidor[]" placeholder="Servidor">
+        <input type="text" name="usuario[]" placeholder="Usuario">
+        <button type="button" class="btn-eliminar" onclick="eliminarFila(this)">❌</button>
+    `;
+    contenedor.appendChild(nuevaFila);
+}
+
+function eliminarFila(boton) {
+    const fila = boton.parentElement;
+    const contenedor = document.getElementById('contenedor-jobs');
+    const totalFilas = contenedor.querySelectorAll('.fila-dinamica').length;
+    if (totalFilas <= 1) {
+        alert('Debe haber al menos un job');
+        return;
+    }
+    fila.remove();
+    contadorJobs--;
+}
+
+console.log('✅ Control-M cargado');
+
+</script>
+
+</body>
+</html>
