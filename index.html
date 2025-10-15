@@ -41,24 +41,134 @@ h2 {
     margin-bottom: 20px;
     font-weight: 400;
 }
-#lista-jobs {
-    display: block;
-    width: 100%;
-    max-width: 600px;
-    margin: 0 auto 30px;
-    padding: 15px;
-    font-size: 1.1rem;
-    border: 2px solid #fff;
-    border-radius: 10px;
+
+/* SISTEMA DE PASOS */
+.paso-container {
+    max-width: 900px;
+    margin: 30px auto;
+    padding: 40px;
     background: white;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    animation: fadeIn 0.4s ease;
+}
+
+.paso-container h2 {
+    color: #667eea;
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 1.8rem;
+    text-shadow: none;
+    font-weight: 600;
+}
+
+.opciones-paso {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 25px;
+    margin-top: 30px;
+}
+
+.btn-opcion {
+    background: white;
+    border: 3px solid #667eea;
+    border-radius: 15px;
+    padding: 40px 20px;
     cursor: pointer;
     transition: all 0.3s ease;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    font-family: inherit;
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.15);
+    position: relative;
+    overflow: hidden;
 }
-#lista-jobs:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+
+.btn-opcion::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: 0;
 }
+
+.btn-opcion:hover::before {
+    opacity: 1;
+}
+
+.btn-opcion:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 30px rgba(102, 126, 234, 0.4);
+    border-color: #764ba2;
+}
+
+.btn-opcion .icono {
+    font-size: 3.5rem;
+    position: relative;
+    z-index: 1;
+    transition: transform 0.3s ease;
+}
+
+.btn-opcion:hover .icono {
+    transform: scale(1.1);
+}
+
+.btn-opcion .texto {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #667eea;
+    position: relative;
+    z-index: 1;
+    transition: color 0.3s ease;
+}
+
+.btn-opcion:hover .texto {
+    color: white;
+}
+
+.breadcrumb {
+    text-align: center;
+    margin-bottom: 25px;
+    padding: 15px 20px;
+    background: linear-gradient(135deg, #f0f4ff 0%, #e8ecff 100%);
+    border-radius: 10px;
+    font-size: 1rem;
+    border: 2px solid #667eea20;
+}
+
+.breadcrumb-item {
+    color: #667eea;
+    cursor: pointer;
+    transition: all 0.2s;
+    padding: 5px 10px;
+    border-radius: 5px;
+}
+
+.breadcrumb-item:hover {
+    background: rgba(102, 126, 234, 0.1);
+    transform: scale(1.05);
+}
+
+.breadcrumb-item strong {
+    color: #764ba2;
+    text-transform: uppercase;
+    font-weight: 700;
+}
+
+.separador {
+    margin: 0 10px;
+    color: #667eea;
+    font-weight: bold;
+}
+
 .custom-form {
     max-width: 900px;
     margin: 0 auto;
@@ -162,7 +272,6 @@ h2 {
     border-left: 4px solid #667eea;
 }
 
-/* CAMPOS DINÁMICOS */
 .campos-dinamicos {
     background: #f9f9f9;
     padding: 20px;
@@ -210,12 +319,117 @@ h2 {
     background: #c82333;
 }
 
+.btn-volver {
+    display: inline-block;
+    padding: 12px 25px;
+    margin-bottom: 20px;
+    background: #6c757d;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 1rem;
+    transition: all 0.3s;
+    text-decoration: none;
+}
+
+.btn-volver:hover {
+    background: #5a6268;
+    transform: translateX(-3px);
+}
+
+.btn-volver::before {
+    content: '← ';
+    margin-right: 5px;
+}
+.resumen-seleccion {
+    max-width: 900px;
+    margin: 20px auto;
+    padding: 20px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+    display: none;
+    animation: fadeIn 0.4s ease;
+}
+
+.resumen-seleccion.visible {
+    display: block;
+}
+
+.resumen-contenido {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.resumen-items {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    flex: 1;
+}
+
+.resumen-item {
+    background: rgba(255, 255, 255, 0.2);
+    padding: 10px 20px;
+    border-radius: 10px;
+    color: white;
+    font-weight: 600;
+    backdrop-filter: blur(10px);
+}
+
+.resumen-item .label {
+    font-size: 0.85rem;
+    opacity: 0.9;
+    margin-bottom: 3px;
+}
+
+.resumen-item .valor {
+    font-size: 1.1rem;
+    text-transform: uppercase;
+}
+
+.resumen-btn-volver {
+    background: white;
+    color: #667eea;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.3s;
+}
+
+.resumen-btn-volver:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(255, 255, 255, 0.3);
+}
+
+@media (max-width: 768px) {
+    .resumen-contenido {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .resumen-items {
+        flex-direction: column;
+        gap: 10px;
+    }
+}
 @media (max-width: 768px) {
     body { padding: 10px; }
     h1 { font-size: 1.5rem; }
     .custom-form { padding: 20px; }
-    .fila-dinamica {
+    .paso-container { padding: 25px; }
+    .fila-dinamica, .opciones-paso {
         grid-template-columns: 1fr;
+    }
+    .btn-opcion {
+        padding: 30px 15px;
     }
 }
 </style>
@@ -228,23 +442,115 @@ h2 {
     <strong>IMPORTANTE:</strong> Los campos marcados con <span class="asterisco">(*)</span> son obligatorios
 </div>
 
-<h2>Seleccionar un formulario:</h2>
+<!-- PASO 1: TIPO DE SOLICITUD -->
+<div id="paso-1" class="paso-container">
+    <h2>Paso 1 de 3: Seleccione el tipo de solicitud</h2>
+    <div class="opciones-paso">
+        <button type="button" class="btn-opcion" onclick="seleccionarTipoSolicitud('alta')">
+            <span class="icono">➕</span>
+            <span class="texto">ALTA</span>
+        </button>
+        <button type="button" class="btn-opcion" onclick="seleccionarTipoSolicitud('baja')">
+            <span class="icono">➖</span>
+            <span class="texto">BAJA</span>
+        </button>
+        <button type="button" class="btn-opcion" onclick="seleccionarTipoSolicitud('modificacion')">
+            <span class="icono">✏️</span>
+            <span class="texto">MODIFICACIÓN</span>
+        </button>
+    </div>
+</div>
 
-<select name="tipo_job" id="lista-jobs">
-    <option value="">Seleccionar...</option>
-    <option value="os">SCRIPT / CMD</option>
-    <option value="sap">SAP</option>
-    <option value="file-transfer">FILE TRANSFER</option>
-    <option value="database">DATABASE</option>
-    <option value="webjob">WEBJOB</option>
-    <option value="masiva">MASIVA</option>
-</select>
+<!-- PASO 2: AMBIENTE -->
+<div id="paso-2" class="paso-container" style="display:none;">
+    <h2>Paso 2 de 3: Seleccione el ambiente</h2>
+    <div class="breadcrumb">
+        <span class="breadcrumb-item" onclick="volverPaso(1)">Tipo: <strong id="tipo-selected"></strong></span>
+    </div>
+    <div class="opciones-paso">
+        <button type="button" class="btn-opcion" onclick="seleccionarAmbiente('desarrollo')">
+            <span class="icono">🛠️</span>
+            <span class="texto">DESARROLLO</span>
+        </button>
+        <button type="button" class="btn-opcion" onclick="seleccionarAmbiente('testing')">
+            <span class="icono">🧪</span>
+            <span class="texto">TESTING</span>
+        </button>
+        <button type="button" class="btn-opcion" onclick="seleccionarAmbiente('produccion')">
+            <span class="icono">🚀</span>
+            <span class="texto">PRODUCCIÓN</span>
+        </button>
+        <button type="button" class="btn-opcion" onclick="seleccionarAmbiente('laboratorio')">
+            <span class="icono">🔬</span>
+            <span class="texto">LABORATORIO</span>
+        </button>
+    </div>
+</div>
 
+<!-- PASO 3: TIPO DE JOB -->
+<div id="paso-3" class="paso-container" style="display:none;">
+    <h2>Paso 3 de 3: Seleccione el tipo de job</h2>
+    <div class="breadcrumb">
+        <span class="breadcrumb-item" onclick="volverPaso(1)">Tipo: <strong id="tipo-selected-2"></strong></span>
+        <span class="separador">→</span>
+        <span class="breadcrumb-item" onclick="volverPaso(2)">Ambiente: <strong id="ambiente-selected"></strong></span>
+    </div>
+    <div class="opciones-paso">
+        <button type="button" class="btn-opcion" onclick="seleccionarJob('os')">
+            <span class="icono">💻</span>
+            <span class="texto">SCRIPT / CMD</span>
+        </button>
+        <button type="button" class="btn-opcion" onclick="seleccionarJob('sap')">
+            <span class="icono">📊</span>
+            <span class="texto">SAP</span>
+        </button>
+        <button type="button" class="btn-opcion" onclick="seleccionarJob('file-transfer')">
+            <span class="icono">📁</span>
+            <span class="texto">FILE TRANSFER</span>
+        </button>
+        <button type="button" class="btn-opcion" onclick="seleccionarJob('database')">
+            <span class="icono">🗄️</span>
+            <span class="texto">DATABASE</span>
+        </button>
+        <button type="button" class="btn-opcion" onclick="seleccionarJob('webjob')">
+            <span class="icono">🌐</span>
+            <span class="texto">WEBJOB</span>
+        </button>
+        <button type="button" class="btn-opcion" onclick="seleccionarJob('masiva')">
+            <span class="icono">📦</span>
+            <span class="texto">MASIVA</span>
+        </button>
+    </div>
+</div>
+
+<!-- RESUMEN DE SELECCIÓN -->
+<div id="resumen-seleccion" class="resumen-seleccion">
+    <div class="resumen-contenido">
+        <div class="resumen-items">
+            <div class="resumen-item">
+                <div class="label">Tipo de Solicitud</div>
+                <div class="valor" id="resumen-tipo"></div>
+            </div>
+            <div class="resumen-item">
+                <div class="label">Ambiente</div>
+                <div class="valor" id="resumen-ambiente"></div>
+            </div>
+            <div class="resumen-item">
+                <div class="label">Tipo de Job</div>
+                <div class="valor" id="resumen-job"></div>
+            </div>
+        </div>
+        <button type="button" class="resumen-btn-volver" onclick="volverAlPaso3()">
+            ← Cambiar selección
+        </button>
+    </div>
+</div>
 <!-- FORMULARIO OS COMPLETO -->
+<button type="button" class="btn-volver" onclick="volverAlPaso3()">Volver</button>
 <form id="form-os" action="/formularios/os" method="post" class="custom-form" style="display:none;">
     <input type="hidden" name="tipo_job" value="os">
     <h2>Campo SCRIPT / CMD</h2>
-   
+    <button type="button" class="btn-volver" onclick="volverAlPaso3()">Volver</button>
     
     <label>Tipo de solicitud:<span class="requerido">(*)</span>
         <select name="tipo_solicitud_os">
@@ -342,10 +648,11 @@ h2 {
 </form>
 
 <!-- FORMULARIO SAP COMPLETO -->
+
 <form id="form-sap" action="/formularios/sap" method="post" class="custom-form" style="display:none;">
     <input type="hidden" name="tipo_job" value="sap">
     <h2>Campo SAP</h2>
-    
+    <button type="button" class="btn-volver" onclick="volverAlPaso3()">Volver</button>
     <label>Tipo de solicitud<span class="requerido">(*)</span>
         <select name="tipo_solicitud_sap">
             <option value="">Seleccionar...</option>
@@ -448,7 +755,7 @@ h2 {
 <form id="form-file-transfer" action="/formularios/file-transfer" method="post" class="custom-form" style="display:none;">
     <input type="hidden" name="tipo_job" value="file-transfer">
     <h2>Campo FILE-TRANSFER</h2>
-    
+    <button type="button" class="btn-volver" onclick="volverAlPaso3()">Volver</button>
     <label>Tipo de solicitud<span class="requerido">(*)</span>
         <select name="tipo_solicitud_aft">
             <option value="">Seleccionar...</option>
@@ -583,7 +890,7 @@ h2 {
 <!-- FORMULARIO DATABASE COMPLETO -->
 <form id="form-database" class="custom-form" style="display:none;">
     <h2>Campo DATABASE</h2>
-    
+    <button type="button" class="btn-volver" onclick="volverAlPaso3()">Volver</button>
     <label>TIPO DE SOLICITUD <span class="requerido">(*)</span>
         <select name="tipo_solicitud_db" required>
             <option value="">Seleccionar...</option>
@@ -744,7 +1051,7 @@ h2 {
 <!-- FORMULARIO WEBJOB COMPLETO -->
 <form id="form-webjob" class="custom-form" style="display:none;">
     <h2>Campo WEBJOB</h2>
-    
+    <button type="button" class="btn-volver" onclick="volverAlPaso3()">Volver</button>
     <label>TIPO DE SOLICITUD <span class="requerido">(*)</span>
         <select name="tipo_solicitud_wj" required>
             <option value="">Seleccionar...</option>
@@ -873,7 +1180,7 @@ h2 {
 <!-- FORMULARIO MASIVA CON CAMPOS DINÁMICOS -->
 <form id="form-masiva" class="custom-form" style="display:none;">
     <h2>MASIVA - Agregar múltiples jobs</h2>
-    
+    <button type="button" class="btn-volver" onclick="volverAlPaso3()">Volver</button>
     <label>TIPO DE SOLICITUD <span class="requerido">(*)</span>
         <select name="tipo_solicitud_masiva" required>
             <option value="">Seleccionar...</option>
@@ -917,6 +1224,108 @@ h2 {
 </form>
 
 <script>
+// VARIABLES GLOBALES PARA EL SISTEMA DE PASOS
+let seleccion = {
+    tipoSolicitud: '',
+    ambiente: '',
+    tipoJob: ''
+};
+
+// FUNCIONES PARA NAVEGACIÓN POR PASOS
+function seleccionarTipoSolicitud(tipo) {
+    seleccion.tipoSolicitud = tipo;
+    document.getElementById('tipo-selected').textContent = tipo.toUpperCase();
+    document.getElementById('tipo-selected-2').textContent = tipo.toUpperCase();
+    
+    document.getElementById('paso-1').style.display = 'none';
+    document.getElementById('paso-2').style.display = 'block';
+}
+
+function seleccionarAmbiente(ambiente) {
+    seleccion.ambiente = ambiente;
+    document.getElementById('ambiente-selected').textContent = ambiente.toUpperCase();
+    
+    document.getElementById('paso-2').style.display = 'none';
+    document.getElementById('paso-3').style.display = 'block';
+}
+function volverAlPaso3() {
+    // Ocultar todos los formularios
+    const forms = document.querySelectorAll('.custom-form');
+    forms.forEach(form => form.style.display = 'none');
+    
+    // Ocultar todos los pasos
+    document.getElementById('paso-1').style.display = 'none';
+    document.getElementById('paso-2').style.display = 'none';
+    document.getElementById('paso-3').style.display = 'none';
+    
+    // Ocultar resumen
+    document.getElementById('resumen-seleccion').classList.remove('visible');
+    
+    // Reiniciar todo
+    seleccion = { tipoSolicitud: '', ambiente: '', tipoJob: '' };
+    
+    // Volver al paso 1
+    document.getElementById('paso-1').style.display = 'block';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function seleccionarJob(tipoJob) {
+    seleccion.tipoJob = tipoJob;
+    
+    document.getElementById('paso-3').style.display = 'none';
+    
+    // Mostrar resumen
+    const resumen = document.getElementById('resumen-seleccion');
+    resumen.classList.add('visible');
+    
+    // Llenar datos del resumen
+    const nombresJobs = {
+        'os': 'Script / CMD',
+        'sap': 'SAP',
+        'file-transfer': 'File Transfer',
+        'database': 'Database',
+        'webjob': 'WebJob',
+        'masiva': 'Masiva'
+    };
+    
+    document.getElementById('resumen-tipo').textContent = seleccion.tipoSolicitud;
+    document.getElementById('resumen-ambiente').textContent = seleccion.ambiente;
+    document.getElementById('resumen-job').textContent = nombresJobs[tipoJob] || tipoJob;
+    
+    const form = document.getElementById('form-' + tipoJob);
+    if (form) {
+        form.style.display = 'block';
+        
+        const selectTipo = form.querySelector('[name^="tipo_solicitud"]');
+        const selectAmbiente = form.querySelector('[name^="ambiente"]');
+        
+        if (selectTipo) selectTipo.value = seleccion.tipoSolicitud;
+        if (selectAmbiente) selectAmbiente.value = seleccion.ambiente;
+        
+        // Scroll al resumen primero
+        resumen.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        
+        inicializarCiclico(form);
+    }
+}
+
+function volverPaso(numeroPaso) {
+    document.getElementById('paso-1').style.display = 'none';
+    document.getElementById('paso-2').style.display = 'none';
+    document.getElementById('paso-3').style.display = 'none';
+    
+    const forms = document.querySelectorAll('.custom-form');
+    forms.forEach(form => form.style.display = 'none');
+    
+    document.getElementById('paso-' + numeroPaso).style.display = 'block';
+    
+    if (numeroPaso === 1) {
+        seleccion = { tipoSolicitud: '', ambiente: '', tipoJob: '' };
+    } else if (numeroPaso === 2) {
+        seleccion.tipoJob = '';
+    }
+}
+
 document.addEventListener('DOMContentLoaded', function() {
     const select = document.getElementById('lista-jobs');
     const forms = {
