@@ -8,7 +8,8 @@
 * { margin: 0; padding: 0; box-sizing: border-box; }
 body { 
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    /* COLORES YPF: Azul #0033A0, Blanco #FFFFFF, Gris #6C757D */
+    background: linear-gradient(135deg, #0033A0 0%, #0047CC 50%, #003399 100%);
     min-height: 100vh;
     padding: 20px;
     color: #333;
@@ -16,21 +17,25 @@ body {
 h1 { 
     text-align: center;
     color: white;
-    font-size: 2rem;
+    font-size: 2.2rem;
     margin-bottom: 10px;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+    text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.3);
+    font-weight: 900;
+    letter-spacing: 1px;
 }
 .importante {
     text-align: center;
     color: white;
     font-size: 1.1rem;
     margin-bottom: 20px;
-    background: rgba(255, 0, 0, 0.2);
-    padding: 10px;
+    background: rgba(255, 255, 255, 0.15);
+    padding: 15px;
     border-radius: 10px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(10px);
 }
 .importante .asterisco {
-    color: #ff6b6b;
+    color: #FFD700;
     font-weight: bold;
     font-size: 1.3rem;
 }
@@ -39,7 +44,7 @@ h2 {
     color: white;
     font-size: 1.3rem;
     margin-bottom: 20px;
-    font-weight: 400;
+    font-weight: 600;
 }
 
 /* SISTEMA DE PASOS */
@@ -49,17 +54,18 @@ h2 {
     padding: 40px;
     background: white;
     border-radius: 15px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
     animation: fadeIn 0.4s ease;
+    border-top: 5px solid #0033A0;
 }
 
 .paso-container h2 {
-    color: #667eea;
+    color: #0033A0;
     text-align: center;
     margin-bottom: 30px;
     font-size: 1.8rem;
     text-shadow: none;
-    font-weight: 600;
+    font-weight: 700;
 }
 
 .opciones-paso {
@@ -70,8 +76,8 @@ h2 {
 }
 
 .btn-opcion {
-    background: white;
-    border: 3px solid #667eea;
+    background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+    border: 3px solid #0033A0;
     border-radius: 15px;
     padding: 40px 20px;
     cursor: pointer;
@@ -82,7 +88,7 @@ h2 {
     justify-content: center;
     gap: 15px;
     font-family: inherit;
-    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.15);
+    box-shadow: 0 4px 15px rgba(0, 51, 160, 0.2);
     position: relative;
     overflow: hidden;
 }
@@ -94,7 +100,7 @@ h2 {
     left: 0;
     width: 100%;
     height: 100%;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #0033A0 0%, #0047CC 100%);
     opacity: 0;
     transition: opacity 0.3s ease;
     z-index: 0;
@@ -106,8 +112,8 @@ h2 {
 
 .btn-opcion:hover {
     transform: translateY(-8px);
-    box-shadow: 0 12px 30px rgba(102, 126, 234, 0.4);
-    border-color: #764ba2;
+    box-shadow: 0 12px 35px rgba(0, 51, 160, 0.4);
+    border-color: #0033A0;
 }
 
 .btn-opcion .icono {
@@ -115,16 +121,18 @@ h2 {
     position: relative;
     z-index: 1;
     transition: transform 0.3s ease;
+    filter: grayscale(0);
 }
 
 .btn-opcion:hover .icono {
-    transform: scale(1.1);
+    transform: scale(1.15);
+    filter: brightness(1.2);
 }
 
 .btn-opcion .texto {
     font-size: 1.1rem;
     font-weight: 700;
-    color: #667eea;
+    color: #0033A0;
     position: relative;
     z-index: 1;
     transition: color 0.3s ease;
@@ -138,34 +146,35 @@ h2 {
     text-align: center;
     margin-bottom: 25px;
     padding: 15px 20px;
-    background: linear-gradient(135deg, #f0f4ff 0%, #e8ecff 100%);
+    background: linear-gradient(135deg, #e8f0ff 0%, #d4e4ff 100%);
     border-radius: 10px;
     font-size: 1rem;
-    border: 2px solid #667eea20;
+    border: 2px solid rgba(0, 51, 160, 0.2);
 }
 
 .breadcrumb-item {
-    color: #667eea;
+    color: #0033A0;
     cursor: pointer;
     transition: all 0.2s;
     padding: 5px 10px;
     border-radius: 5px;
+    font-weight: 600;
 }
 
 .breadcrumb-item:hover {
-    background: rgba(102, 126, 234, 0.1);
+    background: rgba(0, 51, 160, 0.1);
     transform: scale(1.05);
 }
 
 .breadcrumb-item strong {
-    color: #764ba2;
+    color: #0047CC;
     text-transform: uppercase;
-    font-weight: 700;
+    font-weight: 900;
 }
 
 .separador {
     margin: 0 10px;
-    color: #667eea;
+    color: #6C757D;
     font-weight: bold;
 }
 
@@ -173,32 +182,34 @@ h2 {
     max-width: 900px;
     margin: 0 auto;
     background: white;
-    padding: 30px;
+    padding: 35px;
     border-radius: 15px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
     animation: fadeIn 0.4s ease;
+    border-top: 5px solid #0033A0;
 }
 @keyframes fadeIn {
     from { opacity: 0; transform: translateY(20px); }
     to { opacity: 1; transform: translateY(0); }
 }
 .custom-form h2 {
-    color: #667eea;
+    color: #0033A0;
     text-align: left;
     margin-bottom: 25px;
     padding-bottom: 15px;
-    border-bottom: 3px solid #667eea;
+    border-bottom: 3px solid #0033A0;
     text-shadow: none;
+    font-weight: 700;
 }
 .custom-form label {
     display: block;
     margin-bottom: 15px;
     font-weight: 600;
-    color: #444;
+    color: #2c3e50;
     font-size: 0.95rem;
 }
 .requerido {
-    color: #ff0000;
+    color: #dc3545;
     font-weight: bold;
     margin-left: 3px;
 }
@@ -217,67 +228,70 @@ h2 {
     font-size: 1rem;
     font-family: inherit;
     transition: all 0.3s ease;
-    background: #fafafa;
+    background: #f8f9fa;
 }
 .custom-form input:focus,
 .custom-form select:focus,
 .custom-form textarea:focus {
     outline: none;
-    border-color: #667eea;
+    border-color: #0033A0;
     background: white;
-    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    box-shadow: 0 0 0 3px rgba(0, 51, 160, 0.1);
 }
 .custom-form textarea {
     min-height: 100px;
     resize: vertical;
 }
 .ciclico-campos {
-    background: #f0f4ff;
+    background: #e8f0ff;
     padding: 20px;
     border-radius: 10px;
     margin: 15px 0;
-    border-left: 4px solid #667eea;
+    border-left: 4px solid #0033A0;
 }
 .custom-form input[required],
 .custom-form textarea[required] {
-    border-left: 4px solid #ff6b6b;
+    border-left: 4px solid #dc3545;
 }
 .custom-form button[type="submit"] {
     width: 100%;
-    padding: 15px;
+    padding: 16px;
     margin-top: 25px;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #0033A0 0%, #0047CC 100%);
     color: white;
     border: none;
     border-radius: 10px;
     font-size: 1.1rem;
-    font-weight: 600;
+    font-weight: 700;
     cursor: pointer;
     transition: all 0.3s ease;
-    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+    box-shadow: 0 4px 15px rgba(0, 51, 160, 0.4);
+    text-transform: uppercase;
+    letter-spacing: 1px;
 }
 .custom-form button[type="submit"]:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(0, 51, 160, 0.5);
+    background: linear-gradient(135deg, #001f66 0%, #0033A0 100%);
 }
 .section-title {
-    margin-top: 20px;
+    margin-top: 25px;
     margin-bottom: 15px;
-    font-size: 1.05rem;
-    color: #667eea;
+    font-size: 1.1rem;
+    color: #0033A0;
     font-weight: 700;
-    padding: 10px;
-    background: #f0f4ff;
+    padding: 12px;
+    background: linear-gradient(135deg, #e8f0ff 0%, #f0f7ff 100%);
     border-radius: 8px;
-    border-left: 4px solid #667eea;
+    border-left: 5px solid #0033A0;
 }
 
 .campos-dinamicos {
-    background: #f9f9f9;
+    background: #f8f9fa;
     padding: 20px;
     border-radius: 10px;
     margin: 20px 0;
-    border: 2px dashed #667eea;
+    border: 2px dashed #0033A0;
 }
 .fila-dinamica {
     display: grid;
@@ -303,6 +317,7 @@ h2 {
 .btn-agregar:hover {
     background: #218838;
     transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(40, 167, 69, 0.3);
 }
 .btn-eliminar {
     background: #dc3545;
@@ -317,13 +332,14 @@ h2 {
 }
 .btn-eliminar:hover {
     background: #c82333;
+    transform: scale(1.05);
 }
 
 .btn-volver {
     display: inline-block;
     padding: 12px 25px;
     margin-bottom: 20px;
-    background: #6c757d;
+    background: #6C757D;
     color: white;
     border: none;
     border-radius: 8px;
@@ -337,6 +353,7 @@ h2 {
 .btn-volver:hover {
     background: #5a6268;
     transform: translateX(-3px);
+    box-shadow: 0 4px 12px rgba(108, 117, 125, 0.3);
 }
 
 .btn-volver::before {
@@ -346,10 +363,10 @@ h2 {
 .resumen-seleccion {
     max-width: 900px;
     margin: 20px auto;
-    padding: 20px;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    padding: 25px;
+    background: linear-gradient(135deg, #0033A0 0%, #0047CC 100%);
     border-radius: 15px;
-    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+    box-shadow: 0 8px 25px rgba(0, 51, 160, 0.4);
     display: none;
     animation: fadeIn 0.4s ease;
 }
@@ -375,38 +392,65 @@ h2 {
 
 .resumen-item {
     background: rgba(255, 255, 255, 0.2);
-    padding: 10px 20px;
+    padding: 12px 25px;
     border-radius: 10px;
     color: white;
     font-weight: 600;
     backdrop-filter: blur(10px);
+    border: 2px solid rgba(255, 255, 255, 0.3);
 }
 
 .resumen-item .label {
     font-size: 0.85rem;
     opacity: 0.9;
-    margin-bottom: 3px;
+    margin-bottom: 5px;
 }
 
 .resumen-item .valor {
-    font-size: 1.1rem;
+    font-size: 1.2rem;
     text-transform: uppercase;
+    font-weight: 700;
 }
 
 .resumen-btn-volver {
     background: white;
-    color: #667eea;
+    color: #0033A0;
     border: none;
-    padding: 10px 20px;
+    padding: 12px 25px;
     border-radius: 8px;
     cursor: pointer;
-    font-weight: 600;
+    font-weight: 700;
     transition: all 0.3s;
 }
 
 .resumen-btn-volver:hover {
     transform: translateY(-2px);
-    box-shadow: 0 4px 15px rgba(255, 255, 255, 0.3);
+    box-shadow: 0 6px 20px rgba(255, 255, 255, 0.4);
+}
+
+.user-info {
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    border-radius: 10px;
+    margin-bottom: 20px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+}
+
+.btn-logout {
+    background: #dc3545;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-left: 15px;
+    font-weight: 600;
+    transition: all 0.3s;
+}
+
+.btn-logout:hover {
+    background: #c82333;
+    transform: translateY(-2px);
 }
 
 @media (max-width: 768px) {
