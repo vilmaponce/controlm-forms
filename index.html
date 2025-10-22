@@ -7,11 +7,25 @@
 <title>ABM Jobs - Control-M</title>
 </head>
 <body>
+<!-- HEADER CON LOGO YPF -->
+<header class="header-principal">
+    <div class="header-contenido">
+        <div class="logo-container">
+            <img src="image/logo-ypf.png" alt="YPF Logo" class="logo-ypf">
+        </div>
+        <div class="header-info">
+            <h1>ADMINISTRACIÓN CONTROL-M</h1>
+            <h2>Formularios de alta, baja y modificación de Jobs en Control-M</h2>
+        </div>
+        <button class="btn-ayuda" onclick="mostrarAyuda()">
+            <span class="icono-ayuda">❓</span>
+            Ayuda
+        </button>
+    </div>
+</header>
 
-<h1>Plantillas de alta, baja y modificación en Jobs de Control-M</h1>
-<h1>ADMINISTRACIÓN CONTROL-M</h1>
 <div class="importante">
-    <strong>IMPORTANTE:</strong> Los campos marcados con <span class="asterisco">(*)</span> son obligatorios
+    <strong>IMPORTANTE:</strong> Los campos marcados con <span class="requerido">(*)</span> son obligatorios
 </div>
 
 <!-- PASO 1: TIPO DE SOLICITUD -->
@@ -36,6 +50,7 @@
 <!-- PASO 2: AMBIENTE -->
 <div id="paso-2" class="paso-container" style="display:none;">
     <h2>Paso 2 de 3: Seleccione el ambiente</h2>
+    <button type="button" class="btn-volver" onclick="volverAlPasoAnterior()">← Volver al paso anterior</button>
     <div class="breadcrumb">
         <span class="breadcrumb-item" onclick="volverPaso(1)">Tipo: <strong id="tipo-selected"></strong></span>
     </div>
@@ -62,10 +77,12 @@
 <!-- PASO 3: TIPO DE JOB -->
 <div id="paso-3" class="paso-container" style="display:none;">
     <h2>Paso 3 de 3: Seleccione el tipo de job</h2>
+    <button type="button" class="btn-volver" onclick="volverAlPasoAnterior()">← Volver al paso anterior</button>
+
     <div class="breadcrumb">
-        <span class="breadcrumb-item" onclick="volverPaso(1)">Tipo: <strong id="tipo-selected-2"></strong></span>
+        <span class="breadcrumb-item" onclick="volverPaso(2)">Tipo: <strong id="tipo-selected-2"></strong></span>
         <span class="separador">→</span>
-        <span class="breadcrumb-item" onclick="volverPaso(2)">Ambiente: <strong id="ambiente-selected"></strong></span>
+        <span class="breadcrumb-item" onclick="volverPaso(1)">Ambiente: <strong id="ambiente-selected"></strong></span>
     </div>
     <div class="opciones-paso">
         <button type="button" class="btn-opcion" onclick="seleccionarJob('os')">
@@ -74,7 +91,7 @@
         </button>
         <button type="button" class="btn-opcion" onclick="seleccionarJob('sap')">
             <span class="icono">📊</span>
-            <span class="texto">SAP</span>
+            <span class="texto">SAP R3</span>
         </button>
         <button type="button" class="btn-opcion" onclick="seleccionarJob('file-transfer')">
             <span class="icono">📁</span>
@@ -113,6 +130,7 @@
 
 <!-- RESUMEN DE SELECCIÓN -->
 <div id="resumen-seleccion" class="resumen-seleccion">
+
     <div class="resumen-contenido">
         <div class="resumen-items">
             <div class="resumen-item">
@@ -134,11 +152,10 @@
     </div>
 </div>
 <!-- FORMULARIO OS COMPLETO -->
-<button type="button" class="btn-volver" onclick="volverAlPaso3()">Volver</button>
 <form id="form-os" action="/formularios/os" method="post" class="custom-form" style="display:none;">
     <input type="hidden" name="tipo_job" value="os">
     <h2>Campo SCRIPT / CMD</h2>
-    <button type="button" class="btn-volver" onclick="volverAlPaso3()">Volver</button>
+    <button type="button" class="btn-volver" onclick="volverAlPasoAnterior()">← Volver al paso anterior</button>
     
     <label>Tipo de solicitud:<span class="requerido">(*)</span>
         <select name="tipo_solicitud_os">
@@ -238,8 +255,8 @@
 <!-- FORMULARIO SAP CON PERFIL SAP BTP -->
 <form id="form-sap" action="/formularios/sap" method="post" class="custom-form" style="display:none;">
     <input type="hidden" name="tipo_job" value="sap">
-    <h2>Campo SAP</h2>
-    <button type="button" class="btn-volver" onclick="volverAlPaso3()">Volver</button>
+    <h2>SAP R3</h2>
+    <button type="button" class="btn-volver" onclick="volverAlPasoAnterior()">← Volver al paso anterior</button>
     
     <label>Tipo de solicitud<span class="requerido">(*)</span>
         <select name="tipo_solicitud_sap">
@@ -419,7 +436,7 @@
 <form id="form-file-transfer" action="/formularios/file-transfer" method="post" class="custom-form" style="display:none;">
     <input type="hidden" name="tipo_job" value="file-transfer">
     <h2>Campo FILE-TRANSFER</h2>
-    <button type="button" class="btn-volver" onclick="volverAlPaso3()">Volver</button>
+    <button type="button" class="btn-volver" onclick="volverAlPasoAnterior()">← Volver al paso anterior</button>
     <label>Tipo de solicitud<span class="requerido">(*)</span>
         <select name="tipo_solicitud_aft">
             <option value="">Seleccionar...</option>
@@ -554,7 +571,7 @@
 <!-- FORMULARIO DATABASE COMPLETO -->
 <form id="form-database" class="custom-form" style="display:none;">
     <h2>Campo DATABASE</h2>
-    <button type="button" class="btn-volver" onclick="volverAlPaso3()">Volver</button>
+    <button type="button" class="btn-volver" onclick="volverAlPasoAnterior()">← Volver al paso anterior</button>
     <label>TIPO DE SOLICITUD <span class="requerido">(*)</span>
         <select name="tipo_solicitud_db" required>
             <option value="">Seleccionar...</option>
@@ -715,7 +732,7 @@
 <!-- FORMULARIO SAP BTP SCHEDULER CONNECTION PROFILE -->
 <form id="form-sap-btp-scheduler" class="custom-form" style="display:none;">
     <h2>Add SAP BTP Scheduler Connection Profile</h2>
-    <button type="button" class="btn-volver" onclick="volverAlPaso3()">Volver</button>
+    <button type="button" class="btn-volver" onclick="volverAlPasoAnterior()">← Volver al paso anterior</button>
     
     <!-- Connection Profile Name -->
     <label>Connection Profile Name <span class="requerido">(*Required)</span>
@@ -814,10 +831,10 @@
 <!-- FORMULARIO WEB SERVICES REST CONNECTION PROFILE -->
 <form id="form-web-services-rest" class="custom-form" style="display:none;">
     <h2>Add Web Services REST Connection Profile</h2>
-    <button type="button" class="btn-volver" onclick="volverAlPaso3()">Volver</button>
+    <button type="button" class="btn-volver" onclick="volverAlPasoAnterior()">← Volver al paso anterior</button>
     
     <!-- Connection Profile Name -->
-    <label>Connection Profile Name <span class="requerido">(*Required)</span>
+    <label>Connection Profile Name <span class="requerido">((*)-Required)</span>
         <input type="text" name="connection_profile_name_rest" required placeholder="Enter connection profile name">
     </label>
     
@@ -979,7 +996,7 @@
 <!-- FORMULARIO VEEAM BACKUP CONNECTION PROFILE -->
 <form id="form-veeam-backup" class="custom-form" style="display:none;">
     <h2>Add Veeam Backup Connection Profile</h2>
-    <button type="button" class="btn-volver" onclick="volverAlPaso3()">Volver</button>
+    <button type="button" class="btn-volver" onclick="volverAlPasoAnterior()">← Volver al paso anterior</button>
     
     <!-- Connection Profile Name -->
     <label>Connection Profile Name <span class="requerido">(*Required)</span>
@@ -1079,7 +1096,7 @@
 <!-- FORMULARIO AZURE APP SERVICES COMPLETO -->
 <form id="form-azure-webjob" class="custom-form" style="display:none;">
     <h2>Add Azure App Services Webjobs Connection Profile</h2>
-    <button type="button" class="btn-volver" onclick="volverAlPaso3()">Volver</button>
+    <button type="button" class="btn-volver" onclick="volverAlPasoAnterior()">← Volver al paso anterior</button>
     
     <!-- Connection Profile Name -->
     <label>Connection Profile Name <span class="requerido">(*Required)</span>
@@ -1245,7 +1262,7 @@
 <!-----------FORMULARIO MASIVA CON CAMPOS DINÁMICOS ------------------------>
 <form id="form-masiva" class="custom-form" style="display:none;">
     <h2>MASIVA - Agregar múltiples jobs</h2>
-    <button type="button" class="btn-volver" onclick="volverAlPaso3()">Volver</button>
+    <button type="button" class="btn-volver" onclick="volverAlPasoAnterior()">← Volver al paso anterior</button>
     <label>TIPO DE SOLICITUD <span class="requerido">(*)</span>
         <select name="tipo_solicitud_masiva" required>
             <option value="">Seleccionar...</option>
@@ -1287,6 +1304,170 @@
     
     <button type="submit">Guardar Todos</button>
 </form>
+<!-- FOOTER -->
+<footer class="footer-principal">
+    <div class="footer-contenido">
+        <div class="footer-seccion">
+            <h3>📧 Contacto Administracion Control-M</h3>
+            <p><strong>Email:</strong> <a href="Administracion_Control-M@ypf.com">soporte.controlm@ypf.com</a></p>
+            <p><strong>Portal:</strong> <a href="YPF_ADMINISTRACION_CONTROL_CENTRAL_FF" target="_blank">ServiceNow YPF</a></p>
+        </div>
+        
+        <div class="footer-seccion">
+            <h3>📞 Teléfono de Guardia</h3>
+            <p><strong>Horario 24/7:</strong></p>
+            <p class="telefono-grande">+54 11-3811-8835</p>
+            <!-- <p class="telefono-grande">Int: 5000</p> -->
+        </div>
+        
+        <div class="footer-seccion">
+            <h3>🕐 Horarios de Atención</h3>
+            <p><strong>Lunes a Viernes:</strong> 08:00 - 18:00</p>
+            <p><strong>Urgencias:</strong> 24/7</p>
+            <p class="nota-footer">Para emergencias fuera de horario, comunicarse al teléfono de guardia</p>
+        </div>
+    </div>
+    
+    <div class="footer-copyright">
+        <p>© 2025 YPF S.A. - Administración Control-M </p>
+    </div>
+</footer>
+
+<!-- MODAL DE AYUDA -->
+<div id="modal-ayuda" class="modal-ayuda" style="display: none;">
+    <div class="modal-contenido">
+        <span class="cerrar-modal" onclick="cerrarAyuda()">&times;</span>
+        <h2>📖 Guía para completar el Formulario de ALTA/MODIFICACIÓN DE JOBS</h2>
+        
+        <!-- SECCIÓN: Pasos del Sistema -->
+        <div class="ayuda-seccion">
+            <h3>🔹 Paso 1: Tipo de Solicitud</h3>
+            <ul>
+                <li><strong>ALTA:</strong> Para crear un nuevo job en Control-M</li>
+                <li><strong>BAJA:</strong> Para eliminar un job existente (solo necesita el nombre del job)</li>
+                <li><strong>MODIFICACIÓN:</strong> Para cambiar la configuración de un job existente</li>
+            </ul>
+        </div>
+        
+        <div class="ayuda-seccion">
+            <h3>🔹 Paso 2: Ambiente</h3>
+            <ul>
+                <li><strong>DESARROLLO:</strong> Para pruebas de desarrollo</li>
+                <li><strong>TESTING:</strong> Para pruebas de QA</li>
+                <li><strong>PRODUCCIÓN:</strong> Ambiente productivo (requiere aprobaciones)</li>
+                <li><strong>LABORATORIO:</strong> Para pruebas experimentales</li>
+            </ul>
+        </div>
+        
+        <div class="ayuda-seccion">
+            <h3>🔹 Paso 3: Tipo de Job</h3>
+            <ul>
+                <li><strong>SCRIPT / CMD:</strong> Ejecutar scripts o comandos del sistema operativo</li>
+                <li><strong>SAP:</strong> Jobs de SAP (reportes, procesos, etc.)</li>
+                <li><strong>FILE TRANSFER:</strong> Transferencia de archivos entre servidores</li>
+                <li><strong>DATABASE:</strong> Ejecutar queries o procedimientos en bases de datos</li>
+                <li><strong>AZURE APP SERVICES:</strong> Jobs en la nube de Microsoft Azure</li>
+                <li><strong>WEB SERVICES REST:</strong> Llamadas a APIs REST</li>
+                <li><strong>VEEAM BACKUP:</strong> Backups con Veeam</li>
+                <li><strong>SAP BTP SCHEDULER:</strong> Jobs en SAP Business Technology Platform</li>
+                <li><strong>MASIVA:</strong> Crear múltiples jobs similares de una vez</li>
+            </ul>
+        </div>
+        
+        <!-- SECCIÓN: Detalles del Job -->
+        <div class="ayuda-seccion">
+            <h3>🔹 DETALLES del JOB</h3>
+            <ul>
+                <li><strong>Descripción del Proceso:</strong> Breve descripción de la finalidad del Proceso.</li>
+                <li><strong>Nombre del Servidor:</strong> Equipo donde se ejecuta el proceso.</li>
+                <li><strong>Usuario Ejecutante:</strong> Usuario que tiene los permisos necesarios para ejecutar el proceso en el servidor.</li>
+                <li><strong>Instancia de Aplicación:</strong> Instancia de Aplicación a donde pertenece este proceso.</li>
+                <li><strong>Nombre del Proceso a Ejecutar:</strong> Indicar el nombre del proceso a ejecutar.</li>
+            </ul>
+            
+            <h4 style="margin-top: 15px;">Para Jobs de SAP:</h4>
+            <ul>
+                <li><strong>Usuario en SAP:</strong> Usuario de fondo para ejecutar el job en dicho entorno.</li>
+                <li><strong>Instancia / Mandante:</strong> Instancia y Mandante donde se dejó el proceso en estado previsto.</li>
+                <li><strong>Módulo:</strong> Si pertenece a SAP o AS400 Comercial, indicar el módulo asociado.</li>
+            </ul>
+            
+            <h4 style="margin-top: 15px;">Para Jobs de AS400:</h4>
+            <ul>
+                <li><strong>Job Description:</strong> Indicar la Job Description (Lista de Bibliotecas) que debe contener en su ejecución.</li>
+                <li><strong>Job Queue:</strong> Indicar la Job Queue que debe contener en su ejecución.</li>
+                <li><strong>Distribución de Listado:</strong> Indicar si necesita un job de Distribución de Listados.</li>
+            </ul>
+        </div>
+        
+        <!-- SECCIÓN: Frecuencia de Ejecución -->
+        <div class="ayuda-seccion">
+            <h3>🔹 FRECUENCIA de EJECUCIÓN</h3>
+            <ul>
+                <li><strong>Días de la Semana:</strong> El proceso se ejecuta ciertos días. Ejemplos: "Lunes", "Todos", "L a V", "D a V"</li>
+                <li><strong>Día del Mes:</strong> Días específicos del mes. Ejemplos: "1° día Hábil", "5to y 15° día Hábil", "del 15 al 20 y del 28 al 30"</li>
+                <li><strong>Meses:</strong> Si el proceso debe ejecutarse ciertos días de la Semana o del Mes, indicar si debe ejecutarse todos los meses o especificar cuáles.</li>
+                <li><strong>Hora:</strong> Horario de ejecución expresado en HH:MM con horario de Buenos Aires, Argentina.</li>
+                <li><strong>Fecha Única:</strong> El proceso se planifica una única vez. Ejemplo: "31 de Diciembre". Indicar si es para todos los años.</li>
+            </ul>
+            
+            <h4 style="margin-top: 15px;">Para procesos CÍCLICOS:</h4>
+            <ul>
+                <li><strong>Hora Desde:</strong> Hora de inicio de la ejecución cíclica (HH:MM, horario Buenos Aires).</li>
+                <li><strong>Hora Hasta:</strong> Hora de finalización de la ejecución cíclica (HH:MM, horario Buenos Aires).</li>
+                <li><strong>Intervalo:</strong> Intervalo de ejecución. Ejemplos: "cada 120 minutos", "cada 5 minutos"</li>
+                <li><strong>Desde:</strong> Indicar si el intervalo cuenta desde el "Fin" o "Principio" de la ejecución anterior.</li>
+            </ul>
+        </div>
+        
+        <!-- SECCIÓN: Datos Útiles -->
+        <div class="ayuda-seccion">
+            <h3>🔹 DATOS ÚTILES</h3>
+            <ul>
+                <li><strong>Dependencias:</strong> En caso de que este proceso tenga dependencias (prerequisitos), indicar las mismas en formato: JOB.TO.JOB</li>
+                <li><strong>Activo Desde:</strong> Fecha a partir de la cual debe ejecutarse el proceso vía Control-M.</li>
+                <li><strong>Activo Hasta:</strong> Fecha hasta la cual debe ejecutarse el proceso (opcional).</li>
+            </ul>
+        </div>
+        
+        <!-- SECCIÓN: Documentación -->
+        <div class="ayuda-seccion">
+            <h3>🔹 DOCUMENTACIÓN</h3>
+            <p style="font-style: italic; color: #666; margin-bottom: 10px;">
+                Esta información será plasmada en un documento de texto, alojado en el servidor, el cual se relacionará con el ID del proceso.
+            </p>
+            <ul>
+                <li><strong>Grupo Responsable:</strong> Nombre del Grupo de Correo y del Grupo de Service Now del responsable del Job. <span style="color: #dc3545; font-weight: bold;">Indicar sólo un grupo.</span></li>
+                <li><strong>Criticidad:</strong> Indicar si la criticidad del proceso es <strong>Baja</strong>, <strong>Media</strong> o <strong>Alta</strong>. Dependiendo de esto, completar la "Acción a Seguir".</li>
+                <li><strong>Acción a Seguir si Cancela:</strong> De acuerdo a la criticidad del proceso, indicar qué acción se debe tomar frente a una cancelación del mismo. 
+                    <br><span style="color: #dc3545; font-weight: bold;">IMPORTANTE: NO DERIVAR INCIDENTE - CERRAR EN OPERACIONES</span>
+                </li>
+                <li><strong>Observaciones:</strong> Cualquier observación adicional que no esté contemplada en los campos anteriores.</li>
+            </ul>
+        </div>
+        
+        <!-- SECCIÓN: Consejos Finales -->
+        <div class="ayuda-seccion" style="background: #fff3cd; border-left-color: #ffc107;">
+            <h3 style="color: #856404;">💡 Consejos Importantes</h3>
+            <ul>
+                <li>✅ Complete todos los campos marcados con <span style="color: #dc3545; font-weight: bold;">(*)</span></li>
+                <li>✅ Use nombres descriptivos para los jobs (sin espacios, usar guiones bajos)</li>
+                <li>✅ Verifique las dependencias antes de guardar</li>
+                <li>✅ Todos los horarios deben estar en hora de Buenos Aires, Argentina</li>
+                <li>✅ Para jobs SAP, asegúrese de tener el proceso en estado "Previsto" antes de solicitar el alta</li>
+                <li>✅ En caso de dudas, contacte al soporte antes de enviar la solicitud</li>
+            </ul>
+        </div>
+        
+        <!-- Botones de acción -->
+        <div class="ayuda-botones">
+            <button class="btn-cerrar-ayuda" onclick="cerrarAyuda()">Entendido</button>
+            <button class="btn-contacto-ayuda" onclick="window.location.href='mailto:soporte.controlm@ypf.com'">
+                📧 Contactar Soporte
+            </button>
+        </div>
+    </div>
+</div>
 <script src="index.js"></script>
 </body>
 </html>
