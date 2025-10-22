@@ -3,480 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="styles.css">
 <title>ABM Jobs - Control-M</title>
-<style>
-* { margin: 0; padding: 0; box-sizing: border-box; }
-body { 
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    /* COLORES YPF: Azul #0033A0, Blanco #FFFFFF, Gris #6C757D */
-    background: linear-gradient(135deg, #0033A0 0%, #0047CC 50%, #003399 100%);
-    min-height: 100vh;
-    padding: 20px;
-    color: #333;
-}
-h1 { 
-    text-align: center;
-    color: white;
-    font-size: 2.2rem;
-    margin-bottom: 10px;
-    text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.3);
-    font-weight: 900;
-    letter-spacing: 1px;
-}
-.importante {
-    text-align: center;
-    color: white;
-    font-size: 1.1rem;
-    margin-bottom: 20px;
-    background: rgba(255, 255, 255, 0.15);
-    padding: 15px;
-    border-radius: 10px;
-    border: 2px solid rgba(255, 255, 255, 0.3);
-    backdrop-filter: blur(10px);
-}
-.importante .asterisco {
-    color: #FFD700;
-    font-weight: bold;
-    font-size: 1.3rem;
-}
-h2 { 
-    text-align: center;
-    color: white;
-    font-size: 1.3rem;
-    margin-bottom: 20px;
-    font-weight: 600;
-}
-
-/* SISTEMA DE PASOS */
-.paso-container {
-    max-width: 900px;
-    margin: 30px auto;
-    padding: 40px;
-    background: white;
-    border-radius: 15px;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
-    animation: fadeIn 0.4s ease;
-    border-top: 5px solid #0033A0;
-}
-
-.paso-container h2 {
-    color: #0033A0;
-    text-align: center;
-    margin-bottom: 30px;
-    font-size: 1.8rem;
-    text-shadow: none;
-    font-weight: 700;
-}
-
-.opciones-paso {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 25px;
-    margin-top: 30px;
-}
-
-.btn-opcion {
-    background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
-    border: 3px solid #0033A0;
-    border-radius: 15px;
-    padding: 40px 20px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 15px;
-    font-family: inherit;
-    box-shadow: 0 4px 15px rgba(0, 51, 160, 0.2);
-    position: relative;
-    overflow: hidden;
-}
-
-.btn-opcion::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(135deg, #0033A0 0%, #0047CC 100%);
-    opacity: 0;
-    transition: opacity 0.3s ease;
-    z-index: 0;
-}
-
-.btn-opcion:hover::before {
-    opacity: 1;
-}
-
-.btn-opcion:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 12px 35px rgba(0, 51, 160, 0.4);
-    border-color: #0033A0;
-}
-
-.btn-opcion .icono {
-    font-size: 3.5rem;
-    position: relative;
-    z-index: 1;
-    transition: transform 0.3s ease;
-    filter: grayscale(0);
-}
-
-.btn-opcion:hover .icono {
-    transform: scale(1.15);
-    filter: brightness(1.2);
-}
-
-.btn-opcion .texto {
-    font-size: 1.1rem;
-    font-weight: 700;
-    color: #0033A0;
-    position: relative;
-    z-index: 1;
-    transition: color 0.3s ease;
-}
-
-.btn-opcion:hover .texto {
-    color: white;
-}
-
-.breadcrumb {
-    text-align: center;
-    margin-bottom: 25px;
-    padding: 15px 20px;
-    background: linear-gradient(135deg, #e8f0ff 0%, #d4e4ff 100%);
-    border-radius: 10px;
-    font-size: 1rem;
-    border: 2px solid rgba(0, 51, 160, 0.2);
-}
-
-.breadcrumb-item {
-    color: #0033A0;
-    cursor: pointer;
-    transition: all 0.2s;
-    padding: 5px 10px;
-    border-radius: 5px;
-    font-weight: 600;
-}
-
-.breadcrumb-item:hover {
-    background: rgba(0, 51, 160, 0.1);
-    transform: scale(1.05);
-}
-
-.breadcrumb-item strong {
-    color: #0047CC;
-    text-transform: uppercase;
-    font-weight: 900;
-}
-
-.separador {
-    margin: 0 10px;
-    color: #6C757D;
-    font-weight: bold;
-}
-
-.custom-form {
-    max-width: 900px;
-    margin: 0 auto;
-    background: white;
-    padding: 35px;
-    border-radius: 15px;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
-    animation: fadeIn 0.4s ease;
-    border-top: 5px solid #0033A0;
-}
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-.custom-form h2 {
-    color: #0033A0;
-    text-align: left;
-    margin-bottom: 25px;
-    padding-bottom: 15px;
-    border-bottom: 3px solid #0033A0;
-    text-shadow: none;
-    font-weight: 700;
-}
-.custom-form label {
-    display: block;
-    margin-bottom: 15px;
-    font-weight: 600;
-    color: #2c3e50;
-    font-size: 0.95rem;
-}
-.requerido {
-    color: #dc3545;
-    font-weight: bold;
-    margin-left: 3px;
-}
-.custom-form input[type="text"],
-.custom-form input[type="date"],
-.custom-form input[type="time"],
-.custom-form input[type="number"],
-.custom-form input[type="password"],
-.custom-form select,
-.custom-form textarea {
-    width: 100%;
-    padding: 12px;
-    margin-top: 5px;
-    border: 2px solid #e0e0e0;
-    border-radius: 8px;
-    font-size: 1rem;
-    font-family: inherit;
-    transition: all 0.3s ease;
-    background: #f8f9fa;
-}
-.custom-form input:focus,
-.custom-form select:focus,
-.custom-form textarea:focus {
-    outline: none;
-    border-color: #0033A0;
-    background: white;
-    box-shadow: 0 0 0 3px rgba(0, 51, 160, 0.1);
-}
-.custom-form textarea {
-    min-height: 100px;
-    resize: vertical;
-}
-.ciclico-campos {
-    background: #e8f0ff;
-    padding: 20px;
-    border-radius: 10px;
-    margin: 15px 0;
-    border-left: 4px solid #0033A0;
-}
-.custom-form input[required],
-.custom-form textarea[required] {
-    border-left: 4px solid #dc3545;
-}
-.custom-form button[type="submit"] {
-    width: 100%;
-    padding: 16px;
-    margin-top: 25px;
-    background: linear-gradient(135deg, #0033A0 0%, #0047CC 100%);
-    color: white;
-    border: none;
-    border-radius: 10px;
-    font-size: 1.1rem;
-    font-weight: 700;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 15px rgba(0, 51, 160, 0.4);
-    text-transform: uppercase;
-    letter-spacing: 1px;
-}
-.custom-form button[type="submit"]:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 8px 25px rgba(0, 51, 160, 0.5);
-    background: linear-gradient(135deg, #001f66 0%, #0033A0 100%);
-}
-.section-title {
-    margin-top: 25px;
-    margin-bottom: 15px;
-    font-size: 1.1rem;
-    color: #0033A0;
-    font-weight: 700;
-    padding: 12px;
-    background: linear-gradient(135deg, #e8f0ff 0%, #f0f7ff 100%);
-    border-radius: 8px;
-    border-left: 5px solid #0033A0;
-}
-
-.campos-dinamicos {
-    background: #f8f9fa;
-    padding: 20px;
-    border-radius: 10px;
-    margin: 20px 0;
-    border: 2px dashed #0033A0;
-}
-.fila-dinamica {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr 50px;
-    gap: 10px;
-    margin-bottom: 15px;
-    padding: 15px;
-    background: white;
-    border-radius: 8px;
-    border: 1px solid #e0e0e0;
-}
-.btn-agregar {
-    background: #28a745;
-    color: white;
-    border: none;
-    padding: 12px 20px;
-    border-radius: 8px;
-    cursor: pointer;
-    font-weight: 600;
-    margin-top: 10px;
-    transition: all 0.3s;
-}
-.btn-agregar:hover {
-    background: #218838;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(40, 167, 69, 0.3);
-}
-.btn-eliminar {
-    background: #dc3545;
-    color: white;
-    border: none;
-    padding: 10px;
-    border-radius: 8px;
-    cursor: pointer;
-    font-weight: 600;
-    transition: all 0.3s;
-    font-size: 1.2rem;
-}
-.btn-eliminar:hover {
-    background: #c82333;
-    transform: scale(1.05);
-}
-
-.btn-volver {
-    display: inline-block;
-    padding: 12px 25px;
-    margin-bottom: 20px;
-    background: #6C757D;
-    color: white;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    font-weight: 600;
-    font-size: 1rem;
-    transition: all 0.3s;
-    text-decoration: none;
-}
-
-.btn-volver:hover {
-    background: #5a6268;
-    transform: translateX(-3px);
-    box-shadow: 0 4px 12px rgba(108, 117, 125, 0.3);
-}
-
-.btn-volver::before {
-    content: '← ';
-    margin-right: 5px;
-}
-.resumen-seleccion {
-    max-width: 900px;
-    margin: 20px auto;
-    padding: 25px;
-    background: linear-gradient(135deg, #0033A0 0%, #0047CC 100%);
-    border-radius: 15px;
-    box-shadow: 0 8px 25px rgba(0, 51, 160, 0.4);
-    display: none;
-    animation: fadeIn 0.4s ease;
-}
-
-.resumen-seleccion.visible {
-    display: block;
-}
-
-.resumen-contenido {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 15px;
-}
-
-.resumen-items {
-    display: flex;
-    gap: 20px;
-    flex-wrap: wrap;
-    flex: 1;
-}
-
-.resumen-item {
-    background: rgba(255, 255, 255, 0.2);
-    padding: 12px 25px;
-    border-radius: 10px;
-    color: white;
-    font-weight: 600;
-    backdrop-filter: blur(10px);
-    border: 2px solid rgba(255, 255, 255, 0.3);
-}
-
-.resumen-item .label {
-    font-size: 0.85rem;
-    opacity: 0.9;
-    margin-bottom: 5px;
-}
-
-.resumen-item .valor {
-    font-size: 1.2rem;
-    text-transform: uppercase;
-    font-weight: 700;
-}
-
-.resumen-btn-volver {
-    background: white;
-    color: #0033A0;
-    border: none;
-    padding: 12px 25px;
-    border-radius: 8px;
-    cursor: pointer;
-    font-weight: 700;
-    transition: all 0.3s;
-}
-
-.resumen-btn-volver:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(255, 255, 255, 0.4);
-}
-
-.user-info {
-    background: rgba(255, 255, 255, 0.15);
-    backdrop-filter: blur(10px);
-    border-radius: 10px;
-    margin-bottom: 20px;
-    border: 2px solid rgba(255, 255, 255, 0.3);
-}
-
-.btn-logout {
-    background: #dc3545;
-    color: white;
-    border: none;
-    padding: 8px 15px;
-    border-radius: 5px;
-    cursor: pointer;
-    margin-left: 15px;
-    font-weight: 600;
-    transition: all 0.3s;
-}
-
-.btn-logout:hover {
-    background: #c82333;
-    transform: translateY(-2px);
-}
-
-@media (max-width: 768px) {
-    .resumen-contenido {
-        flex-direction: column;
-        align-items: stretch;
-    }
-    
-    .resumen-items {
-        flex-direction: column;
-        gap: 10px;
-    }
-}
-@media (max-width: 768px) {
-    body { padding: 10px; }
-    h1 { font-size: 1.5rem; }
-    .custom-form { padding: 20px; }
-    .paso-container { padding: 25px; }
-    .fila-dinamica, .opciones-paso {
-        grid-template-columns: 1fr;
-    }
-    .btn-opcion {
-        padding: 30px 15px;
-    }
-}
-</style>
 </head>
 <body>
 
@@ -556,13 +84,29 @@ h2 {
             <span class="icono">🗄️</span>
             <span class="texto">DATABASE</span>
         </button>
-        <button type="button" class="btn-opcion" onclick="seleccionarJob('webjob')">
-            <span class="icono">🌐</span>
-            <span class="texto">WEBJOB</span>
+        <button type="button" class="btn-opcion" onclick="seleccionarJob('azure-webjob')">
+            <span class="icono">☁️</span>
+            <span class="texto">AZURE APP SERVICES</span>
         </button>
         <button type="button" class="btn-opcion" onclick="seleccionarJob('masiva')">
             <span class="icono">📦</span>
             <span class="texto">MASIVA</span>
+        </button>
+        <button type="button" class="btn-opcion" onclick="seleccionarJob('sap-btp-scheduler')">
+            <span class="icono">📋</span>
+            <span class="texto">SAP BTP SCHEDULER</span>
+        </button>
+        <button type="button" class="btn-opcion" onclick="seleccionarJob('web-services-rest')">
+            <span class="icono">🔗</span>
+            <span class="texto">Add Web Services Rest Connection Profile</span>
+        </button>
+        <button type="button" class="btn-opcion" onclick="seleccionarJob('veeam-backup')">
+            <span class="icono">💾</span>
+            <span class="texto">VEEAM BACKUP</span>
+        </button>
+        <button type="button" class="btn-opcion" onclick="seleccionarJob('azure-webjob')">
+            <span class="icono">☁️</span>
+            <span class="texto">Add Azure App Webjobs Connection Profile</span>
         </button>
     </div>
 </div>
@@ -691,12 +235,12 @@ h2 {
     <button type="submit">Guardar</button>
 </form>
 
-<!-- FORMULARIO SAP COMPLETO -->
-
+<!-- FORMULARIO SAP CON PERFIL SAP BTP -->
 <form id="form-sap" action="/formularios/sap" method="post" class="custom-form" style="display:none;">
     <input type="hidden" name="tipo_job" value="sap">
     <h2>Campo SAP</h2>
     <button type="button" class="btn-volver" onclick="volverAlPaso3()">Volver</button>
+    
     <label>Tipo de solicitud<span class="requerido">(*)</span>
         <select name="tipo_solicitud_sap">
             <option value="">Seleccionar...</option>
@@ -721,6 +265,82 @@ h2 {
     <label>Nombre del servidor<span class="requerido">(*)</span> <input type="text" name="servidor_sap" required></label>
     <label>Usuario ejecutante: <input type="text" name="usuario_sap"></label>
     <label>Instancia de aplicación<span class="requerido">(*)</span> <input type="text" name="instancia_sap"></label>
+    
+    <!-- PERFIL DE CONEXIÓN SAP BTP -->
+    <div class="connection-profile-section">
+        <h3>Perfil de Conexión SAP BTP Scheduler</h3>
+        
+        <div class="profile-group">
+            <div class="sap-btp-fields">
+                <h4>Configuración SAP BTP</h4>
+            </div>
+            
+            <div class="profile-row">
+                <div class="profile-field">
+                    <label>Connection Profile Name <span class="requerido">(*)</span></label>
+                    <input type="text" name="sap_profile_name" placeholder="Ej: SAP_BTP_PROD" required>
+                </div>
+                <div class="profile-field">
+                    <label>Description</label>
+                    <textarea name="sap_profile_description" placeholder="Descripción del perfil de conexión"></textarea>
+                </div>
+            </div>
+            
+            <div class="profile-row">
+                <div class="profile-field">
+                    <label>Client ID <span class="requerido">(*)</span></label>
+                    <input type="text" name="sap_client_id" required>
+                    <span class="help-text">ID del cliente para autenticación</span>
+                </div>
+                <div class="profile-field">
+                    <label>Client Secret <span class="requerido">(*)</span></label>
+                    <input type="password" name="sap_client_secret" required>
+                    <span class="help-text">Secreto del cliente</span>
+                </div>
+            </div>
+            
+            <div class="profile-row">
+                <div class="profile-field">
+                    <label>SAP Authentication URL <span class="requerido">(*)</span></label>
+                    <input type="text" name="sap_auth_url" placeholder="https://<Domain Name>.authentication.<Region>.hana.ondemand.com" required>
+                </div>
+                <div class="profile-field">
+                    <label>Trigger URL <span class="requerido">(*)</span></label>
+                    <input type="text" name="sap_trigger_url" placeholder="https://jobscheduler-rest.cfapps.<Region>.hana.ondemand.com" required>
+                </div>
+            </div>
+            
+            <h4 style="margin-top: 20px;">Re-Run Execution Parameters</h4>
+            <div class="profile-row">
+                <div class="profile-field">
+                    <label>HTTP Codes</label>
+                    <input type="text" name="sap_http_codes" value="503" placeholder="503">
+                    <span class="help-text">Códigos HTTP para reintentos</span>
+                </div>
+                <div class="profile-field">
+                    <label>Rerun Interval (segundos)</label>
+                    <input type="number" name="sap_rerun_interval" value="10" placeholder="10">
+                </div>
+            </div>
+            
+            <div class="profile-row">
+                <div class="profile-field">
+                    <label>Attempt Reruns</label>
+                    <input type="number" name="sap_attempt_reruns" value="3" placeholder="3">
+                </div>
+                <div class="profile-field">
+                    <label>Connection Timeout (segundos)</label>
+                    <input type="number" name="sap_connection_timeout" value="60" placeholder="60">
+                </div>
+            </div>
+            
+            <button type="button" class="btn-test-connection" onclick="testConnection(this)">
+                Probar Conexión
+            </button>
+            <div class="connection-status"></div>
+        </div>
+    </div>
+    
     <label>Nombre del Proceso de SAP a Lanzar desde Control-M( Proceso a Ejecutar )<span class="requerido">(*)</span> <input type="text" name="command_sap" required></label>
     <label>Usuario en SAP: <input type="text" name="usuario_en_sap"></label>
     <label>Instancia/Mandante: <input type="text" name="mandante_sap"></label>
@@ -1092,70 +712,458 @@ h2 {
     <button type="submit">Guardar</button>
 </form>
 
-<!-- FORMULARIO WEBJOB COMPLETO -->
-<form id="form-webjob" class="custom-form" style="display:none;">
-    <h2>Campo WEBJOB</h2>
+<!-- FORMULARIO SAP BTP SCHEDULER CONNECTION PROFILE -->
+<form id="form-sap-btp-scheduler" class="custom-form" style="display:none;">
+    <h2>Add SAP BTP Scheduler Connection Profile</h2>
     <button type="button" class="btn-volver" onclick="volverAlPaso3()">Volver</button>
-    <label>TIPO DE SOLICITUD <span class="requerido">(*)</span>
-        <select name="tipo_solicitud_wj" required>
-            <option value="">Seleccionar...</option>
-            <option value="alta">Alta</option>
-            <option value="baja">Baja</option>
-            <option value="modificacion">Modificación</option>
+    
+    <!-- Connection Profile Name -->
+    <label>Connection Profile Name <span class="requerido">(*Required)</span>
+        <input type="text" name="connection_profile_name_sap_btp" required placeholder="Enter connection profile name">
+    </label>
+    
+    <!-- Description -->
+    <label>Description
+        <textarea name="description_sap_btp" placeholder="Enter description"></textarea>
+    </label>
+    
+    <!-- Client ID -->
+    <label>Client ID
+        <input type="text" name="client_id_sap_btp" placeholder="Enter client ID">
+    </label>
+    
+    <!-- Client Secret -->
+    <label>Client Secret
+        <input type="password" name="client_secret_sap_btp" placeholder="Enter client secret">
+    </label>
+    
+    <!-- SAP Authentication URL -->
+    <label>SAP Authentication URL
+        <input type="text" name="sap_authentication_url" placeholder="https://<Domain Name>.authentication.<Region>.hana.ondemand.com/oauth/token">
+    </label>
+    
+    <!-- Trigger URL -->
+    <label>Trigger URL
+        <input type="text" name="trigger_url_sap" placeholder="https://jobscheduler-rest.cfapps.<Region>.hana.ondemand.com">
+    </label>
+    
+    <!-- Re-Run Execution Parameters -->
+    <div class="section-title" style="margin-top: 20px;">Re-Run Execution Parameters</div>
+    
+    <!-- HTTP Codes -->
+    <label>HTTP Codes
+        <input type="text" name="http_codes_sap_btp" placeholder="503" value="503">
+    </label>
+    
+    <!-- Rerun Interval -->
+    <label>Rerun Interval
+        <input type="number" name="rerun_interval_sap_btp" placeholder="10" value="10" min="0">
+    </label>
+    
+    <!-- Attempt Reruns -->
+    <label>Attempt Reruns
+        <input type="number" name="attempt_reruns_sap_btp" placeholder="3" value="3" min="0">
+    </label>
+    
+    <!-- Connection Timeout -->
+    <label>Connection Timeout
+        <input type="number" name="connection_timeout_sap_btp" placeholder="60" value="60" min="0">
+    </label>
+    
+    <!-- CAMPOS COMUNES DE CONTROL-M -->
+    <div class="section-title" style="margin-top: 30px;">Configuración Control-M</div>
+    
+    <label>Tipo de Frecuencia:
+        <select name="frecuencia_sap_btp">
+            <option value="diaria">Diaria</option>
+            <option value="semanal">Semanal</option>
+            <option value="mensual">Mensual</option>
+            <option value="on-demand">On-Demand</option>
         </select>
     </label>
     
-    <label>AMBIENTE <span class="requerido">(*)</span>
-        <select name="ambiente_wj" required>
-            <option value="">Seleccionar...</option>
-            <option value="produccion">PRODUCCION</option>
-            <option value="desarrollo">DESARROLLO</option>
-            <option value="testing">TESTING</option>
-            <option value="laboratorio">LABORATORIO</option>
+    <label>Horario de Ejecución:
+        <input type="time" name="horario_sap_btp">
+    </label>
+    
+    <label>Dependencias (Prerequisitos):
+        <textarea name="dependencias_sap_btp" placeholder="Jobs de los cuales depende este job"></textarea>
+    </label>
+    
+    <label>Acciones en caso de Error:
+        <select name="error_sap_btp">
+            <option value="notificar">Notificar</option>
+            <option value="reintentar">Reintentar</option>
+            <option value="detener">Detener flujo</option>
         </select>
     </label>
     
-    <label>Ticket en Service Now: <input type="text" name="sn_wj"></label>
-    <label>JOBNAME: <input type="text" name="jobname_wj"></label>
-    
-    <label>DESCRIPCIÓN DEL PROCESO <span class="requerido">(*)</span>
-        <textarea name="descripcion_wj" required></textarea>
+    <label>Documentación / Observaciones / Datos Complementarios / Notas:
+        <textarea name="observaciones_sap_btp"></textarea>
     </label>
     
-    <label>Instancia de Aplicación en SN <span class="requerido">(*)</span>
-        <input type="text" name="instancia_sn_wj" required>
+    <!-- Botones de acción -->
+    <div style="display: flex; gap: 10px; margin-top: 30px;">
+        <button type="button" class="btn-volver" style="background: #6c757d;">Test</button>
+        <button type="submit" style="background: #ff6600; flex: 0 0 auto; width: auto; padding: 16px 40px;">Add</button>
+        <button type="button" class="btn-volver" onclick="volverAlPaso3()">Cancel</button>
+    </div>
+</form>
+
+
+<!-- FORMULARIO WEB SERVICES REST CONNECTION PROFILE -->
+<form id="form-web-services-rest" class="custom-form" style="display:none;">
+    <h2>Add Web Services REST Connection Profile</h2>
+    <button type="button" class="btn-volver" onclick="volverAlPaso3()">Volver</button>
+    
+    <!-- Connection Profile Name -->
+    <label>Connection Profile Name <span class="requerido">(*Required)</span>
+        <input type="text" name="connection_profile_name_rest" required placeholder="Enter connection profile name">
     </label>
-
-    <label>Nombre del Webjob (Sugerido) 
-        <input type="text" name="servidor_wj" required>
-
+    
+    <!-- Description -->
+    <label>Description
+        <textarea name="description_rest" placeholder="Enter description"></textarea>
     </label>
-
-    <label>Comando a ejecutar <span class="requerido">(*)</span> 
-        <select name="command_wj" required>
-            <option value=""></option>
-            <option value="run">RUN</option>
-            <option value="start">START</option>
-            <option value="stop">STOP</option>
-            <option value="otro">OTRO</option>
+    
+    <!-- Authentication Type -->
+    <label>Authentication Type
+        <select name="authentication_type_rest" id="auth-type-rest" onchange="cambiarAuthTypeRest(this.value)">
+            <option value="none">None</option>
+            <option value="basic">Basic</option>
+            <option value="oauth2">OAuth2</option>
+            <option value="aws">AWS</option>
+            <option value="google">Google</option>
         </select>
     </label>
-
-    <label >Si es otro, indicar cual?
-        <input type="text" name="otro_command_wj">
+    
+    <!-- SECCIÓN BASIC (se muestra cuando Authentication Type = Basic) -->
+    <div id="section-basic-rest" style="display:none;">
+        <label>User Name <span class="requerido">(*Required)</span>
+            <input type="text" name="user_name_rest" placeholder="Enter user name">
+        </label>
+        
+        <label>Password <span class="requerido">(*Required)</span>
+            <input type="password" name="password_rest" placeholder="Enter password">
+        </label>
+        
+        <label style="display: flex; align-items: center; gap: 8px;">
+            <input type="checkbox" name="use_preemptive_auth" style="width: auto;">
+            Use preemptive authentication
+        </label>
+    </div>
+    
+    <!-- SECCIÓN OAUTH2 (se muestra cuando Authentication Type = OAuth2) -->
+    <div id="section-oauth2-rest" style="display:none;">
+        <label style="display: flex; align-items: center; gap: 8px;">
+            <input type="checkbox" name="use_basic_authentication" style="width: auto;">
+            Use basic authentication
+        </label>
+        
+        <label>OAuth2 API URL <span class="requerido">(*Required)</span>
+            <input type="text" name="oauth2_api_url" placeholder="Enter OAuth2 API URL">
+        </label>
+        
+        <label>Grant Type
+            <select name="grant_type">
+                <option value="client_credentials">Client credentials</option>
+                <option value="authorization_code">Authorization code</option>
+                <option value="password">Password</option>
+            </select>
+        </label>
+        
+        <label>Client ID
+            <input type="text" name="client_id_rest" placeholder="Enter client ID">
+        </label>
+        
+        <label>Client Secret
+            <input type="password" name="client_secret_rest" placeholder="Enter client secret">
+        </label>
+        
+        <label>Content Type
+            <input type="text" name="content_type_rest" placeholder="Enter content type">
+        </label>
+        
+        <label>Headers
+            <button type="button" class="btn-expandir" onclick="alert('Funcionalidad de Headers en desarrollo')">➕</button>
+        </label>
+        
+        <label>Body
+            <button type="button" class="btn-expandir" onclick="alert('Funcionalidad de Body en desarrollo')">➕</button>
+        </label>
+    </div>
+    
+    <!-- SECCIÓN AWS (se muestra cuando Authentication Type = AWS) -->
+    <div id="section-aws-rest" style="display:none;">
+        <label>Region <span class="requerido">(*Required)</span>
+            <input type="text" name="region_aws" placeholder="Enter AWS region">
+        </label>
+        
+        <label>Custom Service Name
+            <input type="text" name="custom_service_name" placeholder="Enter custom service name">
+        </label>
+        
+        <label>Authentication Method
+            <select name="authentication_method_aws" id="auth-method-aws" onchange="cambiarAuthMethodAws(this.value)">
+                <option value="iam_role">IAM Role</option>
+                <option value="access_secret_keys">Access & Secret Keys</option>
+            </select>
+        </label>
+        
+        <!-- Campos para Access & Secret Keys (se muestran solo si se selecciona esa opción) -->
+        <div id="section-aws-keys" style="display:none;">
+            <label>Access Key
+                <input type="text" name="access_key_aws" placeholder="Enter access key">
+            </label>
+            
+            <label>Secret Key
+                <input type="password" name="secret_key_aws" placeholder="Enter secret key">
+            </label>
+        </div>
+    </div>
+    
+    <!-- SECCIÓN GOOGLE (se muestra cuando Authentication Type = Google) -->
+    <div id="section-google-rest" style="display:none;">
+        <label>Token Type
+            <select name="token_type_google" id="token-type-google">
+                <option value="access_token">Access token</option>
+                <option value="identity_token">Identity token</option>
+            </select>
+        </label>
+        
+        <label>Service Account Key <span class="requerido">(*Required)</span>
+            <textarea name="service_account_key" placeholder="Enter service account key (JSON format)" rows="6"></textarea>
+        </label>
+    </div>
+    
+    <!-- CAMPOS COMUNES DE CONTROL-M (igual que en los otros formularios) -->
+    <div class="section-title" style="margin-top: 30px;">Configuración Control-M</div>
+    
+    <label>Tipo de Frecuencia:
+        <select name="frecuencia_rest">
+            <option value="diaria">Diaria</option>
+            <option value="semanal">Semanal</option>
+            <option value="mensual">Mensual</option>
+            <option value="on-demand">On-Demand</option>
+        </select>
     </label>
     
-    <div class="section-title">CREDENCIALES DEL CLIENTE</div>
+    <label>Horario de Ejecución:
+        <input type="time" name="horario_rest">
+    </label>
     
-    <label>Usuario de Conexión  <span class="requerido">((Client ID))</span>  <input type="text" name="client_id_wj"></label>
-    <label>Clave para acceder <span class="requerido">((Client Secret))</span><input type="password" name="client_secret_wj"></label>
+    <label>Dependencias (Prerequisitos):
+        <textarea name="dependencias_rest" placeholder="Jobs de los cuales depende este job"></textarea>
+    </label>
+    
+    <label>Acciones en caso de Error:
+        <select name="error_rest">
+            <option value="notificar">Notificar</option>
+            <option value="reintentar">Reintentar</option>
+            <option value="detener">Detener flujo</option>
+        </select>
+    </label>
+    
+    <label>Documentación / Observaciones / Datos Complementarios / Notas:
+        <textarea name="observaciones_rest"></textarea>
+    </label>
+    
+    <!-- Botones de acción -->
+    <div style="display: flex; gap: 10px; margin-top: 30px;">
+        <button type="button" class="btn-volver" style="background: #6c757d;">Test</button>
+        <button type="submit" style="background: #ff6600; flex: 0 0 auto; width: auto; padding: 16px 40px;">Add</button>
+        <button type="button" class="btn-volver" onclick="volverAlPaso3()">Cancel</button>
+    </div>
+</form>
+
+<!-- FORMULARIO VEEAM BACKUP CONNECTION PROFILE -->
+<form id="form-veeam-backup" class="custom-form" style="display:none;">
+    <h2>Add Veeam Backup Connection Profile</h2>
+    <button type="button" class="btn-volver" onclick="volverAlPaso3()">Volver</button>
+    
+    <!-- Connection Profile Name -->
+    <label>Connection Profile Name <span class="requerido">(*Required)</span>
+        <input type="text" name="connection_profile_name_veeam" required placeholder="Enter connection profile name">
+    </label>
+    
+    <!-- Description -->
+    <label>Description
+        <textarea name="description_veeam" placeholder="Enter description"></textarea>
+    </label>
+    
+    <!-- Enterprise Manager Server -->
+    <label>Enterprise Manager Server
+        <input type="text" name="enterprise_manager_server" placeholder="Enter Enterprise Manager Server">
+    </label>
+    
+    <!-- URL -->
+    <label>URL
+        <input type="text" name="url_veeam" placeholder="https://{{EMServer}}:9398" value="https://{{EMServer}}:9398">
+    </label>
+    
+    <!-- API Supported Version -->
+    <label>API Supported Version
+        <input type="text" name="api_supported_version" placeholder="latest" value="latest">
+    </label>
+    
+    <!-- Username -->
+    <label>Username
+        <input type="text" name="username_veeam" placeholder="Enter username">
+    </label>
+    
+    <!-- Password -->
+    <label>Password
+        <input type="password" name="password_veeam" placeholder="Enter password">
+    </label>
+    
+    <!-- HTTP Codes -->
+    <label>HTTP Codes
+        <input type="text" name="http_codes_veeam" placeholder="429" value="429">
+    </label>
+    
+    <!-- Rerun Interval -->
+    <label>Rerun Interval
+        <input type="number" name="rerun_interval_veeam" placeholder="10" value="10" min="0">
+    </label>
+    
+    <!-- Attempt Reruns -->
+    <label>Attempt Reruns
+        <input type="number" name="attempt_reruns_veeam" placeholder="3" value="3" min="0">
+    </label>
+    
+    <!-- Connection Timeout -->
+    <label>Connection Timeout
+        <input type="number" name="connection_timeout_veeam" placeholder="30" value="30" min="0">
+    </label>
+    
+    <!-- CAMPOS COMUNES DE CONTROL-M -->
+    <div class="section-title" style="margin-top: 30px;">Configuración Control-M</div>
+    
+    <label>Tipo de Frecuencia:
+        <select name="frecuencia_veeam">
+            <option value="diaria">Diaria</option>
+            <option value="semanal">Semanal</option>
+            <option value="mensual">Mensual</option>
+            <option value="on-demand">On-Demand</option>
+        </select>
+    </label>
+    
+    <label>Horario de Ejecución:
+        <input type="time" name="horario_veeam">
+    </label>
+    
+    <label>Dependencias (Prerequisitos):
+        <textarea name="dependencias_veeam" placeholder="Jobs de los cuales depende este job"></textarea>
+    </label>
+    
+    <label>Acciones en caso de Error:
+        <select name="error_veeam">
+            <option value="notificar">Notificar</option>
+            <option value="reintentar">Reintentar</option>
+            <option value="detener">Detener flujo</option>
+        </select>
+    </label>
+    
+    <label>Documentación / Observaciones / Datos Complementarios / Notas:
+        <textarea name="observaciones_veeam"></textarea>
+    </label>
+    
+    <!-- Botones de acción -->
+    <div style="display: flex; gap: 10px; margin-top: 30px;">
+        <button type="button" class="btn-volver" style="background: #6c757d;">Test</button>
+        <button type="submit" style="background: #ff6600; flex: 0 0 auto; width: auto; padding: 16px 40px;">Add</button>
+        <button type="button" class="btn-volver" onclick="volverAlPaso3()">Cancel</button>
+    </div>
+</form>
+
+<!-- FORMULARIO AZURE APP SERVICES COMPLETO -->
+<form id="form-azure-webjob" class="custom-form" style="display:none;">
+    <h2>Add Azure App Services Webjobs Connection Profile</h2>
+    <button type="button" class="btn-volver" onclick="volverAlPaso3()">Volver</button>
+    
+    <!-- Connection Profile Name -->
+    <label>Connection Profile Name <span class="requerido">(*Required)</span>
+        <input type="text" name="connection_profile_name" required placeholder="Enter connection profile name">
+    </label>
+    
+    <!-- Description -->
+    <label>Description
+        <textarea name="description_azure" placeholder="Enter description"></textarea>
+    </label>
+    
+    <div class="section-title">Subscription</div>
+    
+    <!-- Subscription ID -->
+    <label>Subscription ID
+        <input type="text" name="subscription_id" placeholder="Enter subscription ID">
+    </label>
+    
+    <div class="section-title">Identity</div>
+    
+    <!-- Authentication Type -->
+    <label>Authentication Type
+        <select name="authentication_type">
+            <option value="service_principal">Service Principal</option>
+            <option value="managed_identity">Managed Identity</option>
+            <option value="user_identity">User Identity</option>
+        </select>
+    </label>
+    
+    <!-- Tenant ID -->
+    <label>Tenant ID
+        <input type="text" name="tenant_id" placeholder="Enter tenant ID">
+    </label>
+    
+    <!-- Application ID -->
+    <label>Application ID
+        <input type="text" name="application_id" placeholder="Enter application ID">
+    </label>
+    
+    <!-- Client Secret -->
+    <label>Client Secret
+        <input type="password" name="client_secret_azure" placeholder="Enter client secret">
+    </label>
+    
+    <div class="section-title">URL Information</div>
+    
+    <!-- Login URL -->
+    <label>Login URL
+        <input type="text" name="login_url" value="https://login.microsoftonline.com" placeholder="https://login.microsoftonline.com">
+    </label>
+    
+    <!-- Management URL -->
+    <label>Management URL
+        <input type="text" name="management_url" value="https://management.azure.com" placeholder="https://management.azure.com">
+    </label>
+    
+    <!-- Connection Timeout -->
+    <label>Connection Timeout
+        <input type="number" name="connection_timeout" value="50" placeholder="50">
+    </label>
+    
+    <div class="section-title">Rerun Step</div>
+    
+    <!-- HTTP Codes -->
+    <label>HTTP Codes
+        <input type="text" name="http_codes" value="429" placeholder="429">
+    </label>
+    
+    <!-- Rerun Interval -->
+    <label>Rerun Interval
+        <input type="number" name="rerun_interval" value="10" placeholder="10">
+    </label>
+    
+    <!-- Attempt Reruns -->
+    <label>Attempt Reruns
+        <input type="number" name="attempt_reruns" value="3" placeholder="3">
+    </label>
     
     <div class="section-title">FRECUENCIA de EJECUCIÓN <span class="requerido">(*)</span></div>
     
-    <label>Días de la Semana: <input type="text" name="dias_semana_wj"></label>
-    <label>Días del Mes: <input type="text" name="dias_mes_wj"></label>
+    <label>Días de la Semana: <input type="text" name="dias_semana_azure" placeholder="L,M,Mi,J,V"></label>
+    <label>Días del Mes: <input type="text" name="dias_mes_azure" placeholder="1,15,30"></label>
     <label>Mes/es:
-        <select name="meses_wj">
+        <select name="meses_azure">
             <option value="todos">TODOS</option>
             <option value="enero">Enero</option>
             <option value="febrero">Febrero</option>
@@ -1171,57 +1179,70 @@ h2 {
             <option value="diciembre">Diciembre</option>
         </select>
     </label>
-    <label>Fecha Única: <input type="date" name="fecha_unica_wj"></label>
-    <label>Hora: <input type="time" name="hora_wj"></label>
+    <label>Fecha Única: <input type="date" name="fecha_unica_azure"></label>
+    <label>Hora: <input type="time" name="hora_azure"></label>
     <label>CÍCLICO?
-        <select name="ciclico_wj" class="ciclico-select">
+        <select name="ciclico_azure" class="ciclico-select">
             <option value="no">NO</option>
             <option value="si">SI</option>
         </select>
     </label>
     <div class="ciclico-campos" style="display: none;">
-        <label>Hora Desde: <input type="time" name="hora_desde_wj"></label>
-        <label>Hora Hasta: <input type="time" name="hora_hasta_wj"></label>
-        <label>Intervalo: <input type="number" name="intervalo_wj"></label>
+        <label>Hora Desde: <input type="time" name="hora_desde_azure"></label>
+        <label>Hora Hasta: <input type="time" name="hora_hasta_azure"></label>
+        <label>Intervalo (minutos): <input type="number" name="intervalo_azure"></label>
         <label>Desde:
-            <select name="desde_wj">
-                <option value=""></option>
+            <select name="desde_azure">
+                <option value="">Seleccionar...</option>
                 <option value="fin">Fin</option>
                 <option value="principio">Principio</option>
             </select>
         </label>
     </div>
     
-    <label>Activo Desde: <input type="date" name="activo_desde_wj"></label>
-    <label>Activo Hasta: <input type="date" name="activo_hasta_wj"></label>
+    <label>Activo Desde: <input type="date" name="activo_desde_azure"></label>
+    <label>Activo Hasta: <input type="date" name="activo_hasta_azure"></label>
+    
+    <label>Si tiene dependencias indicar cuales: 
+        <textarea name="dependencias_azure" placeholder="JOB.TO.JOB"></textarea>
+    </label>
+    
     <label>Criticidad:
-        <select name="criticidad_wj">
-            <option value=""></option>
+        <select name="criticidad_azure">
+            <option value="">Seleccionar...</option>
             <option value="baja">Baja</option>
             <option value="media">Media</option>
             <option value="alta">Alta</option>
         </select>
     </label>
-    <label>Si tiene dependencias indicar cuales: <textarea name="dependencias_wj"></textarea></label>
     
-    <div class="section-title">DOCUMENTACIÓN <span class="requerido"> (Indicar un único grupo)</span>
-       </div>
+    <div class="section-title">DOCUMENTACIÓN <span class="requerido">(Indicar un único grupo)</span></div>
     
     <label>Grupo Responsable Correo <span class="requerido">(*)</span>
-        <input type="text" name="grupo_responsable_correo_wj" required>
-    </label>
-    <label>Grupo Responsable Service Now: <input type="text" name="grupo_responsable_sn_wj"></label>
-    <label>Acción a Seguir si Cancela <span class="requerido">(*) IMPORTANTE : NO DERIVAR INCIDENTE - CERRAR EN OPERACIONES</span>
-        <textarea name="accion_cancela_wj" required></textarea>
-    </label>
-    <label>Observaciones / Datos Complementarios / Notas:
-        <textarea name="observaciones_wj"></textarea>
+        <input type="text" name="grupo_responsable_correo_azure" required>
     </label>
     
-    <button type="submit">Guardar</button>
+    <label>Grupo Responsable Service Now: 
+        <input type="text" name="grupo_responsable_sn_azure">
+    </label>
+    
+    <label>Acción a Seguir si Cancela <span class="requerido">(*) IMPORTANTE: NO DERIVAR INCIDENTE - CERRAR EN OPERACIONES</span>
+        <textarea name="accion_cancela_azure" required placeholder="IMPORTANTE: NO DERIVAR INCIDENTE - CERRAR EN OPERACIONES"></textarea>
+    </label>
+    
+    <label>Observaciones / Datos Complementarios / Notas:
+        <textarea name="observaciones_azure"></textarea>
+    </label>
+    
+    <!-- Botones de acción como en la imagen -->
+    <div style="display: flex; gap: 10px; margin-top: 30px;">
+        <button type="button" class="btn-volver" style="background: #6c757d;">Test</button>
+        <button type="submit" style="background: #ff6600; flex: 0 0 auto; width: auto; padding: 16px 40px;">Add</button>
+        <button type="button" class="btn-volver" onclick="volverAlPaso3()">Cancel</button>
+    </div>
 </form>
 
-<!-- FORMULARIO MASIVA CON CAMPOS DINÁMICOS -->
+<!-----------FORMULARIO MASIVA CON CAMPOS DINÁMICOS ------------------------>
 <form id="form-masiva" class="custom-form" style="display:none;">
     <h2>MASIVA - Agregar múltiples jobs</h2>
     <button type="button" class="btn-volver" onclick="volverAlPaso3()">Volver</button>
@@ -1266,188 +1287,6 @@ h2 {
     
     <button type="submit">Guardar Todos</button>
 </form>
-
-<script>
-// VARIABLES GLOBALES PARA EL SISTEMA DE PASOS
-let seleccion = {
-    tipoSolicitud: '',
-    ambiente: '',
-    tipoJob: ''
-};
-
-// FUNCIONES PARA NAVEGACIÓN POR PASOS
-function seleccionarTipoSolicitud(tipo) {
-    seleccion.tipoSolicitud = tipo;
-    document.getElementById('tipo-selected').textContent = tipo.toUpperCase();
-    document.getElementById('tipo-selected-2').textContent = tipo.toUpperCase();
-    
-    document.getElementById('paso-1').style.display = 'none';
-    document.getElementById('paso-2').style.display = 'block';
-}
-
-function seleccionarAmbiente(ambiente) {
-    seleccion.ambiente = ambiente;
-    document.getElementById('ambiente-selected').textContent = ambiente.toUpperCase();
-    
-    document.getElementById('paso-2').style.display = 'none';
-    document.getElementById('paso-3').style.display = 'block';
-}
-function volverAlPaso3() {
-    // Ocultar todos los formularios
-    const forms = document.querySelectorAll('.custom-form');
-    forms.forEach(form => form.style.display = 'none');
-    
-    // Ocultar todos los pasos
-    document.getElementById('paso-1').style.display = 'none';
-    document.getElementById('paso-2').style.display = 'none';
-    document.getElementById('paso-3').style.display = 'none';
-    
-    // Ocultar resumen
-    document.getElementById('resumen-seleccion').classList.remove('visible');
-    
-    // Reiniciar todo
-    seleccion = { tipoSolicitud: '', ambiente: '', tipoJob: '' };
-    
-    // Volver al paso 1
-    document.getElementById('paso-1').style.display = 'block';
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-}
-
-function seleccionarJob(tipoJob) {
-    seleccion.tipoJob = tipoJob;
-    
-    document.getElementById('paso-3').style.display = 'none';
-    
-    // Mostrar resumen
-    const resumen = document.getElementById('resumen-seleccion');
-    resumen.classList.add('visible');
-    
-    // Llenar datos del resumen
-    const nombresJobs = {
-        'os': 'Script / CMD',
-        'sap': 'SAP',
-        'file-transfer': 'File Transfer',
-        'database': 'Database',
-        'webjob': 'WebJob',
-        'masiva': 'Masiva'
-    };
-    
-    document.getElementById('resumen-tipo').textContent = seleccion.tipoSolicitud;
-    document.getElementById('resumen-ambiente').textContent = seleccion.ambiente;
-    document.getElementById('resumen-job').textContent = nombresJobs[tipoJob] || tipoJob;
-    
-    const form = document.getElementById('form-' + tipoJob);
-    if (form) {
-        form.style.display = 'block';
-        
-        const selectTipo = form.querySelector('[name^="tipo_solicitud"]');
-        const selectAmbiente = form.querySelector('[name^="ambiente"]');
-        
-        if (selectTipo) selectTipo.value = seleccion.tipoSolicitud;
-        if (selectAmbiente) selectAmbiente.value = seleccion.ambiente;
-        
-        // Scroll al resumen primero
-        resumen.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        
-        inicializarCiclico(form);
-    }
-}
-
-function volverPaso(numeroPaso) {
-    document.getElementById('paso-1').style.display = 'none';
-    document.getElementById('paso-2').style.display = 'none';
-    document.getElementById('paso-3').style.display = 'none';
-    
-    const forms = document.querySelectorAll('.custom-form');
-    forms.forEach(form => form.style.display = 'none');
-    
-    document.getElementById('paso-' + numeroPaso).style.display = 'block';
-    
-    if (numeroPaso === 1) {
-        seleccion = { tipoSolicitud: '', ambiente: '', tipoJob: '' };
-    } else if (numeroPaso === 2) {
-        seleccion.tipoJob = '';
-    }
-}
-
-document.addEventListener('DOMContentLoaded', function() {
-    const select = document.getElementById('lista-jobs');
-    const forms = {
-        'os': document.getElementById('form-os'),
-        'sap': document.getElementById('form-sap'),
-        'file-transfer': document.getElementById('form-file-transfer'),
-        'database': document.getElementById('form-database'),
-        'webjob': document.getElementById('form-webjob'),
-        'masiva': document.getElementById('form-masiva')
-    };
-
-    function inicializarCiclico(form) {
-        const selectCiclico = form.querySelector('.ciclico-select');
-        const campos = form.querySelector('.ciclico-campos');
-        if (!selectCiclico || !campos) return;
-
-        function toggleCampos() {
-            campos.style.display = selectCiclico.value === 'si' ? 'block' : 'none';
-        }
-
-        selectCiclico.addEventListener('change', toggleCampos);
-        toggleCampos();
-    }
-
-    select.addEventListener('change', function() {
-        for (const key in forms) {
-            if (forms[key]) forms[key].style.display = 'none';
-        }
-
-        const formSeleccionado = forms[this.value];
-        if (formSeleccionado) {
-            formSeleccionado.style.display = 'block';
-            inicializarCiclico(formSeleccionado);
-        }
-    });
-
-    for (const key in forms) {
-        if (forms[key]) inicializarCiclico(forms[key]);
-    }
-});
-// FUNCIONES PARA MASIVA
-let contadorJobs = 1;
-
-function agregarJob() {
-    contadorJobs++;
-    if (contadorJobs > 50) {
-        alert('Máximo 50 jobs');
-        return;
-    }
-    
-    const contenedor = document.getElementById('contenedor-jobs');
-    const nuevaFila = document.createElement('div');
-    nuevaFila.className = 'fila-dinamica';
-    nuevaFila.innerHTML = `
-        <input type="text" name="jobname[]" placeholder="Nombre Job *" required>
-        <input type="text" name="descripcion[]" placeholder="Descripción">
-        <input type="text" name="servidor[]" placeholder="Servidor">
-        <input type="text" name="usuario[]" placeholder="Usuario">
-        <button type="button" class="btn-eliminar" onclick="eliminarFila(this)">❌</button>
-    `;
-    contenedor.appendChild(nuevaFila);
-}
-
-function eliminarFila(boton) {
-    const fila = boton.parentElement;
-    const contenedor = document.getElementById('contenedor-jobs');
-    const totalFilas = contenedor.querySelectorAll('.fila-dinamica').length;
-    if (totalFilas <= 1) {
-        alert('Debe haber al menos un job');
-        return;
-    }
-    fila.remove();
-    contadorJobs--;
-}
-
-console.log('✅ Control-M cargado');
-
-</script>
-
+<script src="index.js"></script>
 </body>
 </html>
