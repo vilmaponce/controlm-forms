@@ -56,6 +56,8 @@ function seleccionarJob(tipoJob) {
         'web-services-rest': 'Web Services REST',
         'veeam-backup': 'Veeam Backup',
         'azure-webjob': 'Azure App Services',
+        'endpoint': 'Endpoint',  
+        'webjob': 'WebJob',      
         'masiva': 'Masiva'
     };
     
@@ -72,12 +74,21 @@ function seleccionarJob(tipoJob) {
     if (form) {
         form.style.display = 'block';
         
-        // Pre-llenar campos
+        // ✅ Pre-llenar campos Y BLOQUEARLOS
         const selectTipo = form.querySelector('[name^="tipo_solicitud"]');
         const selectAmbiente = form.querySelector('[name^="ambiente"]');
         
-        if (selectTipo) selectTipo.value = seleccion.tipoSolicitud;
-        if (selectAmbiente) selectAmbiente.value = seleccion.ambiente;
+        if (selectTipo) {
+            selectTipo.value = seleccion.tipoSolicitud;
+            selectTipo.disabled = true;
+            selectTipo.classList.add('campo-bloqueado');
+        }
+        
+        if (selectAmbiente) {
+            selectAmbiente.value = seleccion.ambiente;
+            selectAmbiente.disabled = true;
+            selectAmbiente.classList.add('campo-bloqueado');
+        }
         
         // Scroll al resumen
         resumen.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -100,10 +111,24 @@ function volverAlPasoAnterior() {
         // Desde formulario → Paso 3 (selección de jobs)
         console.log('Desde formulario → Paso 3');
         
-        // Ocultar TODOS los formularios
+        // ✅ Ocultar TODOS los formularios Y DESBLOQUEAR CAMPOS
         const forms = document.querySelectorAll('.custom-form');
         forms.forEach(form => {
             form.style.display = 'none';
+            
+            // Desbloquear campos
+            const selectTipo = form.querySelector('[name^="tipo_solicitud"]');
+            const selectAmbiente = form.querySelector('[name^="ambiente"]');
+            
+            if (selectTipo) {
+                selectTipo.disabled = false;
+                selectTipo.classList.remove('campo-bloqueado');
+            }
+            
+            if (selectAmbiente) {
+                selectAmbiente.disabled = false;
+                selectAmbiente.classList.remove('campo-bloqueado');
+            }
         });
         
         // Ocultar resumen
@@ -224,22 +249,34 @@ document.addEventListener('DOMContentLoaded', function() {
         'sap-btp-scheduler': document.getElementById('form-sap-btp-scheduler'),
         'web-services-rest': document.getElementById('form-web-services-rest'),
         'veeam-backup': document.getElementById('form-veeam-backup'),
+        'endpoint': document.getElementById('form-endpoint'),
+        'webjob': document.getElementById('form-webjob'),
         'masiva': document.getElementById('form-masiva')
     };
 
     // Función para inicializar campos cíclicos
-    function inicializarCiclico(form) {
-        const selectCiclico = form.querySelector('.ciclico-select');
-        const campos = form.querySelector('.ciclico-campos');
-        if (!selectCiclico || !campos) return;
-        
-        function toggleCampos() {
-            campos.style.display = selectCiclico.value === 'si' ? 'block' : 'none';
+function inicializarCiclico(form) {
+    const selectCiclico = form.querySelector('.ciclico-select');
+    const campos = form.querySelector('.ciclico-campos');
+    if (!selectCiclico || !campos) return;
+    
+    function toggleCampos() {
+        if (selectCiclico.value === 'si') {
+            // Verificar si está en un grid
+            const esGrid = campos.style.gridColumn || campos.parentElement.style.display.includes('grid');
+            if (esGrid) {
+                campos.style.display = 'grid';
+            } else {
+                campos.style.display = 'block';
+            }
+        } else {
+            campos.style.display = 'none';
         }
-
-        selectCiclico.addEventListener('change', toggleCampos);
-        toggleCampos();
     }
+
+    selectCiclico.addEventListener('change', toggleCampos);
+    toggleCampos();
+}
 
     // Inicializar todos los formularios
     for (const key in forms) {

@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="validaciones.css">
 <title>ABM Jobs - Control-M</title>
 </head>
 <body>
@@ -25,7 +26,7 @@
 </header>
 
 <div class="importante">
-    <strong>IMPORTANTE:</strong> Los campos marcados con <span class="requerido">(*)</span> son obligatorios
+    <strong><span class="requerido">📌 IMPORTANTE..</span></strong> Los campos marcados con <span class="requerido">(*)</span> son obligatorios.
 </div>
 
 <!-- PASO 1: TIPO DE SOLICITUD -->
@@ -109,6 +110,14 @@
             <span class="icono">📦</span>
             <span class="texto">MASIVA</span>
         </button>
+        <button type="button" class="btn-opcion" onclick="seleccionarJob('endpoint')">
+            <span class="icono">🌐</span>
+            <span class="texto">ENDPOINT</span>
+        </button>
+        <button type="button" class="btn-opcion" onclick="seleccionarJob('webjob')">
+            <span class="icono">⚙️</span>
+            <span class="texto">WEBJOB</span>
+        </button>
         <button type="button" class="btn-opcion" onclick="seleccionarJob('sap-btp-scheduler')">
             <span class="icono">📋</span>
             <span class="texto">SAP BTP SCHEDULER</span>
@@ -151,7 +160,11 @@
         </button>
     </div>
 </div>
-<!-- FORMULARIO OS COMPLETO -->
+
+<!--*************************FORMULARIOS***************************************** -->
+
+<!-------------------------- FORMULARIO SCRIPT/CMD ------------------------------->
+
 <form id="form-os" action="/formularios/os" method="post" class="custom-form" style="display:none;">
     <input type="hidden" name="tipo_job" value="os">
     <h2>Campo SCRIPT / CMD</h2>
@@ -177,15 +190,15 @@
     
     <label>Ticket en Service Now: <input type="text" name="sn_os"></label>
     <label>Jobname: <input type="text" name="jobname_os"></label>
-    <label>Descripción del proceso<span class="requerido">(*)</span> <input type="text" name="descripcion_os"></label>
+    <label>Descripción del proceso<span class="requerido">(*)</span> <input type="text" name="descripcion_os" required></label>
     <label>Nombre del servidor<span class="requerido">(*)</span> <input type="text" name="servidor_os" required></label>
     <label>Usuario ejecutante <input type="text" name="usuario_os"></label>
-    <label>Instancia de aplicación en SN <span class="requerido">(*)</span> <input type="text" name="instancia_os"></label>
+    <label>Instancia de aplicación en Service Now <span class="requerido">(*)</span> <input type="text" name="instancia_os" required></label>
     <label>Nombre del proceso a ejecutar<span class="requerido">(*)</span> <input type="text" name="command_os" required></label>
     
     <div class="section-title">Frecuencia de ejecución<span class="requerido">(*)</span></div>
-    <label>Días de la semana: <input type="text" name="dias_semana_os" placeholder="L,M,Mi,J,V"></label>
-    <label>Días del mes: <input type="text" name="dias_mes_os" placeholder="1,15,30"></label>
+    <label>Días de la semana: <input type="text" name="dias_semana_os"required placeholder="L,M,Mi,J,V"></label>
+    <label>Días del mes: <input type="text" name="dias_mes_os" required placeholder="1,15,30"></label>
     <label>Mes/es:
         <select name="meses_os">
             <option value="">Todos</option>
@@ -204,7 +217,7 @@
         </select>
     </label>
     <label>Fecha única: <input type="date" name="fecha_unica_os"></label>
-    <label>Hora: <input type="time" name="hora_os"></label>
+    <label>Hora: <input type="time" name="hora_os" required></label>
     <label>Cíclico:
         <select name="ciclico_os" class="ciclico-select">
             <option value="no">No</option>
@@ -252,187 +265,208 @@
     <button type="submit">Guardar</button>
 </form>
 
-<!-- FORMULARIO SAP CON PERFIL SAP BTP -->
+<!---------------------- FORMULARIO SAP R3 --------------------------------------------->
+
 <form id="form-sap" action="/formularios/sap" method="post" class="custom-form" style="display:none;">
     <input type="hidden" name="tipo_job" value="sap">
-    <h2>SAP R3</h2>
+    <h2>Campo SAP</h2>
     <button type="button" class="btn-volver" onclick="volverAlPasoAnterior()">← Volver al paso anterior</button>
     
-    <label>Tipo de solicitud<span class="requerido">(*)</span>
-        <select name="tipo_solicitud_sap">
-            <option value="">Seleccionar...</option>
-            <option value="alta">Alta</option>
-            <option value="baja">Baja</option>
-            <option value="modificacion">Modificación</option>
-        </select>
-    </label>
-    
-    <label>Ambiente<span class="requerido">(*)</span>
-        <select name="ambiente_sap">
-            <option value="">Seleccionar...</option>
-            <option value="desarrollo">Desarrollo</option>
-            <option value="testing">Testing</option>
-            <option value="produccion">Producción</option>
-        </select>
-    </label>
-    
-    <label>Ticket en Service Now: <input type="text" name="sn_sap"></label>
-    <label>Jobname: <input type="text" name="jobname_sap"></label>
-    <label>Descripción del proceso<span class="requerido">(*)</span><input type="text" name="descripcion_sap"></label>
-    <label>Nombre del servidor<span class="requerido">(*)</span> <input type="text" name="servidor_sap" required></label>
-    <label>Usuario ejecutante: <input type="text" name="usuario_sap"></label>
-    <label>Instancia de aplicación<span class="requerido">(*)</span> <input type="text" name="instancia_sap"></label>
-    
-    <!-- PERFIL DE CONEXIÓN SAP BTP -->
-    <div class="connection-profile-section">
-        <h3>Perfil de Conexión SAP BTP Scheduler</h3>
+    <!-- FILA 1: Tipo, Ambiente, Ticket -->
+    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px; margin-bottom: 20px;">
+        <label>Tipo de solicitud<span class="requerido">(*)</span>
+            <select name="tipo_solicitud_sap" required>
+                <option value="">Seleccionar...</option>
+                <option value="alta">Alta</option>
+                <option value="baja">Baja</option>
+                <option value="modificacion">Modificación</option>
+            </select>
+        </label>
         
-        <div class="profile-group">
-            <div class="sap-btp-fields">
-                <h4>Configuración SAP BTP</h4>
-            </div>
+        <label>Ambiente<span class="requerido">(*)</span>
+            <select name="ambiente_sap" required>
+                <option value="">Seleccionar...</option>
+                <option value="desarrollo">Desarrollo</option>
+                <option value="testing">Testing</option>
+                <option value="produccion">Producción</option>
+            </select>
+        </label>
+        
+        <label>Ticket en Service Now: 
+            <input type="text" name="sn_sap">
+        </label>
+    </div>
+    
+    <!-- JOBNAME -->
+    <label>JOBNAME: 
+        <input type="text" name="jobname_sap">
+    </label>
+    
+    <!-- DESCRIPCIÓN DEL PROCESO -->
+    <label>DESCRIPCIÓN DEL PROCESO <span class="requerido">(*)</span>
+        <textarea name="descripcion_sap" required placeholder="Descripción del proceso"></textarea>
+    </label>
+    
+    <!-- FILA 2: Servidor, Usuario Ejecutante, Instancia -->
+    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px;">
+        <label>Nombre del Servidor <span class="requerido">(*)</span>
+            <input type="text" name="servidor_sap" required>
+        </label>
+        
+        <label>Usuario Ejecutante
+            <input type="text" name="usuario_sap">
+        </label>
+        
+        <label>Instancia de Aplicación en SN <span class="requerido">(*)</span>
+            <input type="text" name="instancia_sap" required>
+        </label>
+    </div>
+    
+    <!-- Nombre del Proceso de SAP -->
+    <label>Nombre del Proceso de SAP a Lanzar desde Control-M (Proceso a Ejecutar) <span class="requerido">(*)</span>
+        <input type="text" name="command_sap" required placeholder="Ejemplo: ZREP_VENTAS_DIARIAS">
+    </label>
+    
+    <!-- FILA 3: Usuario en SAP, Instancia/Mandante, Módulo -->
+    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px;">
+        <label>Usuario en SAP:
+            <input type="text" name="usuario_en_sap">
+        </label>
+        
+        <label>Instancia/Mandante:
+            <input type="text" name="mandante_sap" placeholder="Ej: 100">
+        </label>
+        
+        <label>Módulo:
+            <input type="text" name="modulo_sap" placeholder="Ej: FI, CO, MM, SD">
+        </label>
+    </div>
+    
+    <div class="section-title">FRECUENCIA de EJECUCIÓN <span class="requerido">(*)</span></div>
+    
+    <!-- FILA FRECUENCIA 1 -->
+    <div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px;">
+        <label>Días de la Semana: 
+            <input type="text" name="dias_semana_sap" required placeholder="L,M,Mi,J,V">
+        </label>
+        
+        <label>Días del Mes: 
+            <input type="text" name="dias_mes_sap" required placeholder="1,15,30">
+        </label>
+        
+        <label>Mes/es:
+            <select name="meses_sap">
+                <option value="todos">TODOS</option>
+                <option value="enero">Enero</option>
+                <option value="febrero">Febrero</option>
+                <option value="marzo">Marzo</option>
+                <option value="abril">Abril</option>
+                <option value="mayo">Mayo</option>
+                <option value="junio">Junio</option>
+                <option value="julio">Julio</option>
+                <option value="agosto">Agosto</option>
+                <option value="septiembre">Septiembre</option>
+                <option value="octubre">Octubre</option>
+                <option value="noviembre">Noviembre</option>
+                <option value="diciembre">Diciembre</option>
+            </select>
+        </label>
+        
+        <label>Fecha Única: 
+            <input type="date" name="fecha_unica_sap">
+        </label>
+        
+        <label>Hora: 
+            <input type="time" name="hora_sap" required>
+        </label>
+    </div>
+    
+    <!-- FILA FRECUENCIA 2 (Cíclico) -->
+    <div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; margin-top: 10px;">
+        <label>CÍCLICO?
+            <select name="ciclico_sap" class="ciclico-select">
+                <option value="no">NO</option>
+                <option value="si">SI</option>
+            </select>
+        </label>
+        
+        <div class="ciclico-campos" style="display: none; grid-column: 2 / 6; display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px;">
+            <label>Hora Desde: 
+                <input type="time" name="hora_desde_sap">
+            </label>
             
-            <div class="profile-row">
-                <div class="profile-field">
-                    <label>Connection Profile Name <span class="requerido">(*)</span></label>
-                    <input type="text" name="sap_profile_name" placeholder="Ej: SAP_BTP_PROD" required>
-                </div>
-                <div class="profile-field">
-                    <label>Description</label>
-                    <textarea name="sap_profile_description" placeholder="Descripción del perfil de conexión"></textarea>
-                </div>
-            </div>
+            <label>Hora Hasta: 
+                <input type="time" name="hora_hasta_sap">
+            </label>
             
-            <div class="profile-row">
-                <div class="profile-field">
-                    <label>Client ID <span class="requerido">(*)</span></label>
-                    <input type="text" name="sap_client_id" required>
-                    <span class="help-text">ID del cliente para autenticación</span>
-                </div>
-                <div class="profile-field">
-                    <label>Client Secret <span class="requerido">(*)</span></label>
-                    <input type="password" name="sap_client_secret" required>
-                    <span class="help-text">Secreto del cliente</span>
-                </div>
-            </div>
+            <label>Intervalo (minutos): 
+                <input type="number" name="intervalo_sap" placeholder="30">
+            </label>
             
-            <div class="profile-row">
-                <div class="profile-field">
-                    <label>SAP Authentication URL <span class="requerido">(*)</span></label>
-                    <input type="text" name="sap_auth_url" placeholder="https://<Domain Name>.authentication.<Region>.hana.ondemand.com" required>
-                </div>
-                <div class="profile-field">
-                    <label>Trigger URL <span class="requerido">(*)</span></label>
-                    <input type="text" name="sap_trigger_url" placeholder="https://jobscheduler-rest.cfapps.<Region>.hana.ondemand.com" required>
-                </div>
-            </div>
-            
-            <h4 style="margin-top: 20px;">Re-Run Execution Parameters</h4>
-            <div class="profile-row">
-                <div class="profile-field">
-                    <label>HTTP Codes</label>
-                    <input type="text" name="sap_http_codes" value="503" placeholder="503">
-                    <span class="help-text">Códigos HTTP para reintentos</span>
-                </div>
-                <div class="profile-field">
-                    <label>Rerun Interval (segundos)</label>
-                    <input type="number" name="sap_rerun_interval" value="10" placeholder="10">
-                </div>
-            </div>
-            
-            <div class="profile-row">
-                <div class="profile-field">
-                    <label>Attempt Reruns</label>
-                    <input type="number" name="sap_attempt_reruns" value="3" placeholder="3">
-                </div>
-                <div class="profile-field">
-                    <label>Connection Timeout (segundos)</label>
-                    <input type="number" name="sap_connection_timeout" value="60" placeholder="60">
-                </div>
-            </div>
-            
-            <button type="button" class="btn-test-connection" onclick="testConnection(this)">
-                Probar Conexión
-            </button>
-            <div class="connection-status"></div>
+            <label>Desde:
+                <select name="desde_sap">
+                    <option value="">Seleccionar...</option>
+                    <option value="fin">Fin</option>
+                    <option value="principio">Principio</option>
+                </select>
+            </label>
         </div>
     </div>
     
-    <label>Nombre del Proceso de SAP a Lanzar desde Control-M( Proceso a Ejecutar )<span class="requerido">(*)</span> <input type="text" name="command_sap" required></label>
-    <label>Usuario en SAP: <input type="text" name="usuario_en_sap"></label>
-    <label>Instancia/Mandante: <input type="text" name="mandante_sap"></label>
-    <label>Módulo: <input type="text" name="modulo_sap"></label>
-    
-    <div class="section-title">Frecuencia de ejecución<span class="requerido">(*)</span></div>
-    <label>Días de la semana: <input type="text" name="dias_semana_sap" placeholder="L,M,Mi,J,V"></label>
-    <label>Días del mes: <input type="text" name="dias_mes_sap" placeholder="1,15,30"></label>
-    <label>Mes/es:
-        <select name="meses_sap">
-            <option value="">Todos</option>
-            <option value="enero">Enero</option>
-            <option value="febrero">Febrero</option>
-            <option value="marzo">Marzo</option>
-            <option value="abril">Abril</option>
-            <option value="mayo">Mayo</option>
-            <option value="junio">Junio</option>
-            <option value="julio">Julio</option>
-            <option value="agosto">Agosto</option>
-            <option value="septiembre">Septiembre</option>
-            <option value="octubre">Octubre</option>
-            <option value="noviembre">Noviembre</option>
-            <option value="diciembre">Diciembre</option>
-        </select>
-    </label>
-    <label>Fecha única: <input type="date" name="fecha_unica_sap"></label>
-    <label>Hora: <input type="time" name="hora_sap"></label>
-    <label>Cíclico:
-        <select name="ciclico_sap" class="ciclico-select">
-            <option value="no">No</option>
-            <option value="si">Sí</option>
-        </select>
-    </label>
-    <div class="ciclico-campos" style="display: none;">
-        <label>Hora desde: <input type="time" name="hora_desde_sap"></label>
-        <label>Hora hasta: <input type="time" name="hora_hasta_sap"></label>
-        <label>Intervalo (minutos): <input type="number" name="intervalo_sap" placeholder="30"></label>
-        <label>Desde:
-            <select name="desde_sap">
+    <!-- FILA ACTIVO Y DEPENDENCIAS -->
+    <div style="display: grid; grid-template-columns: 1fr 2fr 1fr; gap: 15px; margin-top: 15px;">
+        <label>Activo Desde: 
+            <input type="date" name="activo_desde_sap">
+        </label>
+        
+        <label>Si tiene dependencias indicar cuales: 
+            <textarea name="dependencias_sap" placeholder="JOB.TO.JOB" rows="2"></textarea>
+        </label>
+        
+        <label>Criticidad:
+            <select name="criticidad_sap">
                 <option value="">Seleccionar...</option>
-                <option value="fin">Fin</option>
-                <option value="principio">Principio</option>
+                <option value="baja">Baja</option>
+                <option value="media">Media</option>
+                <option value="alta">Alta</option>
             </select>
         </label>
     </div>
-    <label>Activo desde: <input type="date" name="activo_desde_sap"></label>
-    <label>Activo hasta: <input type="date" name="activo_hasta_sap"></label>
     
-    <label>Si tiene dependencias indicar cuales: 
-        <textarea name="dependencias_sap" placeholder="JOB.TO.JOB"></textarea>
+    <label>Activo Hasta: 
+        <input type="date" name="activo_hasta_sap">
     </label>
     
-    <label>Criticidad:
-        <select name="criticidad_sap">
-            <option value="">Seleccionar...</option>
-            <option value="baja">Baja</option>
-            <option value="media">Media</option>
-            <option value="alta">Alta</option>
-        </select>
-    </label>
+    <div class="section-title">DOCUMENTACIÓN <span class="requerido">(Indicar un único grupo)</span></div>
     
-    <div class="section-title">DOCUMENTACIÓN <span class="requerido">(indicar un único grupo)</span></div>
-    <label>Grupo responsable correo<span class="requerido">(*)</span> <input type="text" name="grupo_responsable_correo_sap" required></label>
-    <label>Grupo responsable Service Now: <input type="text" name="grupo_responsable_sn_sap"></label>
-    <label>Acción a seguir si cancela <span class="requerido">(*)-IMPORTANTE!: NO DERIVAR INCIDENTE - CERRAR EN OPERACIONES</span>
-        <textarea name="accion_cancela_sap" required></textarea>
-    </label>
-    <label>Observaciones / Datos Complementarios / Notas 
-        <textarea name="observaciones_sap"></textarea>
-    </label>
+    <!-- FILA DOCUMENTACIÓN -->
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+        <label>Grupo Responsable Correo <span class="requerido">(*)</span>
+            <input type="text" name="grupo_responsable_correo_sap" required>
+        </label>
+        
+        <label>Grupo Responsable Service Now: 
+            <input type="text" name="grupo_responsable_sn_sap">
+        </label>
+    </div>
+    
+    <!-- FILA ACCIÓN Y OBSERVACIONES -->
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+        <label>Acción a Seguir si Cancela <span class="requerido">(*IMPORTANTE!: NO DERIVAR INCIDENTE - CERRAR EN OPERACIONES)</span>
+            <textarea name="accion_cancela_sap" required placeholder="IMPORTANTE!: NO DERIVAR INCIDENTE - CERRAR EN OPERACIONES" rows="4"></textarea>
+        </label>
+        
+        <label>Observaciones / Datos Complementarios / Notas:
+            <textarea name="observaciones_sap" rows="4"></textarea>
+        </label>
+    </div>
     
     <button type="submit">Guardar</button>
 </form>
 
-<!-- FORMULARIO FILE TRANSFER COMPLETO -->
+
+<!---------------------- FORMULARIO FILE TRANSFER COMPLETO ------------------------------------>
+
 <form id="form-file-transfer" action="/formularios/file-transfer" method="post" class="custom-form" style="display:none;">
     <input type="hidden" name="tipo_job" value="file-transfer">
     <h2>Campo FILE-TRANSFER</h2>
@@ -457,20 +491,20 @@
     
     <label>Ticket en Service Now: <input type="text" name="sn_aft"></label>
     <label>Jobname: <input type="text" name="jobname_aft"></label>
-    <label>Descripción del proceso<span class="requerido">(*)</span> <input type="text" name="descripcion_aft"></label>
-    <label>Instancia de aplicación en SN<span class="requerido">(*)</span> <input type="text" name="instancia_aft"></label>
+    <label>Descripción del proceso<span class="requerido">(*)</span> <input type="text" name="descripcion_aft" required></label>
+    <label>Instancia de aplicación en Service Now<span class="requerido">(*)</span> <input type="text" name="instancia_aft" required></label>
     
     <div class="section-title">Configuración ORIGEN</div>
-    <label>Servidor Origen<span class="requerido">(*)</span> <input type="text" name="servidor_origen_aft"></label>
-    <label>Carpeta Origen<span class="requerido">(*)</span> <input type="text" name="carpeta_origen_aft"></label>
-    <label>Usuario Origen<span class="requerido">(*)</span> <input type="text" name="usuario_origen_aft"></label>
-    <label>Archivos a Transmitir<span class="requerido">(*)</span> <input type="text" name="archivos_transmitir_aft"></label>
+    <label>Servidor Origen<span class="requerido">(*)</span> <input type="text" name="servidor_origen_aft" required></label>
+    <label>Carpeta Origen<span class="requerido">(*)</span> <input type="text" name="carpeta_origen_aft" required></label>
+    <label>Usuario Origen<span class="requerido">(*)</span> <input type="text" name="usuario_origen_aft" required></label>
+    <label>Archivos a Transmitir<span class="requerido">(*)</span> <input type="text" name="archivos_transmitir_aft" required></label>
     
     <div class="section-title">Configuración DESTINO</div>
-    <label>Servidor Destino <span class="requerido">(*)</span><input type="text" name="servidor_destino_aft"></label>
-    <label>Carpeta Destino<span class="requerido">(*)</span> <input type="text" name="carpeta_destino_aft"></label>
-    <label>Usuario Destino<span class="requerido">(*)</span> <input type="text" name="usuario_destino_aft"></label>
-    <label>Nombre del archivo en Destino<span class="requerido">(*)</span> <input type="text" name="nombre_destino_aft"></label>
+    <label>Servidor Destino <span class="requerido">(*)</span><input type="text" name="servidor_destino_aft" required></label>
+    <label>Carpeta Destino<span class="requerido">(*)</span> <input type="text" name="carpeta_destino_aft" required></label>
+    <label>Usuario Destino<span class="requerido">(*)</span> <input type="text" name="usuario_destino_aft" required></label>
+    <label>Nombre del archivo en Destino<span class="requerido">(*)</span> <input type="text" name="nombre_destino_aft" required></label>
     
     <label>Si archivo existe en Destino<span class="requerido">(*)</span>
         <select name="archivo_existe_aft">
@@ -500,8 +534,8 @@
     </label>
     
     <div class="section-title">Frecuencia de ejecución<span class="requerido">(*)</span></div>
-    <label>Días de la semana: <input type="text" name="dias_semana_aft"></label>
-    <label>Días del mes: <input type="text" name="dias_mes_aft"></label>
+    <label>Días de la semana: <input type="text" name="dias_semana_aft" required></label>
+    <label>Días del mes: <input type="text" name="dias_mes_aft" required></label>
     <label>Mes/es:
         <select name="meses_aft">
             <option value="">Todos</option>
@@ -520,7 +554,7 @@
         </select>
     </label>
     <label>Fecha única: <input type="date" name="fecha_unica_aft"></label>
-    <label>Hora: <input type="time" name="hora_aft"></label>
+    <label>Hora: <input type="time" name="hora_aft" required></label>
      <label>Cíclico:
         <select name="ciclico_sap" class="ciclico-select">
             <option value="no">No</option>
@@ -568,7 +602,8 @@
     <button type="submit">Guardar</button>
 </form>
 
-<!-- FORMULARIO DATABASE COMPLETO -->
+<!----------------- FORMULARIO DATABASE COMPLETO --------------------------->
+
 <form id="form-database" class="custom-form" style="display:none;">
     <h2>Campo DATABASE</h2>
     <button type="button" class="btn-volver" onclick="volverAlPasoAnterior()">← Volver al paso anterior</button>
@@ -627,7 +662,7 @@
         <input type="text" name="nombre_bd" placeholder="nombre base de datos" required>
     </label>
     
-    <label>PUERTO<span class="requerido">(*)</span> <input type="text" name="puerto_db" placeholder="ej 1234"></label>
+    <label>PUERTO<span class="requerido">(*)</span> <input type="text" name="puerto_db"required placeholder="ej 1234"></label>
     
     <label>TIPO DE AUTENTICACION <span class="requerido">(*)</span>
         <select name="tipo_auth_db" required>
@@ -657,14 +692,14 @@
         <input type="text" name="schema_db" placeholder="schema" required>
     </label>
     
-    <label>PACKAGE: <input type="text" name="package_db" placeholder="N/A"></label>
+    <label>PACKAGE: <input type="text" name="package_db"required placeholder="N/A"></label>
     
-    <label>NOMBRE STORED PROCEDURE<span class="requerido">(*)</span> <input type="text" name="nombre_sp_db" placeholder="nombre S_P"></label>
+    <label>NOMBRE STORED PROCEDURE<span class="requerido">(*)</span> <input type="text" name="nombre_sp_db"required placeholder="nombre S_P"></label>
     
     <div class="section-title">FRECUENCIA de EJECUCIÓN <span class="requerido">(*)</span></div>
     
-    <label>Días de la Semana: <input type="text" name="dias_semana_db" placeholder="Todos"></label>
-    <label>Días del Mes: <input type="text" name="dias_mes_db" placeholder="Todos"></label>
+    <label>Días de la Semana: <input type="text" name="dias_semana_db"required placeholder="Todos"></label>
+    <label>Días del Mes: <input type="text" name="dias_mes_db" required placeholder="Todos"></label>
     <label>Mes/es:
         <select name="meses_db">
             <option value="todos">TODOS</option>
@@ -683,7 +718,7 @@
         </select>
     </label>
     <label>Fecha Única: <input type="date" name="fecha_unica_db"></label>
-    <label>Hora: <input type="time" name="hora_db"></label>
+    <label>Hora: <input type="time" name="hora_db" required></label>
     <label>CÍCLICO?
         <select name="ciclico_db" class="ciclico-select">
             <option value="no">NO</option>
@@ -729,7 +764,8 @@
     <button type="submit">Guardar</button>
 </form>
 
-<!-- FORMULARIO SAP BTP SCHEDULER CONNECTION PROFILE -->
+<!------------- FORMULARIO SAP BTP SCHEDULER CONNECTION PROFILE -------------------->
+
 <form id="form-sap-btp-scheduler" class="custom-form" style="display:none;">
     <h2>Add SAP BTP Scheduler Connection Profile</h2>
     <button type="button" class="btn-volver" onclick="volverAlPasoAnterior()">← Volver al paso anterior</button>
@@ -828,7 +864,8 @@
 </form>
 
 
-<!-- FORMULARIO WEB SERVICES REST CONNECTION PROFILE -->
+<!-----------------------FoRMULARIO WEB SERVICES REST CONNECTION PROFILE------------->
+
 <form id="form-web-services-rest" class="custom-form" style="display:none;">
     <h2>Add Web Services REST Connection Profile</h2>
     <button type="button" class="btn-volver" onclick="volverAlPasoAnterior()">← Volver al paso anterior</button>
@@ -993,7 +1030,8 @@
     </div>
 </form>
 
-<!-- FORMULARIO VEEAM BACKUP CONNECTION PROFILE -->
+<!-------------------- FORMULARIO VEEAM BACKUP CONNECTION PROFILE -------------------------->
+
 <form id="form-veeam-backup" class="custom-form" style="display:none;">
     <h2>Add Veeam Backup Connection Profile</h2>
     <button type="button" class="btn-volver" onclick="volverAlPasoAnterior()">← Volver al paso anterior</button>
@@ -1093,7 +1131,8 @@
     </div>
 </form>
 
-<!-- FORMULARIO AZURE APP SERVICES COMPLETO -->
+<!---------------------FORMULARIO AZURE APP SERVICES COMPLETO ---------------------------------------->
+
 <form id="form-azure-webjob" class="custom-form" style="display:none;">
     <h2>Add Azure App Services Webjobs Connection Profile</h2>
     <button type="button" class="btn-volver" onclick="volverAlPasoAnterior()">← Volver al paso anterior</button>
@@ -1259,7 +1298,8 @@
     </div>
 </form>
 
-<!-----------FORMULARIO MASIVA CON CAMPOS DINÁMICOS ------------------------>
+<!--------------------FORMULARIO MASIVA CON CAMPOS DINÁMICOS ------------------------------>
+
 <form id="form-masiva" class="custom-form" style="display:none;">
     <h2>MASIVA - Agregar múltiples jobs</h2>
     <button type="button" class="btn-volver" onclick="volverAlPasoAnterior()">← Volver al paso anterior</button>
@@ -1304,7 +1344,300 @@
     
     <button type="submit">Guardar Todos</button>
 </form>
-<!-- FOOTER -->
+
+<!---------------------- FORMULARIO ENDPOINT ------------------------------------->
+
+<form id="form-endpoint" class="custom-form" style="display:none;">
+    <h2>Campo ENDPOINT</h2>
+    <button type="button" class="btn-volver" onclick="volverAlPasoAnterior()">← Volver al paso anterior</button>
+    
+    <label>Tipo de solicitud<span class="requerido">(*)</span>
+        <select name="tipo_solicitud_endpoint">
+            <option value="">Seleccionar...</option>
+            <option value="alta">Alta</option>
+            <option value="baja">Baja</option>
+            <option value="modificacion">Modificación</option>
+        </select>
+    </label>
+    
+    <label>Ambiente<span class="requerido">(*)</span>
+        <select name="ambiente_endpoint">
+            <option value="">Seleccionar...</option>
+            <option value="desarrollo">Desarrollo</option>
+            <option value="testing">Testing</option>
+            <option value="produccion">Producción</option>
+        </select>
+    </label>
+    
+    <label>Ticket en Service Now: <input type="text" name="sn_endpoint"></label>
+    
+    <label>JOBNAME: <input type="text" name="jobname_endpoint"></label>
+    
+    <label>DESCRIPCIÓN DEL PROCESO <span class="requerido">(*)</span>
+        <textarea name="descripcion_endpoint" required placeholder="Descripción del proceso"></textarea>
+    </label>
+    
+    <label>Instancia de Aplicación en SN <span class="requerido">(*)</span>
+        <input type="text" name="instancia_endpoint" required>
+    </label>
+    
+    <label>URL del Job <span class="requerido">(*)</span>
+        <input type="text" name="url_job_endpoint" required placeholder="https://...">
+    </label>
+    
+    <div class="profile-row" style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+        <label>Content Type
+            <input type="text" name="content_type_endpoint" placeholder="application/json">
+        </label>
+        
+        <label>BODY <span class="requerido">(*)</span>
+            <textarea name="body_endpoint" required placeholder="JSON body"></textarea>
+        </label>
+    </div>
+    
+    <div class="profile-row" style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+        <label>Method
+            <select name="method_endpoint">
+                <option value="">Seleccionar...</option>
+                <option value="GET">GET</option>
+                <option value="POST">POST</option>
+                <option value="PUT">PUT</option>
+                <option value="DELETE">DELETE</option>
+                <option value="PATCH">PATCH</option>
+            </select>
+        </label>
+    </div>
+    
+    <div class="section-title">FRECUENCIA de EJECUCIÓN <span class="requerido">(*)</span></div>
+    
+    <label>Días de la Semana: <input type="text" name="dias_semana_endpoint"required placeholder="L,M,Mi,J,V"></label>
+    <label>Días del Mes: <input type="text" name="dias_mes_endpoint" required placeholder="1,15,30"></label>
+    <label>Mes/es:
+        <select name="meses_endpoint">
+            <option value="todos">TODOS</option>
+            <option value="enero">Enero</option>
+            <option value="febrero">Febrero</option>
+            <option value="marzo">Marzo</option>
+            <option value="abril">Abril</option>
+            <option value="mayo">Mayo</option>
+            <option value="junio">Junio</option>
+            <option value="julio">Julio</option>
+            <option value="agosto">Agosto</option>
+            <option value="septiembre">Septiembre</option>
+            <option value="octubre">Octubre</option>
+            <option value="noviembre">Noviembre</option>
+            <option value="diciembre">Diciembre</option>
+        </select>
+    </label>
+    <label>Fecha Única: <input type="date" name="fecha_unica_endpoint"></label>
+    <label>Hora: <input type="time" name="hora_endpoint" required></label>
+    <label>CÍCLICO?
+        <select name="ciclico_endpoint" class="ciclico-select">
+            <option value="no">NO</option>
+            <option value="si">SI</option>
+        </select>
+    </label>
+    <div class="ciclico-campos" style="display: none;">
+        <label>Hora Desde: <input type="time" name="hora_desde_endpoint"></label>
+        <label>Hora Hasta: <input type="time" name="hora_hasta_endpoint"></label>
+        <label>Intervalo (minutos): <input type="number" name="intervalo_endpoint"></label>
+        <label>Desde:
+            <select name="desde_endpoint">
+                <option value="">Seleccionar...</option>
+                <option value="fin">Fin</option>
+                <option value="principio">Principio</option>
+            </select>
+        </label>
+    </div>
+    
+    <label>Activo Desde: <input type="date" name="activo_desde_endpoint"></label>
+    <label>Activo Hasta: <input type="date" name="activo_hasta_endpoint"></label>
+    
+    <label>Si tiene dependencias indicar cuales: 
+        <textarea name="dependencias_endpoint" placeholder="JOB.TO.JOB"></textarea>
+    </label>
+    
+    <label>Criticidad:
+        <select name="criticidad_endpoint">
+            <option value="">Seleccionar...</option>
+            <option value="baja">Baja</option>
+            <option value="media">Media</option>
+            <option value="alta">Alta</option>
+        </select>
+    </label>
+    
+    <div class="section-title">DOCUMENTACIÓN <span class="requerido">(Indicar un único grupo)</span></div>
+    
+    <label>Grupo Responsable Correo <span class="requerido">(*)</span>
+        <input type="text" name="grupo_responsable_correo_endpoint" required>
+    </label>
+    
+    <label>Grupo Responsable Service Now: 
+        <input type="text" name="grupo_responsable_sn_endpoint">
+    </label>
+    
+    <label>Acción a Seguir si Cancela <span class="requerido">(*IMPORTANTE!: NO DERIVAR INCIDENTE - CERRAR EN OPERACIONES)</span>
+        <textarea name="accion_cancela_endpoint" required placeholder="IMPORTANTE!: NO DERIVAR INCIDENTE - CERRAR EN OPERACIONES"></textarea>
+    </label>
+    
+    <label>Observaciones / Datos Complementarios / Notas:
+        <textarea name="observaciones_endpoint"></textarea>
+    </label>
+    
+    <button type="submit">Guardar</button>
+</form>
+
+
+<!---------------------------- FORMULARIO WEBJOB ----------------------------------------->
+
+<form id="form-webjob" class="custom-form" style="display:none;">
+    <h2>WEBJOB</h2>
+    <button type="button" class="btn-volver" onclick="volverAlPasoAnterior()">← Volver al paso anterior</button>
+    
+    <label>Tipo de solicitud<span class="requerido">(*)</span>
+        <select name="tipo_solicitud_webjob">
+            <option value="">Seleccionar...</option>
+            <option value="alta">Alta</option>
+            <option value="baja">Baja</option>
+            <option value="modificacion">Modificación</option>
+        </select>
+    </label>
+    
+    <label>Ambiente<span class="requerido">(*)</span>
+        <select name="ambiente_webjob">
+            <option value="">Seleccionar...</option>
+            <option value="desarrollo">Desarrollo</option>
+            <option value="testing">Testing</option>
+            <option value="produccion">Producción</option>
+        </select>
+    </label>
+    
+    <label>Ticket en Service Now: <input type="text" name="sn_webjob"></label>
+    
+    <label>JOBNAME: <input type="text" name="jobname_webjob"></label>
+    
+    <label>DESCRIPCIÓN DEL PROCESO <span class="requerido">(*)</span>
+        <textarea name="descripcion_webjob" required placeholder="Descripción del proceso"></textarea>
+    </label>
+    
+    <label>Instancia de Aplicación en Service Now <span class="requerido">(*)</span>
+        <input type="text" name="instancia_webjob" required>
+    </label>
+    
+    <label>URL del Job <span class="requerido">(*)</span>
+        <input type="text" name="url_job_webjob" required placeholder="https://...">
+    </label>
+    
+    <div class="profile-row" style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px;">
+        <label>Nombre del WebJob (Sugerido)
+            <input type="text" name="nombre_webjob" placeholder="Nombre del WebJob">
+        </label>
+        
+        <label>Comando a Ejecutar <span class="requerido">(*)</span>
+            <select type="text" name="comando_webjob" required>
+                <option value="">Seleccionar...</option>
+                <option value="run">RUN</option>
+                <option value="start">START</option>
+                <option value="stop">STOP</option>
+                <option value="otro">OTRO</option>
+            </select>
+        
+        <label>Si es otro indicar cual
+            <input type="text" name="otro_comando_webjob" placeholder="Indicar otro comando">
+        </label>
+    </div>
+    
+    <div class="section-title">CREDENCIALES DEL CLIENTE</div>
+    
+    <label>Usuario de Conexión (Client ID)
+        <input type="text" name="client_id_webjob"required placeholder="Client ID">
+    </label>
+    
+    <label>Clave para acceder (Client Secret)
+        <input type="password" name="client_secret_webjob"required placeholder="Client Secret">
+    </label>
+    
+    <div class="section-title">FRECUENCIA de EJECUCIÓN <span class="requerido">(*)</span></div>
+    
+    <label>Días de la Semana: <input type="text" name="dias_semana_webjob"required placeholder="L,M,Mi,J,V"></label>
+    <label>Días del Mes: <input type="text" name="dias_mes_webjob"required placeholder="1,15,30"></label>
+    <label>Mes/es:
+        <select name="meses_webjob">
+            <option value="todos">TODOS</option>
+            <option value="enero">Enero</option>
+            <option value="febrero">Febrero</option>
+            <option value="marzo">Marzo</option>
+            <option value="abril">Abril</option>
+            <option value="mayo">Mayo</option>
+            <option value="junio">Junio</option>
+            <option value="julio">Julio</option>
+            <option value="agosto">Agosto</option>
+            <option value="septiembre">Septiembre</option>
+            <option value="octubre">Octubre</option>
+            <option value="noviembre">Noviembre</option>
+            <option value="diciembre">Diciembre</option>
+        </select>
+    </label>
+    <label>Fecha Única: <input type="date" name="fecha_unica_webjob"></label>
+    <label>Hora: <input type="time" name="hora_webjob" required></label>
+    <label>CÍCLICO?
+        <select name="ciclico_webjob" class="ciclico-select">
+            <option value="no">NO</option>
+            <option value="si">SI</option>
+        </select>
+    </label>
+    <div class="ciclico-campos" style="display: none;">
+        <label>Hora Desde: <input type="time" name="hora_desde_webjob"></label>
+        <label>Hora Hasta: <input type="time" name="hora_hasta_webjob"></label>
+        <label>Intervalo (minutos): <input type="number" name="intervalo_webjob"></label>
+        <label>Desde:
+            <select name="desde_webjob">
+                <option value="">Seleccionar...</option>
+                <option value="fin">Fin</option>
+                <option value="principio">Principio</option>
+            </select>
+        </label>
+    </div>
+    
+    <label>Activo Desde: <input type="date" name="activo_desde_webjob"></label>
+    <label>Activo Hasta: <input type="date" name="activo_hasta_webjob"></label>
+    
+    <label>Si tiene dependencias indicar cuales: 
+        <textarea name="dependencias_webjob" placeholder="JOB.TO.JOB"></textarea>
+    </label>
+    
+    <label>Criticidad:
+        <select name="criticidad_webjob">
+            <option value="">Seleccionar...</option>
+            <option value="baja">Baja</option>
+            <option value="media">Media</option>
+            <option value="alta">Alta</option>
+        </select>
+    </label>
+    
+    <div class="section-title">DOCUMENTACIÓN <span class="requerido">(Indicar un único grupo)</span></div>
+    
+    <label>Grupo Responsable Correo <span class="requerido">(*)</span>
+        <input type="text" name="grupo_responsable_correo_webjob" required>
+    </label>
+    
+    <label>Grupo Responsable Service Now: 
+        <input type="text" name="grupo_responsable_sn_webjob">
+    </label>
+    
+    <label>Acción a Seguir si Cancela <span class="requerido">(*IMPORTANTE!: NO DERIVAR INCIDENTE - CERRAR EN OPERACIONES)</span>
+        <textarea name="accion_cancela_webjob" required placeholder="IMPORTANTE!: NO DERIVAR INCIDENTE - CERRAR EN OPERACIONES"></textarea>
+    </label>
+    
+    <label>Observaciones / Datos Complementarios / Notas:
+        <textarea name="observaciones_webjob"></textarea>
+    </label>
+    
+    <button type="submit">Guardar</button>
+</form>
+
+
+<!--------------------------------------------- FOOTER ------------------------------------------------>
 <footer class="footer-principal">
     <div class="footer-contenido">
         <div class="footer-seccion">
@@ -1469,5 +1802,6 @@
     </div>
 </div>
 <script src="index.js"></script>
+<script src="validaciones.js"></script>
 </body>
 </html>

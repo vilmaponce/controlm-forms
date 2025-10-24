@@ -17,7 +17,7 @@ h1 {
 }
 .importante {
     text-align: center;
-    color: white;
+    color: rgb(219, 238, 3);
     font-size: 1.1rem;
     margin-bottom: 20px;
     background: rgba(255, 255, 255, 0.15);
@@ -27,7 +27,7 @@ h1 {
     backdrop-filter: blur(10px);
 }
 .importante .asterisco {
-    color: #FFD700;
+    color: #f30303;
     font-weight: bold;
     font-size: 1.3rem;
 }
@@ -204,6 +204,22 @@ h2 {
     color: #dc3545;
     font-weight: bold;
     margin-left: 3px;
+}
+/* Estilo para campos required directamente */
+.custom-form input[required],
+.custom-form textarea[required],
+.custom-form select[required] {
+    background-color: #fff5f5 !important;  /* Fondo rosa muy suave en el input */
+    border: 2px solid #dc3545 !important;  /* Borde rojo */
+}
+
+/* Añadir fondo al label padre (requiere agregar clase manualmente) */
+.custom-form label.tiene-required {
+    background-color: #ffe6e6;
+    padding: 15px;
+    border-radius: 8px;
+    border-left: 5px solid #dc3545;
+    margin-bottom: 20px;
 }
 .custom-form input[type="text"],
 .custom-form input[type="date"],
@@ -466,8 +482,9 @@ h2 {
 }
 
 .logo-ypf {
-    height: 80px;
+    height: 100px;
     width: auto;
+    border-radius: 10px;
     filter: drop-shadow(0 2px 5px rgba(0, 0, 0, 0.3));
 }
 
@@ -522,6 +539,50 @@ h2 {
     margin: 0 auto;
 }
 
+/* Estilo para campos bloqueados (disabled) */
+.campo-bloqueado,
+.custom-form select:disabled,
+.custom-form input:disabled {
+    background-color: #e9ecef !important;
+    color: #6c757d !important;
+    cursor: not-allowed !important;
+    border: 2px solid #ced4da !important;
+    opacity: 0.7;
+}
+
+.custom-form select:disabled,
+.custom-form input:disabled {
+    pointer-events: none;
+}
+
+/* Tooltip opcional para indicar por qué está bloqueado */
+.campo-bloqueado::after {
+    content: " (Bloqueado - Use 'Volver' para cambiar)";
+    font-size: 0.8rem;
+    color: #6c757d;
+    font-style: italic;
+}
+
+/* Mejoras para formularios con grid */
+.custom-form > div[style*="grid"] label {
+    margin-bottom: 0;
+}
+
+/* Los campos cíclicos dentro de grid necesitan display correcto */
+.ciclico-campos[style*="grid"] {
+    display: none !important;
+}
+
+.ciclico-campos[style*="grid"][style*="display: grid"] {
+    display: grid !important;
+}
+
+/* Responsive: En móviles, convertir grids en columnas simples */
+@media (max-width: 768px) {
+    .custom-form > div[style*="grid"] {
+        grid-template-columns: 1fr !important;
+    }
+}
 /* FOOTER */
 .footer-principal {
     background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);

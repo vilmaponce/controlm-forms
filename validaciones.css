@@ -1,0 +1,234 @@
+/* ===================================================================
+   VALIDACIONES.CSS - Estilos para sistema de validación
+   ================================================================= */
+
+/* ===== INPUT CON ERROR ===== */
+.input-error {
+    border-color: #dc3545 !important;
+    border-width: 2px !important;
+    background-color: #fff5f5 !important;
+    animation: shake 0.3s;
+    box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.1) !important;
+}
+
+/* ===== ANIMACIÓN DE SACUDIDA ===== */
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+    20%, 40%, 60%, 80% { transform: translateX(5px); }
+}
+
+/* ===== MENSAJE DE ERROR ===== */
+.mensaje-error {
+    color: #dc3545;
+    font-size: 0.85rem;
+    margin-top: 5px;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-weight: 600;
+    background-color: #fff5f5;
+    padding: 8px 12px;
+    border-radius: 5px;
+    border-left: 4px solid #dc3545;
+    animation: slideDown 0.3s ease;
+}
+
+/* Icono de advertencia */
+.mensaje-error::before {
+    content: "⚠️";
+    font-size: 1rem;
+    flex-shrink: 0;
+}
+
+/* Animación de aparición del mensaje */
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ===== INPUT VÁLIDO (feedback positivo opcional) ===== */
+.input-valido {
+    border-color: #28a745 !important;
+    background-color: #f0fff4 !important;
+}
+
+.input-valido::after {
+    content: "✓";
+    color: #28a745;
+    font-weight: bold;
+    margin-left: 10px;
+}
+
+/* ===== SELECT CON ERROR ===== */
+select.input-error {
+    background-image: none;  /* Remover la flecha por defecto si hay error */
+}
+
+/* ===== TEXTAREA CON ERROR ===== */
+textarea.input-error {
+    border: 2px solid #dc3545 !important;
+    background-color: #fff5f5 !important;
+}
+
+/* ===== LABEL CON CAMPO REQUERIDO CON ERROR ===== */
+.custom-form label:has(.input-error) {
+    border-left-color: #dc3545;
+    background-color: #ffe6e6;
+    animation: pulsarError 1s ease;
+}
+
+@keyframes pulsarError {
+    0%, 100% { background-color: #ffe6e6; }
+    50% { background-color: #ffd6d6; }
+}
+
+/* ===== RESUMEN DE ERRORES (opcional - para mostrar al inicio del form) ===== */
+.resumen-errores {
+    background-color: #fff5f5;
+    border: 2px solid #dc3545;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 30px;
+    display: none;  /* Se muestra con JavaScript */
+}
+
+.resumen-errores.visible {
+    display: block;
+    animation: slideDown 0.4s ease;
+}
+
+.resumen-errores h3 {
+    color: #dc3545;
+    margin-top: 0;
+    margin-bottom: 15px;
+    font-size: 1.2rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.resumen-errores h3::before {
+    content: "❌";
+    font-size: 1.5rem;
+}
+
+.resumen-errores ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.resumen-errores li {
+    padding: 8px 0;
+    color: #721c24;
+    display: flex;
+    align-items: start;
+    gap: 8px;
+}
+
+.resumen-errores li::before {
+    content: "•";
+    color: #dc3545;
+    font-weight: bold;
+    font-size: 1.2rem;
+}
+
+/* ===== FOCUS EN CAMPO CON ERROR ===== */
+.input-error:focus {
+    outline: none;
+    border-color: #dc3545 !important;
+    box-shadow: 0 0 0 4px rgba(220, 53, 69, 0.2) !important;
+}
+
+/* ===== TOOLTIP DE ERROR (alternativa al mensaje debajo) ===== */
+.tooltip-error {
+    position: absolute;
+    top: -35px;
+    left: 0;
+    background-color: #dc3545;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 0.8rem;
+    white-space: nowrap;
+    z-index: 1000;
+    animation: fadeIn 0.3s ease;
+}
+
+.tooltip-error::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 20px;
+    border: 5px solid transparent;
+    border-top-color: #dc3545;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* ===== CONTADOR DE ERRORES EN EL BOTÓN SUBMIT ===== */
+.btn-submit-con-errores {
+    position: relative;
+}
+
+.btn-submit-con-errores::after {
+    content: attr(data-errores) " errores";
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    background-color: #dc3545;
+    color: white;
+    font-size: 0.7rem;
+    padding: 3px 8px;
+    border-radius: 10px;
+    font-weight: bold;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+    .mensaje-error {
+        font-size: 0.8rem;
+        padding: 6px 10px;
+    }
+    
+    .resumen-errores {
+        padding: 15px;
+    }
+}
+
+/* ===== MODO OSCURO (opcional) ===== */
+@media (prefers-color-scheme: dark) {
+    .input-error {
+        background-color: #3d1f1f !important;
+        border-color: #ff6b6b !important;
+    }
+    
+    .mensaje-error {
+        background-color: #3d1f1f;
+        color: #ff6b6b;
+        border-left-color: #ff6b6b;
+    }
+}
+
+/* ===== ESTADOS DISABLED NO MUESTRAN ERROR ===== */
+.input-error:disabled {
+    border-color: #ced4da !important;
+    background-color: #e9ecef !important;
+    animation: none;
+}
+
+.custom-form label:has(.input-error:disabled) {
+    animation: none;
+    background-color: #f8f9fa;
+}
