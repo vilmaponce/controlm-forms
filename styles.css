@@ -251,11 +251,23 @@ h2 {
     resize: vertical;
 }
 .ciclico-campos {
-    background: #e8f0ff;
+    background: #E6EBF5;
     padding: 20px;
     border-radius: 10px;
     margin: 15px 0;
     border-left: 4px solid #0033A0;
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 .custom-form input[required],
 .custom-form textarea[required] {
@@ -538,6 +550,78 @@ h2 {
     max-width: 1400px;
     margin: 0 auto;
 }
+
+/* Estilos para campos condicionales */
+.campo-condicional {
+    animation: fadeIn 0.3s ease;
+}
+
+.info-perfil-box {
+    background: #fff3cd;
+    padding: 15px;
+    border-radius: 8px;
+    margin: 10px 0;
+    border: 2px solid #ffc107;
+    animation: fadeIn 0.3s ease;
+}
+
+.info-perfil-box ul {
+    margin: 10px 0 0 20px;
+    color: #856404;
+}
+
+.info-perfil-box strong {
+    color: #856404;
+}
+
+/* Campos de solo lectura */
+input[readonly] {
+    background-color: #e9ecef !important;
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+
+/* Estilos para small (textos de ayuda) */
+small {
+    display: block;
+    font-size: 0.85rem;
+    color: #666;
+    margin-top: 5px;
+    font-style: italic;
+}
+
+/* Mejorar visualización de checkboxes */
+input[type="checkbox"] {
+    width: auto;
+    margin-right: 8px;
+    transform: scale(1.2);
+}
+
+label:has(> input[type="checkbox"]) {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+/* Prioridad visual para campos requeridos */
+.custom-form input[required]:not([type="checkbox"]),
+.custom-form textarea[required],
+.custom-form select[required] {
+    border-left: 4px solid #ff6b6b;
+}
+
+/* Animación suave */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
 
 /* Estilo para campos bloqueados (disabled) */
 .campo-bloqueado,

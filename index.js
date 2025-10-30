@@ -50,6 +50,7 @@ function seleccionarJob(tipoJob) {
     const nombresJobs = {
         'os': 'Script / CMD',
         'sap': 'SAP',
+        'sap-business-warehouse': 'SAP Business Warehouse',
         'file-transfer': 'File Transfer',
         'database': 'Database',
         'sap-btp-scheduler': 'SAP BTP Scheduler',
@@ -90,12 +91,51 @@ function seleccionarJob(tipoJob) {
             selectAmbiente.classList.add('campo-bloqueado');
         }
         
+        // ✅ PRE-LLENAR Control-M Server según ambiente
+        const selectServer = form.querySelector('[name^="controlm_server"]');
+        if (selectServer) {
+            const mapeoServidores = {
+                'desarrollo': 'DESARROLLO',
+                'testing': 'TESTING',
+                'produccion': 'PRODUCCION',
+                'laboratorio': 'LABORATORIO'
+            };
+            
+            const servidor = mapeoServidores[seleccion.ambiente];
+            if (servidor) {
+                selectServer.value = servidor;
+                selectServer.disabled = true;
+                selectServer.classList.add('campo-bloqueado');
+            }
+        }
+        
         // Scroll al resumen
         resumen.scrollIntoView({ behavior: 'smooth', block: 'start' });
         
         // Inicializar campos cíclicos
         if (typeof window.inicializarCiclico === 'function') {
             window.inicializarCiclico(form);
+        }
+        
+        // ✅✅✅ NUEVO: Inicializar Process Chain toggle para SAP BW
+        if (tipoJob === 'sap-business-warehouse') {
+            console.log('🎯 Inicializando Process Chain toggle para SAP BW');
+            
+            //  setTimeout para asegurar que el DOM esté listo
+            setTimeout(() => {
+                const processTypeSelect = form.querySelector('select[name="process_type_sap_bw"]');
+                const processChainSection = document.getElementById('process-chain-section-bw');
+                
+                console.log('Select Process Type encontrado:', !!processTypeSelect);
+                console.log('Sección Process Chain encontrada:', !!processChainSection);
+                
+                if (processTypeSelect && processChainSection) {
+                    
+                    console.log('✅ Elementos listos para Process Chain toggle');
+                } else {
+                    console.error('❌ Elementos no encontrados para Process Chain');
+                }
+            }, 100);
         }
         
         pasoActual = 4;
@@ -234,7 +274,7 @@ function volverPaso(numeroPaso) {
 document.addEventListener('DOMContentLoaded', function() {
     console.log('✅ Control-M cargado');
     
-    // Asegurar que empieza en paso 1
+    // Asegura que empieza en paso 1
     pasoActual = 1;
     document.getElementById('paso-1').style.display = 'block';
     document.getElementById('paso-2').style.display = 'none';
@@ -243,6 +283,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const forms = {
         'os': document.getElementById('form-os'),
         'sap': document.getElementById('form-sap'),
+        'sap-business-warehouse': document.getElementById('form-sap-business-warehouse'),
         'file-transfer': document.getElementById('form-file-transfer'),
         'database': document.getElementById('form-database'),
         'azure-webjob': document.getElementById('form-azure-webjob'),
@@ -289,6 +330,83 @@ function inicializarCiclico(form) {
     // Hacer la función accesible globalmente
     window.inicializarCiclico = inicializarCiclico;
 });
+
+// ========== FUNCIONES PARA SAP BUSINESS WAREHOUSE ==========
+
+// Inicializar al cargar la página
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('✅ Inicializando eventos SAP BW');
+    
+    // Delegar eventos para campos dinámicos que se cargan después
+    document.body.addEventListener('change', function(e) {
+        // Detectar cambio en Process Type de SAP BW
+        if (e.target.name === 'process_type_sap_bw') {
+            console.log('🔄 Process Type cambiado a:', e.target.value);
+            
+            const processSection = document.getElementById('process-chain-section-bw');
+            
+            if (processSection) {
+                if (e.target.value === 'process_chain') {
+                    console.log('✅ Mostrando Process Chain Characteristics');
+                    processSection.style.display = 'block';
+                } else {
+                    console.log('❌ Ocultando Process Chain Characteristics');
+                    processSection.style.display = 'none';
+                }
+            } else {
+                console.error('❌ No se encontró #process-chain-section-bw');
+            }
+        }
+    });
+});
+
+// Variables dinámicas SAP BW
+function agregarVariableSapBw() {
+    const contenedor = document.getElementById('contenedor-variables-sap-bw');
+    if (!contenedor) return;
+    
+    const nuevaFila = document.createElement('div');
+    nuevaFila.className = 'fila-dinamica';
+    nuevaFila.innerHTML = `
+        <input type="text" name="var_nombre_sap_bw[]" placeholder="Nombre variable">
+        <input type="text" name="var_valor_sap_bw[]" placeholder="Valor">
+        <button type="button" class="btn-eliminar" onclick="eliminarVariableSapBw(this)">❌</button>
+    `;
+    contenedor.appendChild(nuevaFila);
+}
+
+function eliminarVariableSapBw(boton) {
+    const contenedor = document.getElementById('contenedor-variables-sap-bw');
+    const filas = contenedor.querySelectorAll('.fila-dinamica');
+    if (filas.length > 1) {
+        boton.parentElement.remove();
+    } else {
+        alert('Debe haber al menos una fila de variables');
+    }
+}
+
+// Agregar variables dinámicas para SAP
+function agregarVariableSap() {
+    const contenedor = document.getElementById('contenedor-variables-sap');
+    const nuevaFila = document.createElement('div');
+    nuevaFila.className = 'fila-dinamica';
+    nuevaFila.innerHTML = `
+        <input type="text" name="var_nombre_sap[]" placeholder="Nombre variable">
+        <input type="text" name="var_valor_sap[]" placeholder="Valor">
+        <button type="button" class="btn-eliminar" onclick="eliminarVariableSap(this)">❌</button>
+    `;
+    contenedor.appendChild(nuevaFila);
+}
+
+function eliminarVariableSap(boton) {
+    const filas = document.getElementById('contenedor-variables-sap').querySelectorAll('.fila-dinamica');
+    if (filas.length > 1) {
+        boton.parentElement.remove();
+    } else {
+        alert('Debe haber al menos una fila de variables');
+    }
+}
+
 
 // FUNCIONES PARA MASIVA
 let contadorJobs = 1;

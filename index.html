@@ -68,10 +68,10 @@
             <span class="icono">🚀</span>
             <span class="texto">PRODUCCIÓN</span>
         </button>
-        <button type="button" class="btn-opcion" onclick="seleccionarAmbiente('laboratorio')">
+        <!-- <button type="button" class="btn-opcion" onclick="seleccionarAmbiente('laboratorio')">
             <span class="icono">🔬</span>
             <span class="texto">LABORATORIO</span>
-        </button>
+        </button> -->
     </div>
 </div>
 
@@ -94,6 +94,11 @@
             <span class="icono">📊</span>
             <span class="texto">SAP R3</span>
         </button>
+        <button type="button" class="btn-opcion" onclick="seleccionarJob('sap-business-warehouse')">
+            <span class="icono">🔄</span>
+            <span class="texto">SAP BUSINESS WAREHOUSE</span>
+
+        </button>
         <button type="button" class="btn-opcion" onclick="seleccionarJob('file-transfer')">
             <span class="icono">📁</span>
             <span class="texto">FILE TRANSFER</span>
@@ -104,7 +109,7 @@
         </button>
         <button type="button" class="btn-opcion" onclick="seleccionarJob('azure-webjob')">
             <span class="icono">☁️</span>
-            <span class="texto">AZURE APP SERVICES</span>
+            <span class="texto">ADD AZURE APP WEBJOB</span>
         </button>
         <button type="button" class="btn-opcion" onclick="seleccionarJob('masiva')">
             <span class="icono">📦</span>
@@ -112,11 +117,11 @@
         </button>
         <button type="button" class="btn-opcion" onclick="seleccionarJob('endpoint')">
             <span class="icono">🌐</span>
-            <span class="texto">ENDPOINT</span>
+            <!-- <span class="texto">ENDPOINT</span> -->
         </button>
         <button type="button" class="btn-opcion" onclick="seleccionarJob('webjob')">
             <span class="icono">⚙️</span>
-            <span class="texto">WEBJOB</span>
+            <!-- <span class="texto">WEBJOB</span> -->
         </button>
         <button type="button" class="btn-opcion" onclick="seleccionarJob('sap-btp-scheduler')">
             <span class="icono">📋</span>
@@ -132,7 +137,7 @@
         </button>
         <button type="button" class="btn-opcion" onclick="seleccionarJob('azure-webjob')">
             <span class="icono">☁️</span>
-            <span class="texto">Add Azure App Webjobs Connection Profile</span>
+            <!-- <span class="texto">Add Azure App Webjobs Connection Profile</span> -->
         </button>
     </div>
 </div>
@@ -465,6 +470,324 @@
 </form>
 
 
+<!------------------------- FORMULARIO SAP BUSINESS WAREHOUSE MODIFICADO ---------------------->
+
+<form id="form-sap-business-warehouse" action="/formularios/sap-bw" method="post" class="custom-form" style="display:none;">
+    <input type="hidden" name="tipo_job" value="sap-business-warehouse">
+    
+    <h2>📊 SAP Business Warehouse - Formulario Completo</h2>
+    <button type="button" class="btn-volver" onclick="volverAlPasoAnterior()">← Volver</button>
+    
+    <!-- ========== INFORMACIÓN BÁSICA ========== -->
+    <div class="section-title">📋 INFORMACIÓN BÁSICA</div>
+    
+    <label>Tipo de solicitud<span class="requerido">(*)</span>
+        <select name="tipo_solicitud_sap_bw" required disabled class="campo-bloqueado">
+            <option value="">Seleccionar...</option>
+            <option value="alta">Alta</option>
+            <option value="baja">Baja</option>
+            <option value="modificacion">Modificación</option>
+        </select>
+        <small>✓ Seleccionado en el paso anterior</small>
+    </label>
+    
+    <label>Ambiente<span class="requerido">(*)</span>
+        <select name="ambiente_sap_bw" required disabled class="campo-bloqueado">
+            <option value="">Seleccionar...</option>
+            <option value="desarrollo">Desarrollo</option>
+            <option value="testing">Testing</option>
+            <option value="produccion">Producción</option>
+        </select>
+        <small>✓ Seleccionado en el paso anterior</small>
+    </label>
+    
+    <label>Ticket en Service Now:
+        <input type="text" name="sn_sap_bw" placeholder="INC0123456">
+        <small>Número de ticket si existe</small>
+    </label>
+    
+    <!-- ========== GENERAL (de Control-M) ========== -->
+    <div class="section-title">📋 General</div>
+    
+    <label>Job Name<span class="requerido">(*)</span>
+        <input type="text" name="job_name_sap_bw" required placeholder="SAP_Business_Warehouse_Job#1">
+        <small>Nombre único del job en Control-M</small>
+    </label>
+    
+    <label>Description<span class="requerido">(*)</span>
+        <textarea name="description_sap_bw" required rows="3" placeholder="Proceso de carga de datos en SAP BW..."></textarea>
+    </label>
+    
+    <label>
+        <input type="checkbox" name="run_as_dummy_sap_bw" value="si">
+        Run as Dummy (solo para pruebas)
+    </label>
+    
+    <!-- ========== WHAT (Configuración) ========== -->
+    <div class="section-title">🔧 What - Configuración del Proceso</div>
+    
+    <label>Connection Profile<span class="requerido">(*)</span>
+        <input type="text" name="connection_profile_sap_bw" required placeholder="SAP_BW_Profile_01">
+        <small>⚠️ Debe existir en CCM (Control-M Configuration Manager)</small>
+    </label>
+    
+    <label>Process Type<span class="requerido">(*)</span>
+        <select name="process_type_sap_bw" required class="process-type-select-bw">
+            <option value="">Seleccionar...</option>
+            <option value="process_chain">Process Chain</option>
+            <option value="info_package">InfoPackage</option>
+        </select>
+    </label>
+    
+    <div id="process-chain-section-bw" class="ciclico-campos" style="display:none;">
+        <div class="section-title">⛓️ Process Chain Characteristics</div>
+        
+        <label>Select Process Chain<span class="requerido">(*)</span>
+            <input type="text" name="select_process_chain_sap_bw" placeholder="Z_CARGA_VENTAS_MENSUAL">
+            <small>Nombre técnico del Process Chain en SAP BW</small>
+        </label>
+        
+        <label>Description:
+            <textarea name="process_chain_description_sap_bw" rows="2" placeholder="Descripción del Process Chain"></textarea>
+        </label>
+        
+        <label>ID/Variant<span class="requerido">(*)</span>
+            <input type="text" name="process_chain_id_sap_bw" placeholder="VARIANT_001">
+        </label>
+    </div>
+    
+    <label>ReRun Options (On Job Failure)<span class="requerido">(*)</span>
+        <select name="rerun_options_sap_bw" required>
+            <option value="restart_from_point_of_failure">Restart from point of failure</option>
+            <option value="restart_from_beginning">Rerun from Start</option>
+        </select>
+    </label>
+    
+    <!-- ========== SAP - More ========== -->
+    <div class="section-title">📂 Organización en Control-M</div>
+    
+    <label>Host/Host Group<span class="requerido">(*)</span>
+        <input type="text" name="host_group_sap_bw" required placeholder="sapbw-prod-01.ypf.com">
+        <small>Servidor o grupo donde está el Agent de Control-M</small>
+    </label>
+    
+    <!-- ✅ CONTROL-M SERVER - BLOQUEADO Y PRE-LLENADO -->
+    <label>Control-M Server<span class="requerido">(*)</span>
+        <select name="controlm_server_sap_bw" required disabled class="campo-bloqueado">
+            <option value="">Seleccionar...</option>
+            <option value="DESARROLLO">DESARROLLO</option>
+            <option value="TESTING">TESTING</option>
+            <option value="PRODUCCION">PRODUCCION</option>
+            <option value="LABORATORIO">LABORATORIO</option>
+        </select>
+        <small>✓ Automático según ambiente seleccionado</small>
+    </label>
+    
+    <!-- ✅ PARENT FOLDER - AHORA ES SELECT CON OPCIONES -->
+    <label>Parent Folder<span class="requerido">(*)</span>
+        <select name="parent_folder_sap_bw" required>
+            <option value="">Seleccionar...</option>
+            <option value="Folder_SAP_BW_Finanzas">Folder_SAP_BW_Finanzas</option>
+            <option value="Folder_SAP_BW_Ventas">Folder_SAP_BW_Ventas</option>
+            <option value="Folder_SAP_BW_Compras">Folder_SAP_BW_Compras</option>
+            <option value="Folder_SAP_BW_RRHH">Folder_SAP_BW_RRHH</option>
+            <option value="Folder_SAP_BW_Logistica">Folder_SAP_BW_Logistica</option>
+            <option value="Folder_SAP_BW_Produccion">Folder_SAP_BW_Produccion</option>
+            <option value="Folder_SAP_BW_Reportes">Folder_SAP_BW_Reportes</option>
+            <option value="otro">Otro (especificar en observaciones)</option>
+        </select>
+        <small>Carpeta en Control-M donde se ubicará el job</small>
+    </label>
+    
+    <label>Application:
+        <input type="text" name="application_sap_bw" placeholder="SAP_BW">
+    </label>
+    
+    <label>Sub Application:
+        <input type="text" name="sub_application_sap_bw" placeholder="FINANZAS">
+    </label>
+    
+    <label>
+        <input type="checkbox" name="run_on_all_hosts_sap_bw" value="si">
+        Run job on all hosts in group
+    </label>
+    
+    <label>Instancia de Aplicación en SN<span class="requerido">(*)</span>
+        <input type="text" name="instancia_sap_bw" required placeholder="SAP_BW_PRODUCCION">
+        <small>Nombre de la instancia en Service Now</small>
+    </label>
+    
+    <!-- ========== SCHEDULING (Frecuencia) ========== -->
+    <div class="section-title">📅 Scheduling - Frecuencia de Ejecución</div>
+    
+    <label>Días de la semana:
+        <input type="text" name="dias_semana_sap_bw" placeholder="L,M,Mi,J,V">
+        <small>L,M,Mi,J,V,S,D - Dejar vacío para todos los días</small>
+    </label>
+    
+    <label>Días del mes:
+        <input type="text" name="dias_mes_sap_bw" placeholder="1,15,30">
+        <small>Números del 1-31 separados por comas</small>
+    </label>
+    
+    <label>Mes/es:
+        <select name="meses_sap_bw">
+            <option value="todos">Todos los meses</option>
+            <option value="enero">Enero</option>
+            <option value="febrero">Febrero</option>
+            <option value="marzo">Marzo</option>
+            <option value="abril">Abril</option>
+            <option value="mayo">Mayo</option>
+            <option value="junio">Junio</option>
+            <option value="julio">Julio</option>
+            <option value="agosto">Agosto</option>
+            <option value="septiembre">Septiembre</option>
+            <option value="octubre">Octubre</option>
+            <option value="noviembre">Noviembre</option>
+            <option value="diciembre">Diciembre</option>
+        </select>
+    </label>
+    
+    <label>Fecha única:
+        <input type="date" name="fecha_unica_sap_bw">
+        <small>Solo si se ejecuta una única vez</small>
+    </label>
+    
+    <label>Hora de ejecución:
+        <input type="time" name="hora_sap_bw">
+    </label>
+    
+    <label>¿Es Cíclico?
+        <select name="ciclico_sap_bw" class="ciclico-select">
+            <option value="no">No</option>
+            <option value="si">Sí</option>
+        </select>
+        <small>Se ejecuta repetidamente en un rango de horas</small>
+    </label>
+    
+    <div class="ciclico-campos" style="display:none;">
+        <label>Hora desde:
+            <input type="time" name="hora_desde_sap_bw">
+        </label>
+        
+        <label>Hora hasta:
+            <input type="time" name="hora_hasta_sap_bw">
+        </label>
+        
+        <label>Intervalo (minutos):
+            <input type="number" name="intervalo_sap_bw" placeholder="30" min="1" max="1440">
+        </label>
+        
+        <label>Desde:
+            <select name="desde_sap_bw">
+                <option value="">Seleccionar...</option>
+                <option value="fin">Fin</option>
+                <option value="principio">Principio</option>
+            </select>
+        </label>
+    </div>
+    
+    <label>Activo desde:
+        <input type="date" name="activo_desde_sap_bw">
+    </label>
+    
+    <label>Activo hasta:
+        <input type="date" name="activo_hasta_sap_bw">
+    </label>
+    
+    <!-- ========== PREREQUISITES (Dependencias) ========== -->
+    <div class="section-title">🔗 Prerequisites - Dependencias</div>
+    
+    <label>Si tiene dependencias indicar cuales:
+        <textarea name="dependencias_sap_bw" rows="3" placeholder="JOB_ANTERIOR.TO.JOB_ACTUAL"></textarea>
+        <small>Jobs que deben terminar antes de ejecutar este</small>
+    </label>
+    
+    <label>Criticidad:
+        <select name="criticidad_sap_bw">
+            <option value="">Seleccionar...</option>
+            <option value="baja">Baja</option>
+            <option value="media">Media</option>
+            <option value="alta">Alta</option>
+            <option value="critica">Crítica</option>
+        </select>
+    </label>
+    
+    <!-- ========== VARIABLES ========== -->
+    <div class="section-title">🔢 Variables</div>
+    
+    <label>Created By:
+        <input type="text" name="created_by_sap_bw" value="" placeholder="Usuario que solicita" readonly style="background-color:#e9ecef;">
+    </label>
+    
+    <div class="campos-dinamicos" id="contenedor-variables-sap-bw">
+        <p><strong>Variables adicionales (opcional):</strong></p>
+        <div class="fila-dinamica">
+            <input type="text" name="var_nombre_sap_bw[]" placeholder="Nombre variable">
+            <input type="text" name="var_valor_sap_bw[]" placeholder="Valor">
+            <button type="button" class="btn-eliminar" onclick="eliminarVariableSapBw(this)">❌</button>
+        </div>
+    </div>
+    
+    <button type="button" class="btn-agregar" onclick="agregarVariableSapBw()">
+        ➕ Agregar Variable
+    </button>
+    
+    <!-- ========== DOCUMENTATION ========== -->
+    <div class="section-title">📄 Documentation</div>
+    
+    <label>Type:
+        <select name="doc_type_sap_bw">
+            <option value="file">File</option>
+            <option value="url">URL</option>
+            <option value="text">Text</option>
+            <option value="none">Sin documentación</option>
+        </select>
+    </label>
+    
+    <label>Doc Path:
+        <input type="text" name="doc_path_sap_bw" placeholder="\\servidor\documentacion\sap_bw\proceso.pdf">
+    </label>
+    
+    <label>Doc File:
+        <input type="text" name="doc_file_sap_bw" placeholder="manual_proceso.pdf">
+    </label>
+    
+    <!-- ========== PRIORITY ========== -->
+    <div class="section-title">⚡ Priority</div>
+    
+    <label>Priority:
+        <input type="number" name="priority_sap_bw" min="0" max="999" placeholder="50">
+        <small>0-999, mayor número = mayor prioridad</small>
+    </label>
+    
+    <label>
+        <input type="checkbox" name="critical_resource_sap_bw" value="si">
+        Critical (reserve resources)
+    </label>
+    
+    <!-- ========== RESPONSABLES ========== -->
+    <div class="section-title">👥 RESPONSABLES Y NOTIFICACIONES</div>
+    
+    <label>Grupo Responsable Correo<span class="requerido">(*)</span>
+        <input type="text" name="grupo_responsable_correo_sap_bw" required placeholder="soporte_sap_bw@ypf.com">
+    </label>
+    
+    <label>Grupo Responsable Service Now:
+        <input type="text" name="grupo_responsable_sn_sap_bw" placeholder="SAP BW - Soporte">
+    </label>
+    
+    <label>Acción a seguir si cancela<span class="requerido">(*)</span>
+        <textarea name="accion_cancela_sap_bw" required rows="4" placeholder="IMPORTANTE: NO DERIVAR INCIDENTE - CERRAR EN OPERACIONES&#10;&#10;Procedimiento:&#10;1. Verificar logs en SM37&#10;2. Revisar Process Chain en RSPC&#10;3. Contactar grupo responsable"></textarea>
+    </label>
+    
+    <label>Observaciones / Datos Complementarios:
+        <textarea name="observaciones_sap_bw" rows="3" placeholder="Información adicional relevante..."></textarea>
+    </label>
+    
+    <button type="submit">💾 Guardar Solicitud</button>
+</form>
+
 <!---------------------- FORMULARIO FILE TRANSFER COMPLETO ------------------------------------>
 
 <form id="form-file-transfer" action="/formularios/file-transfer" method="post" class="custom-form" style="display:none;">
@@ -772,7 +1095,7 @@
     
     <!-- Connection Profile Name -->
     <label>Connection Profile Name <span class="requerido">(*Required)</span>
-        <input type="text" name="connection_profile_name_sap_btp" required placeholder="Enter connection profile name">
+        <!-- <input type="text" name="connection_profile_name_sap_btp" required placeholder="Enter connection profile name"> -->
     </label>
     
     <!-- Description -->
@@ -872,7 +1195,7 @@
     
     <!-- Connection Profile Name -->
     <label>Connection Profile Name <span class="requerido">((*)-Required)</span>
-        <input type="text" name="connection_profile_name_rest" required placeholder="Enter connection profile name">
+        <!-- <input type="text" name="connection_profile_name_rest" required placeholder="Enter connection profile name"> -->
     </label>
     
     <!-- Description -->
@@ -1038,7 +1361,7 @@
     
     <!-- Connection Profile Name -->
     <label>Connection Profile Name <span class="requerido">(*Required)</span>
-        <input type="text" name="connection_profile_name_veeam" required placeholder="Enter connection profile name">
+        <!-- <input type="text" name="connection_profile_name_veeam" required placeholder="Enter connection profile name"> -->
     </label>
     
     <!-- Description -->
@@ -1139,7 +1462,7 @@
     
     <!-- Connection Profile Name -->
     <label>Connection Profile Name <span class="requerido">(*Required)</span>
-        <input type="text" name="connection_profile_name" required placeholder="Enter connection profile name">
+        <!-- <input type="text" name="connection_profile_name" required placeholder="Enter connection profile name"> -->
     </label>
     
     <!-- Description -->

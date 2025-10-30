@@ -4,17 +4,17 @@
 
 // ===== EXPRESIONES REGULARES =====
 const REGEX = {
-    jobname: /^[a-zA-Z0-9_\-\.]+$/,
-    servidor: /^[a-zA-Z0-9\-\.]+$/,
-    email: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+    jobname: /^[a-zA-Z0-9_\-\.]+$/, // Letras, números, guiones, guiones bajos y puntos
+    servidor: /^[a-zA-Z0-9\-\.]+$/, // Letras, números, guiones y puntos
+    email: /^[^\s@]+@[^\s@]+\.[^\s@]+$/, // Formato básico de email
     hora: /^([01]?[0-9]|2[0-3]):[0-5][0-9]$/,
     diasSemana: /^[LMmiJVSD,\s]+$/,
-    diasMes: /^(\d{1,2})(,\s*\d{1,2})*$/,
+    diasMes: /^(\d{1,2})(,\s*\d{1,2})*$/,// Números del 1 al 31 separados por comas
     url: /^https?:\/\/.+/,
     puerto: /^([1-9][0-9]{0,3}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|655[0-2][0-9]|6553[0-5])$/,
-    path: /^[\/\\]?([a-zA-Z0-9_\-\.\s]+[\/\\]?)+$/,
-    dependencias: /^[A-Z0-9_\-]+(\.[A-Z0-9_\-]+)*$/i,
-    ip: /^(\d{1,3}\.){3}\d{1,3}$/
+    path: /^[\/\\]?([a-zA-Z0-9_\-\.\s]+[\/\\]?)+$/,// Rutas simples de archivos/carpetas
+    dependencias: /^[A-Z0-9_\-]+(\.[A-Z0-9_\-]+)*$/i,// JOBNAME.TO.JOBNAME
+    ip: /^(\d{1,3}\.){3}\d{1,3}$/// Formato básico de IP
 };
 
 // ===== MENSAJES DE ERROR =====
@@ -39,10 +39,10 @@ const MENSAJES = {
 
 // ===== FUNCIÓN PRINCIPAL DE VALIDACIÓN =====
 function validarCampo(input, tipoValidacion) {
-    const valor = input.value.trim();
+    const valor = input.value.trim();// Obtener valor y limpiar espacios , trim es importante para evitar errores por espacios
     
     // Si está vacío y es required, mostrar error
-    if (!valor && input.hasAttribute('required')) {
+    if (!valor && input.hasAttribute('required')) {  // has es importante para validar solo si es requerido
         mostrarError(input, MENSAJES.requerido);
         return false;
     }
@@ -60,8 +60,6 @@ function validarCampo(input, tipoValidacion) {
     switch(tipoValidacion) {
         case 'jobname':
             esValido = REGEX.jobname.test(valor);
-            mensaje = MENSAJES.jobname;
-            break;
             
         case 'servidor':
             esValido = REGEX.servidor.test(valor) || REGEX.ip.test(valor);
@@ -372,7 +370,7 @@ function inicializarValidaciones(form) {
             `📋 ${Object.keys(datos).length} campos completados\n\n` +
             `Cuando el backend esté listo, estos datos se enviarán a Flask.`);
         
-        // CUANDO TENGAS EL BACKEND, REEMPLAZA TODO LO DE ARRIBA CON:
+        // ⇛⇛⇛⇛⇛⇛CUANDO TENGAS EL BACKEND, REEMPLAZA TODO LO DE ARRIBA CON:
         // this.submit();
         
         return false;
